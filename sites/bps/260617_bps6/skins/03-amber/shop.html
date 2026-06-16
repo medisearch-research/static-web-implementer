@@ -1,0 +1,475 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>PRODUCT | BP+ 뷰티파마시</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://api.fontshare.com/v2/css?f[]=clash-display@600,700&f[]=general-sans@400,500,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+  <style>
+:root{
+ --ink:#16181D;--ac:#C89B4A;--ac2:#9A7430;--beige:#F6EEE5;--brown:#4C4236;
+ --white:#fff;--g1:#F8F8F8;--g2:#F4F3F1;--grey:#CCC6C0;
+ --b10:rgba(22,24,29,.06);--b15:rgba(22,24,29,.1);--b20:rgba(22,24,29,.16);--b40:rgba(22,24,29,.34);--b55:rgba(22,24,29,.5);--b70:rgba(22,24,29,.68);
+ --w20:rgba(255,255,255,.2);--w40:rgba(255,255,255,.4);--w60:rgba(255,255,255,.6);--w80:rgba(255,255,255,.82);
+ --ac8:rgba(200,155,74,0.08);--ac15:rgba(200,155,74,0.16);
+ --disp:'Clash Display','General Sans',sans-serif;--body:'Pretendard',sans-serif;--lat:'General Sans',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+/* req3: 자간·줄바꿈 (hince/ayunche 참고 — 폰트 유지, 한글 단어 안 끊김, 균형 줄바꿈) */
+body{font-family:var(--body);color:var(--ink);background:#fff;line-height:1.72;-webkit-font-smoothing:antialiased;overflow-x:hidden;font-size:15px;letter-spacing:-0.012em;word-break:keep-all;overflow-wrap:break-word}
+:lang(ko),p,li,td,.nm,.lede{word-break:keep-all;overflow-wrap:break-word}
+img{max-width:100%;display:block}a{color:inherit;text-decoration:none}
+.disp{font-family:var(--disp)}
+.wrap{max-width:1320px;margin:0 auto;padding:0 40px}
+.ey{font-family:var(--lat);font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--ac);font-weight:600}
+.sec{padding:108px 0}
+h1,h2,h3{font-family:var(--disp);font-weight:600;line-height:1.08;letter-spacing:-.022em;word-break:keep-all;text-wrap:pretty}
+.lede{font-size:17px;color:var(--b55);max-width:560px}
+.btn{display:inline-flex;align-items:center;gap:9px;padding:15px 32px;border:1px solid var(--ink);border-radius:999px;font-size:13px;letter-spacing:.05em;background:none;cursor:pointer;transition:.28s;font-family:var(--lat);color:var(--ink)}
+.btn:hover{background:var(--ink);color:#fff}
+.btn-ac{background:var(--ac);border-color:var(--ac);color:#fff}.btn-ac:hover{background:var(--ac2);border-color:var(--ac2)}
+.lnk{font-family:var(--lat);font-size:13px;letter-spacing:.04em;display:inline-flex;gap:7px;align-items:center;border-bottom:1px solid var(--b20);padding-bottom:3px;transition:.25s}
+.lnk:hover{color:var(--ac);border-color:var(--ac)}
+
+/* anno + header */
+.anno{background:var(--ink);color:#fff;font-size:12.5px;letter-spacing:.04em;text-align:center;padding:10px 44px;position:relative}
+.anno [data-anno-close]{position:absolute;right:18px;top:50%;transform:translateY(-50%);background:none;border:0;color:#fff;cursor:pointer;font-size:15px;opacity:.6}
+.hd{position:sticky;top:0;z-index:60;background:var(--w80);backdrop-filter:blur(16px);border-bottom:1px solid var(--b10)}
+.hd .wrap{display:flex;align-items:center;justify-content:space-between;height:74px}
+.hd .left,.hd .right{display:flex;align-items:center;gap:24px;flex:1}
+.hd .right{justify-content:flex-end}
+.burger{display:flex;flex-direction:column;gap:5px;background:none;border:0;cursor:pointer;padding:4px}
+.burger span{width:24px;height:1.5px;background:var(--ink);transition:.3s}
+.burger.is-open span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+.burger.is-open span:nth-child(2){opacity:0}.burger.is-open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+.logo{font-family:var(--disp);font-size:26px;font-weight:700;letter-spacing:-.02em;flex:0 0 auto}
+.logo b{color:var(--ac)}
+.navlink{font-family:var(--lat);font-size:13px;letter-spacing:.05em}
+.navlink:hover{color:var(--ac)}.hd .ico{font-size:13px;letter-spacing:.03em}
+
+/* overlay GNB */
+.gnb{position:fixed;inset:0;z-index:100;background:var(--ink);color:#fff;display:none;flex-direction:column;padding:44px}
+.gnb-top{display:flex;justify-content:space-between;align-items:center}
+.gnb .close{background:none;border:0;color:#fff;font-size:32px;cursor:pointer;line-height:1}
+.gnb-mid{flex:1;display:flex;flex-direction:column;justify-content:center;gap:4px}
+.gnb-mid a{font-family:var(--disp);font-size:clamp(32px,5.6vw,66px);font-weight:600;line-height:1.08;opacity:.92;transition:.3s}
+.gnb-mid a:hover{color:var(--ac);padding-left:20px}
+.gnb-mid a small{font-family:var(--lat);font-size:12px;letter-spacing:.18em;opacity:.45;vertical-align:super;margin-left:12px}
+.gnb-foot{display:flex;gap:28px;font-size:12px;letter-spacing:.08em;opacity:.55;flex-wrap:wrap}
+
+/* hero (21:9 cinematic, fade swiper) */
+.hero-swiper{position:relative;height:90vh;min-height:600px}
+.hero-slide{position:relative;height:100%;overflow:hidden}
+.hero-slide img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.hero-slide .veil{position:absolute;inset:0;background:linear-gradient(90deg,rgba(22,24,29,0.28),rgba(22,24,29,0.04) 60%)}
+.hero-cap{position:absolute;left:0;bottom:13%;z-index:2;padding:0 8vw;max-width:780px}
+.hero-cap .ey{color:var(--ac)}
+.hero-cap h1{font-size:clamp(40px,6vw,80px);color:var(--ink);margin:16px 0 18px;overflow:hidden}
+.hero-cap h1 .kin{display:inline-block}
+.hero-cap p{font-size:16px;color:var(--b55);max-width:520px;margin-bottom:26px}
+.hero-swiper .swiper-pagination{bottom:30px!important;text-align:left;padding-left:8vw}
+.hero-swiper .swiper-pagination-bullet{background:var(--ink);opacity:.3;width:26px;height:3px;border-radius:0}
+.hero-swiper .swiper-pagination-bullet-active{opacity:1;background:var(--ac)}
+.s-nav{position:absolute;top:50%;z-index:3;transform:translateY(-50%);width:48px;height:48px;border-radius:50%;background:var(--w60);border:1px solid var(--b15);color:var(--ink);cursor:pointer;display:grid;place-items:center;font-size:18px}
+.s-prev{left:30px}.s-next{right:30px}
+.slide-no{position:absolute;right:8vw;bottom:13%;z-index:3;font-family:var(--lat);font-size:13px;letter-spacing:.18em;color:var(--b40)}
+
+/* section head */
+.sh{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:46px;gap:24px;flex-wrap:wrap}
+.sh h2{font-size:clamp(28px,3.6vw,46px)}.sh .ey{margin-bottom:12px}
+
+/* circular categories */
+.circs{display:flex;gap:30px;justify-content:center;flex-wrap:wrap}
+.circ{text-align:center;width:138px}
+.circ .ph{width:138px;height:138px;border-radius:50%;overflow:hidden;background:var(--g1);transition:.4s}
+.circ .ph img{width:100%;height:100%;object-fit:cover;transition:.6s}
+.circ:hover .ph{transform:translateY(-7px)}.circ:hover .ph img{transform:scale(1.08)}
+.circ span{display:block;margin-top:14px;font-size:13.5px;letter-spacing:.02em}
+
+/* product card (hover dim + image swap, hince-style) */
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:46px 26px}
+.grid.g3{grid-template-columns:repeat(3,1fr)}
+.prod{position:relative;display:block}
+.prod .thumb{position:relative;aspect-ratio:3/4;overflow:hidden;background:var(--g1)}
+.prod .thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity .55s ease,transform 3.5s ease}
+.prod .thumb .back{opacity:0}
+.prod:hover .thumb .front{opacity:0}.prod:hover .thumb .back{opacity:1;transform:scale(1.05)}
+.prod .thumb::after{content:'';position:absolute;inset:0;background:var(--ink);opacity:0;transition:.4s}
+.prod:hover .thumb::after{opacity:.06}
+.prod .rank{position:absolute;left:0;top:0;z-index:3;width:34px;height:34px;background:var(--ink);color:#fff;display:grid;place-items:center;font-family:var(--lat);font-size:13px}
+.prod .bdg{position:absolute;right:12px;top:12px;z-index:3;display:flex;flex-direction:column;gap:5px;align-items:flex-end}
+.prod .bdg b{font-family:var(--lat);font-size:10px;letter-spacing:.1em;background:var(--ink);color:#fff;padding:3px 8px;font-weight:600}
+.prod .bdg b.nw{background:var(--ac)}.prod .bdg b.sl{background:#b23b3b}
+.prod .quick{position:absolute;left:0;right:0;bottom:0;z-index:3;transform:translateY(100%);background:var(--ink);color:#fff;border:0;padding:13px;font-family:var(--lat);font-size:12px;letter-spacing:.08em;cursor:pointer;transition:.35s}
+.prod:hover .quick{transform:translateY(0)}
+.prod .meta{padding:16px 2px 0}
+.prod .brand{font-family:var(--lat);font-size:11px;letter-spacing:.12em;color:var(--ac2);text-transform:uppercase}
+.prod .nm{font-size:14.5px;margin:6px 0 6px;line-height:1.45;font-weight:500}
+.prod .ing{font-size:12px;color:var(--b40);margin-bottom:9px}
+.prod .pr{display:flex;align-items:center;gap:8px;font-size:14px}
+.prod .pr .dc{color:var(--ac);font-weight:700}.prod .pr .sp{font-weight:700}.prod .pr .op{color:var(--b40);text-decoration:line-through;font-size:12px}
+.prod .rt{font-size:11.5px;color:var(--b55);margin-top:7px}
+.prod .sw{display:flex;gap:5px;margin-top:9px}.prod .sw i{width:13px;height:13px;border-radius:50%;border:1px solid var(--b15)}
+
+/* VIEW MORE gauge */
+.gauge{position:relative;display:inline-flex;align-items:center;gap:12px;padding:16px 36px;border:1px solid var(--ink);border-radius:999px;overflow:hidden;cursor:pointer;font-family:var(--lat);font-size:13px;letter-spacing:.14em}
+.gauge .gauge-fill{position:absolute;inset:0;background:var(--ink);transform:scaleX(0);transform-origin:left;transition:transform .6s cubic-bezier(.7,0,.3,1);z-index:0}
+.gauge span,.gauge svg{position:relative;z-index:1;transition:color .4s}
+.gauge:hover span,.gauge.is-filling span{color:#fff}
+
+/* editorial split */
+.split{display:grid;grid-template-columns:1fr 1fr;align-items:stretch}
+.split.rev .im{order:2}
+.split .im{position:relative;min-height:560px;overflow:hidden}
+.split .im img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.split .tx{padding:6vw 5vw;display:flex;flex-direction:column;justify-content:center}
+.split .tx h2{font-size:clamp(28px,3.4vw,44px);margin:16px 0 18px}
+.split .tx p{font-size:15px;color:var(--b55);margin-bottom:14px}
+
+/* numbers (refined, hairline, light) */
+.numbers{border-top:1px solid var(--b15);border-bottom:1px solid var(--b15)}
+.numgrid{display:grid;grid-template-columns:repeat(4,1fr)}
+.numgrid .n{padding:64px 28px;border-right:1px solid var(--b10);text-align:center}
+.numgrid .n:last-child{border-right:0}
+.numgrid .v{font-family:var(--disp);font-size:clamp(40px,5vw,66px);font-weight:600}
+.numgrid .v em{font-style:normal;color:var(--ac)}
+.numgrid .l{font-size:13px;letter-spacing:.05em;color:var(--b55);margin-top:10px}
+
+/* why */
+.why-hero{font-family:var(--disp);font-size:clamp(42px,8.5vw,116px);line-height:.94;font-weight:600;letter-spacing:-.02em}
+.why-hero em{font-style:normal;color:var(--ac)}
+.whygrid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:54px;border-top:1px solid var(--b15)}
+.whygrid .c{padding:34px 26px 0;border-right:1px solid var(--b10)}
+.whygrid .c:last-child{border-right:0}
+.whygrid .c .no{font-family:var(--lat);font-size:13px;color:var(--ac2);letter-spacing:.1em}
+.whygrid .c h3{font-size:20px;margin:14px 0 12px}.whygrid .c p{font-size:13.5px;color:var(--b55)}
+
+/* structure */
+.structure .row{display:grid;grid-template-columns:90px 1.1fr 1fr;gap:34px;align-items:start;padding:44px 0;border-top:1px solid var(--b15)}
+.structure .row .no{font-family:var(--disp);font-size:30px;color:var(--ac)}
+.structure .row h3{font-size:26px}.structure .row .tag{font-size:12px;letter-spacing:.12em;color:var(--ac2);margin-top:7px}
+.structure .row p{font-size:14.5px;color:var(--b55);max-width:480px}
+.structure .row ul{list-style:none;margin-top:16px;display:flex;flex-wrap:wrap;gap:8px}
+.structure .row li{font-size:12px;border:1px solid var(--b15);border-radius:999px;padding:6px 13px;color:var(--b70)}
+
+/* paths — redesigned editorial (req8) */
+.pathgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:30px}
+.path{display:block;position:relative}
+.path .pim{position:relative;aspect-ratio:4/3;overflow:hidden;background:var(--g1)}
+.path .pim img{width:100%;height:100%;object-fit:cover;transition:.6s}
+.path:hover .pim img{transform:scale(1.05)}
+.path .pim::after{content:'';position:absolute;inset:0;background:var(--ink);opacity:0;transition:.4s}
+.path:hover .pim::after{opacity:.08}
+.path .pe{font-family:var(--lat);font-size:12px;letter-spacing:.16em;color:var(--ac2);margin-top:20px;text-transform:uppercase}
+.path h3{font-size:24px;margin:10px 0 12px}
+.path p{font-size:14px;color:var(--b55);min-height:64px}
+.path .go{margin-top:16px;display:inline-flex;align-items:center;gap:8px;font-family:var(--lat);font-size:13px;color:var(--ac);letter-spacing:.04em}
+.path:hover .go{gap:14px}
+
+/* manifesto band */
+.mani{background:var(--ink);color:#fff;position:relative;overflow:hidden}
+.mani .bg{position:absolute;inset:0;opacity:.22}.mani .bg img{width:100%;height:100%;object-fit:cover}
+.mani .wrap{position:relative;z-index:2;text-align:center;padding:120px 40px}
+.mani .ey{color:var(--ac)}
+.mani h2{font-size:clamp(30px,4.6vw,62px);color:#fff;margin:18px 0;line-height:1.15}
+.mani p{color:var(--w80);max-width:600px;margin:0 auto;font-size:16px}
+
+/* insight */
+.icards{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+.icard{display:block}
+.icard .cv{position:relative;aspect-ratio:4/5;overflow:hidden;background:var(--g1)}
+.icard .cv img{width:100%;height:100%;object-fit:cover;transition:.6s}
+.icard:hover .cv img{transform:scale(1.05)}
+.icard .cv .k{position:absolute;left:14px;top:14px;font-family:var(--lat);background:var(--w80);color:var(--ink);font-size:11px;letter-spacing:.06em;padding:5px 11px}
+.icard .bd{padding:18px 0 0}.icard .bd h3{font-size:17px;line-height:1.4;font-family:var(--body);font-weight:600}
+.icard .bd .date{font-family:var(--lat);font-size:12px;color:var(--b40);margin-top:10px}
+
+/* cinematic — redesigned (req8) */
+.cine{position:relative;height:82vh;min-height:560px;display:grid;place-items:center;overflow:hidden}
+.cine img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+/* req9: cine 영상(무음 루프) */
+.cine-video{height:86vh;min-height:580px}
+.cine-video video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.cine .veil{position:absolute;inset:0;background:rgba(22,24,29,0.46)}
+.cine .c{position:relative;z-index:2;text-align:center;color:#fff;padding:0 24px;max-width:760px}
+.cine .c .ey{color:#fff;opacity:.8}
+.cine .c h2{font-size:clamp(34px,5.4vw,82px);color:#fff;margin:18px 0}
+.cine .c .rule{width:60px;height:2px;background:var(--ac);margin:0 auto 18px}
+.cine .c p{color:var(--w80);font-size:16px}
+
+/* contact — redesigned hince form (req8) */
+.contact{background:var(--g1)}
+.contact-grid{display:grid;grid-template-columns:1fr 1.05fr;gap:80px;align-items:start}
+.contact h2{font-size:clamp(30px,4vw,56px)}
+/* req7: 포인트 단어 색 (why-hero 방식) */
+.contact-h em{font-style:normal;color:var(--ac)}
+/* req7: 테두리를 뱀처럼 훑는 리본 애니메이션 (색칠 ~22% < 1/3) */
+.cf-wrap{position:relative;padding:30px 30px 4px;background:var(--white)}
+.cf-wrap .ribbon{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+.cf-wrap .ribbon .rb{fill:none;stroke:var(--ac);stroke-width:2;vector-effect:non-scaling-stroke;stroke-linecap:round;stroke-dasharray:22 78;animation:ribbon 6.5s linear infinite}
+@keyframes ribbon{to{stroke-dashoffset:-100}}
+@media(prefers-reduced-motion:reduce){.cf-wrap .ribbon .rb{animation:none;stroke-dasharray:none;stroke:var(--b15)}}
+.contact .meta-line{display:flex;gap:10px;font-size:13.5px;color:var(--b55);margin-top:10px}
+.cf{margin-top:8px}
+.cf .row2{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+.cf .fld{margin-bottom:26px}
+.cf label{display:block;font-family:var(--lat);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--b40);margin-bottom:8px}
+.cf input,.cf select,.cf textarea{width:100%;border:0;border-bottom:1px solid var(--b20);padding:10px 0;font-family:var(--body);font-size:15px;background:none;color:var(--ink);transition:.25s}
+.cf input:focus,.cf select,.cf textarea:focus{outline:0;border-color:var(--ac)}
+.cf textarea{min-height:84px;resize:vertical}
+.cf .done{display:none;background:var(--ac);color:#fff;padding:15px;text-align:center;font-size:14px;margin-bottom:18px}
+
+/* footer */
+.ft{background:var(--ink);color:var(--w60);padding:78px 0 0}
+.ft-top{display:grid;grid-template-columns:1.5fr 1fr 1fr 1.2fr;gap:34px;padding-bottom:50px;border-bottom:1px solid var(--w20)}
+.ft h4{color:#fff;font-family:var(--lat);font-size:13px;letter-spacing:.12em;margin-bottom:18px}
+.ft a{display:block;font-size:13px;padding:5px 0;opacity:.72}.ft a:hover{opacity:1;color:var(--ac)}
+.ft .desc{font-size:13.5px;line-height:1.85}
+.ft .comp{font-size:11.5px;line-height:2;opacity:.5;padding:24px 0 34px}
+.ft .word{font-family:var(--disp);font-weight:700;font-size:clamp(80px,18vw,260px);line-height:.78;color:#fff;opacity:.07;letter-spacing:-.03em;text-align:center;padding-bottom:26px}
+
+/* page header */
+.pgh{padding:64px 0 6px;text-align:center}.pgh h1{font-size:clamp(30px,4vw,52px)}
+.pgh .bc{font-family:var(--lat);font-size:12px;letter-spacing:.1em;color:var(--b40);margin-top:12px}
+
+/* shop */
+.catkv{position:relative;aspect-ratio:24/7;overflow:hidden;background:var(--g1);margin-bottom:46px}
+.catkv img{width:100%;height:100%;object-fit:cover}
+.subtabs{display:flex;gap:4px;flex-wrap:wrap;justify-content:center;border-bottom:1px solid var(--b10);padding-bottom:20px;margin-bottom:32px}
+.subtabs button{background:none;border:0;font-family:var(--lat);font-size:14px;letter-spacing:.06em;color:var(--b40);padding:9px 18px;cursor:pointer;transition:.2s;border-bottom:2px solid transparent;margin-bottom:-21px}
+.subtabs button.is-active{color:var(--ink);border-bottom-color:var(--ac)}
+.shopbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:26px;font-size:13px;color:var(--b55)}
+.shopbar select{font-family:var(--body);border:1px solid var(--b15);border-radius:999px;padding:9px 18px;background:#fff;color:var(--ink)}
+.pagi{display:flex;gap:8px;justify-content:center;margin-top:60px}
+.pagi a{width:38px;height:38px;display:grid;place-items:center;border:1px solid var(--b15);font-family:var(--lat);font-size:13px}
+.pagi a.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+
+/* product detail */
+.pd{display:grid;grid-template-columns:1.1fr 1fr;gap:64px}
+.pd .gal-main{aspect-ratio:1;overflow:hidden;background:var(--g1)}
+.pd .gal-main img{width:100%;height:100%;object-fit:cover;transition:opacity .2s}
+.pd .gal-th{display:flex;gap:10px;margin-top:12px}
+.pd .gal-th [data-gallery-thumb]{width:78px;height:78px;overflow:hidden;border:1px solid var(--b15);cursor:pointer;opacity:.55;transition:.2s}
+.pd .gal-th .is-active{opacity:1;border-color:var(--ac)}.pd .gal-th img{width:100%;height:100%;object-fit:cover}
+.pd .info .brand{font-family:var(--lat);font-size:12px;letter-spacing:.12em;color:var(--ac2);text-transform:uppercase}
+.pd .info h1{font-size:32px;margin:10px 0 14px;line-height:1.25}
+.pd .info .price{font-size:27px;font-weight:700;margin:12px 0}
+.pd .info .price .op{font-size:15px;color:var(--b40);text-decoration:line-through;margin-right:10px;font-weight:400}
+.pd .info .price .dc{color:var(--ac);margin-right:8px}
+.pd .opt{border-top:1px solid var(--b15);margin-top:22px;padding-top:22px}
+.pd .opt .lab{font-size:13px;color:var(--b55);margin-bottom:10px}
+.pd .sws{display:flex;gap:10px}.pd .sws i{width:30px;height:30px;border-radius:50%;border:1px solid var(--b15);cursor:pointer}
+.qty{display:inline-flex;align-items:center;border:1px solid var(--b15);border-radius:999px;overflow:hidden;margin-top:18px}
+.qty button{width:42px;height:44px;border:0;background:none;font-size:18px;cursor:pointer;color:var(--ink)}.qty input{width:48px;text-align:center;border:0;font-size:15px;background:none;color:var(--ink)}
+.pd .buy{display:flex;gap:12px;margin-top:24px}.pd .buy .btn{flex:1;justify-content:center;padding:17px}
+.pdtabs{margin-top:80px}
+.pdtabs .tabnav{display:flex;border-bottom:1px solid var(--b15)}
+.pdtabs .tabnav button{flex:1;background:none;border:0;padding:18px;font-family:var(--lat);font-size:14px;letter-spacing:.06em;color:var(--b40);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px}
+.pdtabs .tabnav button.is-active{color:var(--ink);border-bottom-color:var(--ink)}
+.panel{display:none}.panel.is-active{display:block}.pdtabs .panel{padding:40px 0}
+.pdtabs .panel img{margin:14px 0}
+.review{border-bottom:1px solid var(--b10);padding:20px 0}
+.review .top{display:flex;justify-content:space-between;font-size:13px;color:var(--b55)}.review .star{color:var(--ac)}
+
+/* community */
+.ctabs{display:flex;gap:8px;justify-content:center;margin-bottom:34px;flex-wrap:wrap}
+.ctabs button{background:none;border:1px solid var(--b15);border-radius:999px;padding:9px 22px;font-family:var(--lat);font-size:13px;cursor:pointer;color:var(--b55)}
+.ctabs button.is-active{background:var(--ink);color:#fff;border-color:var(--ink)}
+.list .it{display:flex;gap:20px;align-items:center;padding:19px 4px;border-bottom:1px solid var(--b10)}
+.list .it .k{font-family:var(--lat);font-size:11px;border:1px solid var(--ac15);color:var(--ac2);border-radius:999px;padding:4px 13px;flex:0 0 auto}
+.list .it .t{font-size:15px;flex:1}.list .it .d{font-family:var(--lat);font-size:12px;color:var(--b40)}
+.revgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:26px}
+.revcard .cv{aspect-ratio:4/5;overflow:hidden;background:var(--g1)}.revcard .cv img{width:100%;height:100%;object-fit:cover;transition:.5s}.revcard:hover .cv img{transform:scale(1.05)}
+.revcard .star{color:var(--ac);font-size:13px;margin-top:12px}.revcard p{font-size:13.5px;margin-top:6px}.revcard .who{font-family:var(--lat);font-size:12px;color:var(--b40);margin-top:8px}
+.faq .it{display:block}.faq .q{font-size:15px;padding:18px 4px;border-bottom:1px solid var(--b10)}.faq .q::before{content:'Q';font-family:var(--disp);color:var(--ac);margin-right:12px}
+.faq .a{font-size:14px;color:var(--b55);padding:4px 4px 22px 30px}
+
+/* mypage */
+.mp{display:grid;grid-template-columns:1fr 2.4fr;gap:46px}
+.mp .side{border-top:2px solid var(--ink);padding-top:22px;height:max-content}
+.mp .side h3{font-family:var(--lat);font-size:13px;letter-spacing:.1em;margin-bottom:14px}
+.mp .side a{display:block;font-size:13.5px;padding:8px 0;color:var(--b55)}.mp .side a:hover{color:var(--ac)}
+.mp .welcome{position:relative;aspect-ratio:24/7;overflow:hidden;margin-bottom:34px;background:var(--g1)}
+.mp .welcome img{width:100%;height:100%;object-fit:cover}
+.mp .login{border:1px solid var(--b15);padding:34px;max-width:400px}
+.mp .login h3{font-family:var(--disp);font-size:20px;margin-bottom:18px}
+.mp .login input{width:100%;border:0;border-bottom:1px solid var(--b20);padding:12px 0;margin-bottom:14px;font-family:var(--body);background:none}
+.mp .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--b15);border:1px solid var(--b15);margin-bottom:34px}
+.mp .stat{background:#fff;padding:26px;text-align:center}.mp .stat .n{font-family:var(--disp);font-size:30px;font-weight:600;color:var(--ac)}.mp .stat .l{font-size:12px;color:var(--b55);margin-top:6px}
+.mp .menu{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.mp .menu a{border:1px solid var(--b15);padding:24px 16px;text-align:center;font-size:13px}.mp .menu a:hover{border-color:var(--ac);color:var(--ac)}
+.mp .bank{margin-top:28px;background:var(--g1);padding:24px;font-size:13px;line-height:2}
+
+@media(max-width:920px){
+ .grid,.grid.g3{grid-template-columns:repeat(2,1fr)}
+ .numgrid,.whygrid,.pathgrid,.icards,.revgrid,.mp .stats,.mp .menu{grid-template-columns:repeat(2,1fr)}
+ .pd,.split,.split.rev .im,.contact-grid,.mp{grid-template-columns:1fr}.split.rev .im{order:0}
+ .wrap{padding:0 22px}.whygrid .c,.numgrid .n{border-right:0;border-bottom:1px solid var(--b10)}
+}</style></head><body><header class="hd"><div class="wrap">
+   <div class="left">
+     <button class="burger" data-gnb-toggle aria-label="menu" aria-expanded="false"><span></span><span></span><span></span></button>
+     <a class="navlink" href="brand.html">ABOUT</a><a class="navlink" href="shop.html">PRODUCT</a><a class="navlink" href="community.html">커뮤니티</a>
+   </div>
+   <a class="logo" href="index.html">BP<b>+</b></a>
+   <div class="right">
+     <a class="navlink" href="brand.html#contact">제휴문의</a>
+     <span class="ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="7"/><path d="m20 20-3-3"/></svg></span><a class="ico" href="mypage.html"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20a8 8 0 0 1 16 0"/></svg></a><a class="ico" href="#"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 7h12l-1 13H7L6 7Z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg> 0</a>
+   </div></div></header><div class="gnb" data-gnb><div class="gnb-top"><span class="logo" style="color:#fff">BP<b style="color:var(--ac)">+</b></span><button class="close" data-gnb-close aria-label="close">×</button></div>
+   <nav class="gnb-mid"><a data-gnb-link href="brand.html">About<small>약국에서 시작되는 뷰티</small></a><a data-gnb-link href="shop.html">Shop<small>더모 코스메틱 전체</small></a><a data-gnb-link href="brand.html#paths">Pharmacy<small>약국 파트너십</small></a><a data-gnb-link href="community.html">Event<small>진행중 프로모션</small></a><a data-gnb-link href="community.html">Community<small>리뷰 · 공지 · Q&A</small></a><a data-gnb-link href="mypage.html">Join<small>회원가입 · 로그인</small></a><a data-gnb-link href="shop.html">Search<small>상품 검색</small></a></nav>
+   <div class="gnb-foot"><span>드럭스토어가 답할 수 없는 피부 질문, 약사의 안목으로</span><span>partnership@bp-plus.co.kr</span><span>+82 10-8313-3579</span></div></div>
+  <div class="pgh"><h1>PRODUCT</h1><div class="bc">HOME / 전체 상품</div></div>
+  <section class="sec" style="padding-top:34px"><div class="wrap" data-shopfilter>
+   <div class="catkv"><img src="../../assets/img/real/scene_00.jpg" alt="Beauty Pharmacy"></div>
+   <div class="subtabs"><button data-cat="all" class="is-active">ALL</button><button data-cat="trouble" class="">트러블</button><button data-cat="soothing" class="">진정</button><button data-cat="aging" class="">슬로우에이징</button><button data-cat="bright" class="">브라이트닝</button><button data-cat="moisture" class="">보습</button><button data-cat="cleansing" class="">클렌징</button><button data-cat="body" class="">바디</button></div>
+   <div class="shopbar"><span>전체 <b data-prodcount>14</b>개 · 약사 큐레이션</span>
+     <select data-sort><option value="new">신상품순</option><option value="low">낮은가격순</option><option value="high">높은가격순</option><option value="review">리뷰많은순</option></select></div>
+   <div class="grid g3" data-grid><a class="prod" data-prodcat="trouble" data-price="30400" data-review="1284" data-idx="0" data-reveal href="product.html?no=1001">
+   <div class="thumb">
+     <img class="front" src="../../assets/img/prod6/p00_front.jpg" alt="믹순 프리미엄 병풀 크림" loading="lazy">
+     <img class="back" src="../../assets/img/prod6/p00_hover.jpg" alt="믹순 프리미엄 병풀 크림 텍스처" loading="lazy">
+     <div class="bdg"><b class="">BEST</b></div>
+   </div>
+   <div class="meta"><div class="brand">믹순</div><div class="nm">믹순 프리미엄 병풀 크림</div><div class="ing">스쿠알란 · 병풀 · 세라마이드</div>
+     <div class="pr"><span class="dc">20%</span><span class="sp">30,400원</span><span class="op">38,000원</span></div>
+     <div class="rt">★ 4.9 <span style="color:var(--b40)">(1,284)</span></div>
+     <div class="sw"><i style="background:#E7B7B0"></i><i style="background:#C7A98B"></i></div></div></a><a class="prod" data-prodcat="aging" data-price="41600" data-review="642" data-idx="1" data-reveal href="product.html?no=1002">
+   <div class="thumb">
+     <img class="front" src="../../assets/img/prod6/p01_front.jpg" alt="보페덤 프로텍션 엘리시어 에센스" loading="lazy">
+     <img class="back" src="../../assets/img/prod6/p01_hover.jpg" alt="보페덤 프로텍션 엘리시어 에센스 텍스처" loading="lazy">
+     <div class="bdg"><b class="">BEST</b></div>
+   </div>
+   <div class="meta"><div class="brand">보페덤</div><div class="nm">보페덤 프로텍션 엘리시어 에센스</div><div class="ing">5중 세라마이드 · 15종 아미노산</div>
+     <div class="pr"><span class="dc">20%</span><span class="sp">41,600원</span><span class="op">52,000원</span></div>
+     <div class="rt">★ 4.8 <span style="color:var(--b40)">(642)</span></div>
+     <div class="sw"><i style="background:#E7B7B0"></i><i style="background:#C7A98B"></i><i style="background:#A8B6A0"></i></div></div></a><a class="prod" data-prodcat="aging" data-price="46400" data-review="318" data-idx="2" data-reveal href="product.html?no=1003">
+   <div class="thumb">
+     <img class="front" src="../../assets/img/prod6/p02_front.jpg" alt="바이펙신 파이토신 앰플" loading="lazy">
+     <img class="back" src="../../assets/img/prod6/p02_hover.jpg" alt="바이펙신 파이토신 앰플 텍스처" loading="lazy">
+     <div class="bdg"><b class="">BEST</b><b class="nw">NEW</b></div>
+   </div>
+   <div class="meta"><div class="brand">바이펙신</div><div class="nm">바이펙신 파이토신 앰플</div><div class="ing">병풀엑소좀 · 이데베논 · NAD</div>
+     <div class="pr"><span class="dc">20%</span><span class="sp">46,400원</span><span class="op">58,000원</span></div>
+     <div class="rt">★ 4.9 <span style="color:var(--b40)">(318)</span></div>
+     <div class="sw"><i style="background:#E7B7B0"></i><i style="background:#C7A98B"></i><i style="background:#A8B6A0"></i><i style="background:#9DB4C8"></i></div></div></a><a class="prod" data-prodcat="soothing" data-price="27200" data-review="2061" data-idx="3" data-reveal href="product.html?no=1004">
+   <div class="thumb">
+     <img class="front" src="../../assets/img/prod6/p03_front.jpg" alt="믹순 프리미엄 병풀 세럼" loading="lazy">
+     <img class="back" src="../../assets/img/prod6/p03_hover.jpg" alt="믹순 프리미엄 병풀 세럼 텍스처" loading="lazy">
+     <div class="bdg"><b class="">BEST</b></div>
+   </div>
+   <div class="meta"><div class="brand">믹순</div><div class="nm">믹순 프리미엄 병풀 세럼</div><div class="ing">병풀추출물 고순도</div>
+     <div class="pr"><span class="dc">20%</span><span class="sp">27,200원</span><span class="op">34,000원</span></div>
+     <div class="rt">★ 4.9 <span style="color:var(--b40)">(2,061)</span></div>
+     <div class="sw"><i style="background:#E7B7B0"></i><i style="background:#C7A98B"></i></div></div></a><a class="prod" data-prodcat="soothing" data-price="22100" data-review="884" data-idx="4" data-reveal href="product.html?no=1005">
+   <div class="thumb">
+     <img class="front" src="../../assets/img/prod6/p04_front.jpg" alt="믹순 시카 카밍 토너" loading="lazy">
+     <img class="back" src="../../assets/img/prod6/p04_hover.jpg" alt="믹순 시카 카밍 토너 텍스처" loading="lazy">
+     <div class="bdg"><b class="nw">NEW</b></div>
+   </div>
+   <div class="meta"><div class="brand">믹순</div><div class="nm">믹순 시카 카밍 토너</div><div class="ing">병풀 70% · 판테놀</div>
+     <div class="pr"><span class="dc">15%</span><span class="sp">22,100원</span><span class="op">26,000원</span></div>
+     <div class="rt">★ 4.7 <span style="color:var(--b40)">(884)</span></div>
+     <div class="sw"><i style="background:#E7B7B0"></i><i style="background:#C7A98B"></i><i style="background:#A8B6A0"></i></div></div></a><a class="prod" data-prodcat="moisture" data-price="35700" data-review="506" data-idx="5" data-reveal href="product.html?no=1006">
+   <div class="thumb">
+     <img class="front" src="../../assets/img/prod6/p05_front.jpg" alt="보페덤 배리어 리페어 크림" loading="lazy">
+     <img class="back" src="../../assets/img/prod6/p05_hover.jpg" alt="보페덤 배리어 리페어 크림 텍스처" loading="lazy">
+     <div class="bdg"></div>
+   </div>
+   <div class="meta"><div class="brand">보페덤</div><div class="nm">보페덤 배리어 리페어 크림</div><div class="ing">세라마이드 NP · 콜레스테롤</div>
+     <div class="pr"><span class="dc">15%</span><span class="sp">35,700원</span><span class="op">42,000원</span></div>
+     <div class="rt">★ 4.8 <span style="color:var(--b40)">(506)</span></div>
+     <div class="sw"><i style="background:#E7B7B0"></i><i style="background:#C7A98B"></i><i style="background:#A8B6A0"></i><i style="background:#9DB4C8"></i></div></div></a><a class="prod" data-prodcat="bright" data-price="37400" data-review="271" data-idx="6" data-reveal href="product.html?no=1007">
+   <div class="thumb">
+     <img class="front" src="../../assets/img/prod6/p06_front.jpg" alt="바이펙신 글로우 비타 세럼" loading="lazy">
+     <img class="back" src="../../assets/img/prod6/p06_hover.jpg" alt="바이펙신 글로우 비타 세럼 텍스처" loading="lazy">
+     <div class="bdg"><b class="nw">NEW</b></div>
+   </div>
+   <div class="meta"><div class="brand">바이펙신</div><div class="nm">바이펙신 글로우 비타 세럼</div><div class="ing">비타민C 유도체 · 나이아신아마이드</div>
+     <div class="pr"><span class="dc">15%</span><span class="sp">37,400원</span><span class="op">44,000원</span></div>
+     <div class="rt">★ 4.6 <span style="color:var(--b40)">(271)</span></div>
+     <div class="sw"><i style="background:#E7B7B0"></i><i style="background:#C7A98B"></i></div></div></a><a class="prod" data-prodcat="cleansing" data-price="16150" data-review="1432" data-idx="7" data-reveal href="product.html?no=1008">
+   <div class="thumb">
+     <img class="front" src="../../assets/img/prod6/p07_front.jpg" alt="믹순 마일드 약산성 클렌저" loading="lazy">
+     <img class="back" src="../../assets/img/prod6/p07_hover.jpg" alt="믹순 마일드 약산성 클렌저 텍스처" loading="lazy">
+     <div class="bdg"></div>
+   </div>
+   <div class="meta"><div class="brand">믹순</div><div class="nm">믹순 마일드 약산성 클렌저</div><div class="ing">pH 5.5 · 아미노산 계면활성</div>
+     <div class="pr"><span class="dc">15%</span><span class="sp">16,150원</span><span class="op">19,000원</span></div>
+     <div class="rt">★ 4.7 <span style="color:var(--b40)">(1,432)</span></div>
+     <div class="sw"><i style="background:#E7B7B0"></i><i style="background:#C7A98B"></i><i style="background:#A8B6A0"></i></div></div></a><a class="prod" data-prodcat="trouble" data-price="9600" data-review="990" data-idx="8" data-reveal href="product.html?no=1009">
+   <div class="thumb">
+     <img class="front" src="../../assets/img/prod6/p08_front.jpg" alt="보페덤 트러블 스팟 패치" loading="lazy">
+     <img class="back" src="../../assets/img/prod6/p08_hover.jpg" alt="보페덤 트러블 스팟 패치 텍스처" loading="lazy">
+     <div class="bdg"><b class="sl">SALE</b></div>
+   </div>
+   <div class="meta"><div class="brand">보페덤</div><div class="nm">보페덤 트러블 스팟 패치</div><div class="ing">하이드로콜로이드 · 티트리</div>
+     <div class="pr"><span class="dc">20%</span><span class="sp">9,600원</span><span class="op">12,000원</span></div>
+     <div class="rt">★ 4.5 <span style="color:var(--b40)">(990)</span></div>
+     <div class="sw"><i style="background:#E7B7B0"></i><i style="background:#C7A98B"></i><i style="background:#A8B6A0"></i><i style="background:#9DB4C8"></i></div></div></a><a class="prod" data-prodcat="aging" data-price="47600" data-review="224" data-idx="9" data-reveal href="product.html?no=1010">
+   <div class="thumb">
+     <img class="front" src="../../assets/img/prod6/p09_front.jpg" alt="바이펙신 리프팅 펩타이드 크림" loading="lazy">
+     <img class="back" src="../../assets/img/prod6/p09_hover.jpg" alt="바이펙신 리프팅 펩타이드 크림 텍스처" loading="lazy">
+     <div class="bdg"></div>
+   </div>
+   <div class="meta"><div class="brand">바이펙신</div><div class="nm">바이펙신 리프팅 펩타이드 크림</div><div class="ing">시그널 펩타이드 9종</div>
+     <div class="pr"><span class="dc">15%</span><span class="sp">47,600원</span><span class="op">56,000원</span></div>
+     <div class="rt">★ 4.8 <span style="color:var(--b40)">(224)</span></div>
+     <div class="sw"><i style="background:#E7B7B0"></i><i style="background:#C7A98B"></i></div></div></a><a class="prod" data-prodcat="moisture" data-price="23800" data-review="1175" data-idx="10" data-reveal href="product.html?no=1011">
+   <div class="thumb">
+     <img class="front" src="../../assets/img/prod6/p10_front.jpg" alt="믹순 워터 글로우 선크림 SPF50+" loading="lazy">
+     <img class="back" src="../../assets/img/prod6/p10_hover.jpg" alt="믹순 워터 글로우 선크림 SPF50+ 텍스처" loading="lazy">
+     <div class="bdg"></div>
+   </div>
+   <div class="meta"><div class="brand">믹순</div><div class="nm">믹순 워터 글로우 선크림 SPF50+</div><div class="ing">무기자차 · 병풀</div>
+     <div class="pr"><span class="dc">15%</span><span class="sp">23,800원</span><span class="op">28,000원</span></div>
+     <div class="rt">★ 4.7 <span style="color:var(--b40)">(1,175)</span></div>
+     <div class="sw"><i style="background:#E7B7B0"></i><i style="background:#C7A98B"></i><i style="background:#A8B6A0"></i></div></div></a><a class="prod" data-prodcat="bright" data-price="19200" data-review="538" data-idx="11" data-reveal href="product.html?no=1012">
+   <div class="thumb">
+     <img class="front" src="../../assets/img/prod6/p11_front.jpg" alt="보페덤 브라이트닝 앰플 마스크" loading="lazy">
+     <img class="back" src="../../assets/img/prod6/p11_hover.jpg" alt="보페덤 브라이트닝 앰플 마스크 텍스처" loading="lazy">
+     <div class="bdg"><b class="nw">NEW</b></div>
+   </div>
+   <div class="meta"><div class="brand">보페덤</div><div class="nm">보페덤 브라이트닝 앰플 마스크</div><div class="ing">트라넥삼산 · 글루타치온</div>
+     <div class="pr"><span class="dc">20%</span><span class="sp">19,200원</span><span class="op">24,000원</span></div>
+     <div class="rt">★ 4.6 <span style="color:var(--b40)">(538)</span></div>
+     <div class="sw"><i style="background:#E7B7B0"></i><i style="background:#C7A98B"></i><i style="background:#A8B6A0"></i><i style="background:#9DB4C8"></i></div></div></a><a class="prod" data-prodcat="body" data-price="18700" data-review="412" data-idx="12" data-reveal href="product.html?no=1013">
+   <div class="thumb">
+     <img class="front" src="../../assets/img/prod6/p12_front.jpg" alt="믹순 시카 바디 로션" loading="lazy">
+     <img class="back" src="../../assets/img/prod6/p12_hover.jpg" alt="믹순 시카 바디 로션 텍스처" loading="lazy">
+     <div class="bdg"></div>
+   </div>
+   <div class="meta"><div class="brand">믹순</div><div class="nm">믹순 시카 바디 로션</div><div class="ing">병풀 · 시어버터</div>
+     <div class="pr"><span class="dc">15%</span><span class="sp">18,700원</span><span class="op">22,000원</span></div>
+     <div class="rt">★ 4.6 <span style="color:var(--b40)">(412)</span></div>
+     <div class="sw"><i style="background:#E7B7B0"></i><i style="background:#C7A98B"></i></div></div></a><a class="prod" data-prodcat="body" data-price="27200" data-review="188" data-idx="13" data-reveal href="product.html?no=1014">
+   <div class="thumb">
+     <img class="front" src="../../assets/img/prod6/p13_front.jpg" alt="바이펙신 스칼프 토닉" loading="lazy">
+     <img class="back" src="../../assets/img/prod6/p13_hover.jpg" alt="바이펙신 스칼프 토닉 텍스처" loading="lazy">
+     <div class="bdg"></div>
+   </div>
+   <div class="meta"><div class="brand">바이펙신</div><div class="nm">바이펙신 스칼프 토닉</div><div class="ing">카페인 · 비오틴</div>
+     <div class="pr"><span class="dc">15%</span><span class="sp">27,200원</span><span class="op">32,000원</span></div>
+     <div class="rt">★ 4.5 <span style="color:var(--b40)">(188)</span></div>
+     <div class="sw"><i style="background:#E7B7B0"></i><i style="background:#C7A98B"></i><i style="background:#A8B6A0"></i></div></div></a></div>
+   <div class="pagi"><a>‹</a><a class="on">1</a><a>2</a><a>3</a><a>›</a></div>
+  </div></section>
+  <!-- bp-plus Home.tsx:711-750 #insight (req6 bp-plus 원본 이미지) -->
+  <section class="sec insight" style="background:var(--g1)"><div class="wrap">
+   <div class="sh"><div><p class="ey">Insight</p><h2>BP+ Insight</h2></div><a class="lnk" href="community.html">VIEW ALL <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+   <div class="icards"><a class="icard" data-reveal href="community.html"><div class="cv"><span class="k">트렌드</span><img src="../../assets/img/prod6/bpp_00.jpg" alt="2026 K-뷰티 약국 채널의 부상" loading="lazy"></div><div class="bd"><h3>2026 K-뷰티 약국 채널의 부상</h3><div class="date">2026.02.15</div></div></a><a class="icard" data-reveal href="community.html"><div class="cv"><span class="k">데이터</span><img src="../../assets/img/prod6/bpp_01.jpg" alt="AI 상권 분석으로 본 최적 입점 위치 TOP 10" loading="lazy"></div><div class="bd"><h3>AI 상권 분석으로 본 최적 입점 위치 TOP 10</h3><div class="date">2026.01.28</div></div></a><a class="icard" data-reveal href="community.html"><div class="cv"><span class="k">파트너십</span><img src="../../assets/img/prod6/bpp_02.jpg" alt="일본 드럭스토어 시장 진출 전략 리포트" loading="lazy"></div><div class="bd"><h3>일본 드럭스토어 시장 진출 전략 리포트</h3><div class="date">2026.02.20</div></div></a></div>
+  </div></section>
+  <footer class="ft"><div class="wrap">
+   <div class="ft-top">
+     <div><h4>BP+ BEAUTY PHARMACY</h4><p class="desc">드럭스토어가 답할 수 없는 피부 질문<br>이제 약사의 안목으로 큐레이션합니다<br>약국의 신뢰 안에 큐레이션된 단 하나의 카테고리 더마 코스메틱</p></div>
+     <div><h4>PRODUCT</h4><a href="shop.html">전체 상품</a><a href="shop.html">Trouble Care</a><a href="shop.html">Aging Care</a><a href="shop.html">Mild Care</a></div>
+     <div><h4>ABOUT / 제휴</h4><a href="brand.html">브랜드 스토리</a><a href="brand.html#contact">가맹 문의</a><a href="brand.html#contact">입점 문의</a><a href="brand.html#contact">마케팅 협업</a></div>
+     <div><h4>CS / MY</h4><a href="community.html">공지사항</a><a href="community.html">리뷰 · 이벤트</a><a href="community.html">FAQ</a><a href="mypage.html">마이페이지 · 주문조회</a></div>
+   </div>
+   <p class="comp">법인명 : 비피플러스 주식회사 &nbsp;|&nbsp; 대표자 : 이지은 &nbsp;|&nbsp; 주소 : 서울시 송파구 올림픽로 240, 스파크플러스 2F<br>
+     사업자등록번호 : 602-88-03742 &nbsp;|&nbsp; 통신판매업신고 &nbsp;|&nbsp; 개인정보관리책임자 : 비피플러스 주식회사 (partnership@bp-plus.co.kr)<br>
+     고객센터 : +82 10-8313-3579 (평일 09:00~18:00 / 점심 12:00~13:00 / 주말·공휴일 휴무) &nbsp;|&nbsp; 교환·반품 : 서울특별시 송파구 올림픽로 240, 스파크플러스 2F<br>
+     무통장입금 : 하나은행 284-910036-87404 (예금주 비피플러스 주식회사) &nbsp;|&nbsp; 고객님은 안전거래를 위해 현금 등으로 결제 시 PG사의 구매안전 서비스를 이용하실 수 있습니다.<br>
+     Copyright © <span data-year>2026</span> 비피플러스 주식회사. All rights reserved.</p>
+   <div class="word">BP+</div>
+  </div></footer><script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <script src="../../assets/bps5.js"></script></body></html>
