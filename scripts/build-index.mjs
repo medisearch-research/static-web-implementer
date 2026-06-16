@@ -6,6 +6,16 @@
  * extracts each page's <title> / <meta name="description"> / version, and
  * renders a single self-contained index.html (inline CSS, Google Fonts CDN).
  *
+ * Two kinds of entries are recognised inside a project folder:
+ *   1. A single .html file directly under sites/<project>/      → one tile / file.
+ *   2. A multi-file sub-project sites/<project>/<subdir>/ that
+ *      ships its own index.html (skins, assets, …)              → ONE tile that
+ *      points at that subdir's index.html. Inner pages (e.g. skin
+ *      variants) are reached through that entry page, not listed separately.
+ *
+ * The generated page also carries a client-side search box that filters the
+ * tiles by title / description / file / project — pure inline JS, no deps.
+ *
  * Pure Node, zero dependencies. Run from anywhere:
  *     node scripts/build-index.mjs
  *
@@ -26,6 +36,7 @@ const OUTPUT = join(REPO_ROOT, 'index.html');
 const PROJECT_NAMES = {
   medisearch: 'MediSearch',
   'bp-plus': 'BP+',
+  bps: 'BP+',
   yaksaseyo: 'YakSaseyo · 약사세요',
   pharmdash: 'Pharmdash',
 };
@@ -91,6 +102,23 @@ function extractVersion(filename) {
   return m ? `v${m[1]}` : '';
 }
 
+function projectDisplayName(key) {
+  return PROJECT_NAMES[key] || key.replace(/(^|[-_])([a-z])/g, (_, s, c) => (s ? ' ' : '') + c.toUpperCase());
+}
+
+// Build one page record from an HTML file on disk.
+function makePage(abs, { label, href, isProject = false }) {
+  const html = readFileSync(abs, 'utf8');
+  return {
+    title: extractTitle(html, label),
+    desc: extractDescription(html),
+    version: extractVersion(label),
+    href,
+    file: label,
+    isProject,
+  };
+}
+
 // ---------- scan ----------
 
 if (!existsSync(SITES_DIR)) {
@@ -98,29 +126,69 @@ if (!existsSync(SITES_DIR)) {
   process.exit(1);
 }
 
-const projects = new Map(); // folder -> [{ title, desc, version, href, file }]
-
+// Group every discovered .html by its top-level project folder.
+const byProject = new Map(); // project -> [{ rel, parts, abs }]
 for (const abs of walkHtml(SITES_DIR)) {
   const rel = relative(SITES_DIR, abs);
   const parts = rel.split(sep);
   const project = parts[0];
-  const file = parts[parts.length - 1];
-  const href = `sites/${parts.join('/')}`; // URL-style separators
-
-  const html = readFileSync(abs, 'utf8');
-  const page = {
-    title: extractTitle(html, file),
-    desc: extractDescription(html),
-    version: extractVersion(file),
-    href,
-    file,
-  };
-
-  if (!projects.has(project)) projects.set(project, []);
-  projects.get(project).push(page);
+  if (!byProject.has(project)) byProject.set(project, []);
+  byProject.get(project).push({ rel, parts, abs });
 }
 
-// Stable ordering: projects alphabetical, pages by filename.
+const projects = new Map(); // project -> [page]
+
+for (const [project, files] of byProject) {
+  // Deterministic processing order regardless of filesystem walk order.
+  files.sort((a, b) => a.rel.localeCompare(b.rel));
+
+  const pages = [];
+  const seenSubdirs = new Set();
+
+  for (const { parts, abs } of files) {
+    if (parts.length === 2) {
+      // sites/<project>/<page>.html — a single-file design.
+      const file = parts[1];
+      pages.push(makePage(abs, { label: file, href: `sites/${parts.join('/')}` }));
+      continue;
+    }
+
+    // Nested: sites/<project>/<subdir>/…/<file>.html
+    const subdir = parts[1];
+    const subIndex = join(SITES_DIR, project, subdir, 'index.html');
+
+    if (existsSync(subIndex)) {
+      // Multi-file sub-project: collapse the whole subdir into a single tile
+      // that opens its index.html. Inner pages are reached from there.
+      if (seenSubdirs.has(subdir)) continue;
+      seenSubdirs.add(subdir);
+      const page = makePage(subIndex, {
+        label: `${subdir}/`,
+        href: `sites/${project}/${subdir}/index.html`,
+        isProject: true,
+      });
+      // Fold inner page titles/descriptions into the search haystack so the
+      // collapsed tile is findable by any inner page (e.g. an individual skin
+      // name) — without cluttering the visible card text.
+      page.searchExtra = files
+        .filter((f) => f.parts.length > 2 && f.parts[1] === subdir)
+        .map((f) => {
+          const h = readFileSync(f.abs, 'utf8');
+          return [extractTitle(h, ''), extractDescription(h)].filter(Boolean).join(' ');
+        })
+        .join(' ');
+      pages.push(page);
+    } else {
+      // Subdir without its own index.html — keep every page discoverable.
+      const file = parts[parts.length - 1];
+      pages.push(makePage(abs, { label: file, href: `sites/${parts.join('/')}` }));
+    }
+  }
+
+  projects.set(project, pages);
+}
+
+// Stable ordering: projects alphabetical, pages by label.
 const projectKeys = [...projects.keys()].sort();
 for (const key of projectKeys) {
   projects.get(key).sort((a, b) => a.file.localeCompare(b.file));
@@ -130,17 +198,24 @@ const totalPages = [...projects.values()].reduce((n, arr) => n + arr.length, 0);
 
 // ---------- render ----------
 
-function renderCard(page) {
+function renderCard(page, projectKey, projectName) {
   const versionBadge = page.version
     ? `<span class="badge">${escapeHtml(page.version)}</span>`
     : '';
+  const folderBadge = page.isProject ? '<span class="badge badge--folder">프로젝트</span>' : '';
   const desc = page.desc
     ? `<p class="card-desc">${escapeHtml(page.desc)}</p>`
     : '<p class="card-desc card-desc--empty">설명이 없습니다.</p>';
-  return `        <a class="card" href="${escapeHtml(page.href)}">
+  // Lower-cased haystack for the client-side filter.
+  const haystack = escapeHtml(
+    [page.title, page.desc, page.file, projectKey, projectName, page.searchExtra || '']
+      .join(' ')
+      .toLowerCase()
+  );
+  return `        <a class="card" href="${escapeHtml(page.href)}" data-search="${haystack}">
           <div class="card-top">
             <h3 class="card-title">${escapeHtml(page.title)}</h3>
-            ${versionBadge}
+            ${[folderBadge, versionBadge].filter(Boolean).join('\n            ')}
           </div>
           ${desc}
           <code class="card-file">${escapeHtml(page.file)}</code>
@@ -149,7 +224,7 @@ function renderCard(page) {
 }
 
 function renderProject(key) {
-  const name = PROJECT_NAMES[key] || key.replace(/(^|[-_])([a-z])/g, (_, s, c) => (s ? ' ' : '') + c.toUpperCase());
+  const name = projectDisplayName(key);
   const pages = projects.get(key);
   return `      <section class="project" id="${escapeHtml(key)}">
         <div class="project-head">
@@ -157,7 +232,7 @@ function renderProject(key) {
           <span class="project-count">${pages.length}개 페이지</span>
         </div>
         <div class="grid">
-${pages.map(renderCard).join('\n')}
+${pages.map((p) => renderCard(p, key, name)).join('\n')}
         </div>
       </section>`;
 }
@@ -175,7 +250,7 @@ const html = `<!DOCTYPE html>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>디자인 구현 목록 · static-web-implementer</title>
-  <meta name="description" content="Claude Code로 구현한 정적 디자인 페이지 목록. 클릭하면 브라우저에서 바로 검토할 수 있습니다." />
+  <meta name="description" content="Claude Code로 구현한 정적 디자인 페이지 목록. 검색하고, 클릭하면 브라우저에서 바로 검토할 수 있습니다." />
   <!-- This file is AUTO-GENERATED by scripts/build-index.mjs. Do not edit by hand. -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -214,6 +289,19 @@ const html = `<!DOCTYPE html>
     .lede { color: var(--muted); font-size: 16px; max-width: 60ch; margin: 0; }
     .meta-line { margin-top: 18px; color: var(--muted); font-size: 14px; }
     .meta-line strong { color: var(--text); }
+    .result-count { color: var(--accent-2); }
+
+    .search-wrap { position: relative; margin-top: 22px; max-width: 520px; }
+    .search-wrap > svg { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--muted); pointer-events: none; }
+    .search {
+      width: 100%; font: inherit; font-size: 15px; color: var(--text);
+      background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+      padding: 13px 14px 13px 42px; outline: none;
+      transition: border-color .15s ease, background .15s ease;
+    }
+    .search::placeholder { color: var(--muted); }
+    .search:focus { border-color: var(--accent); background: var(--card-hover); }
+    .search:focus + .search-clear, .search-clear:focus { color: var(--text); }
 
     .project { margin-top: 44px; }
     .project-head { display: flex; align-items: baseline; gap: 12px; padding-bottom: 14px; border-bottom: 1px solid var(--line); }
@@ -228,9 +316,10 @@ const html = `<!DOCTYPE html>
       transition: transform .15s ease, background .15s ease, border-color .15s ease;
     }
     .card:hover { transform: translateY(-3px); background: var(--card-hover); border-color: var(--accent); }
-    .card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
-    .card-title { font-size: 17px; font-weight: 700; margin: 0; }
+    .card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+    .card-title { font-size: 17px; font-weight: 700; margin: 0; flex: 1 1 auto; }
     .badge { flex: none; font-size: 12px; font-weight: 700; color: #0b1020; background: var(--accent-2); border-radius: 999px; padding: 2px 9px; }
+    .badge--folder { color: var(--text); background: rgba(110,168,254,.18); border: 1px solid rgba(110,168,254,.45); }
     .card-desc { color: var(--muted); font-size: 14px; margin: 0; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
     .card-desc--empty { font-style: italic; opacity: .7; }
     .card-file { font-size: 12px; color: var(--accent); background: rgba(110,168,254,.1); padding: 4px 8px; border-radius: 8px; align-self: flex-start; word-break: break-all; }
@@ -238,7 +327,12 @@ const html = `<!DOCTYPE html>
 
     .empty { text-align: center; padding: 80px 20px; color: var(--muted); border: 1px dashed var(--line); border-radius: var(--radius); margin-top: 32px; }
     .empty-hint { font-size: 14px; }
+    .no-results { display: none; text-align: center; padding: 64px 20px; color: var(--muted); border: 1px dashed var(--line); border-radius: var(--radius); margin-top: 24px; }
+    .no-results strong { color: var(--text); }
     code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+
+    /* [hidden] must beat the explicit display rules above when filtering. */
+    .card[hidden], .project[hidden] { display: none !important; }
 
     footer.page-foot { margin-top: 64px; padding-top: 24px; border-top: 1px solid var(--line); color: var(--muted); font-size: 13px; }
     footer.page-foot a { color: var(--accent); text-decoration: none; }
@@ -252,21 +346,60 @@ const html = `<!DOCTYPE html>
     <header class="page-head">
       <span class="eyebrow">Design Review</span>
       <h1>디자인 구현 목록</h1>
-      <p class="lede">Claude Code로 구현한 정적 디자인 페이지 모음입니다. 카드를 클릭하면 브라우저에서 바로 검토할 수 있습니다.</p>
-      <p class="meta-line">총 <strong>${projectKeys.length}</strong>개 프로젝트 · <strong>${totalPages}</strong>개 페이지</p>
+      <p class="lede">Claude Code로 구현한 정적 디자인 페이지 모음입니다. 검색하거나 카드를 클릭하면 브라우저에서 바로 검토할 수 있습니다.</p>
+      <p class="meta-line">총 <strong>${projectKeys.length}</strong>개 프로젝트 · <strong>${totalPages}</strong>개 페이지<span class="result-count" id="result-count"></span></p>
+      <div class="search-wrap">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <input id="q" class="search" type="search" placeholder="제목 · 설명 · 파일 · 프로젝트로 검색…" autocomplete="off" aria-label="디자인 검색" />
+      </div>
     </header>
 
     <main>
 ${projectSections}
+      <p class="no-results" id="no-results"><strong>검색 결과가 없습니다.</strong><br />다른 키워드로 검색해 보세요.</p>
     </main>
 
     <footer class="page-foot">
       이 페이지는 <code>scripts/build-index.mjs</code>가 <code>/sites</code>를 스캔해 자동 생성합니다. 직접 수정하지 마세요.
     </footer>
   </div>
+
+  <script>
+    (function () {
+      var q = document.getElementById('q');
+      if (!q) return;
+      var cards = Array.prototype.slice.call(document.querySelectorAll('.card'));
+      var sections = Array.prototype.slice.call(document.querySelectorAll('.project'));
+      var noResults = document.getElementById('no-results');
+      var countEl = document.getElementById('result-count');
+
+      function apply() {
+        var term = q.value.trim().toLowerCase();
+        var visible = 0;
+        cards.forEach(function (card) {
+          var hay = card.getAttribute('data-search') || '';
+          var show = !term || hay.indexOf(term) !== -1;
+          card.hidden = !show;
+          if (show) visible++;
+        });
+        sections.forEach(function (sec) {
+          sec.hidden = !sec.querySelector('.card:not([hidden])');
+        });
+        if (noResults) noResults.style.display = (term && visible === 0) ? 'block' : 'none';
+        if (countEl) countEl.textContent = term ? (' · ' + visible + '개 검색됨') : '';
+      }
+
+      q.addEventListener('input', apply);
+      q.addEventListener('keydown', function (e) { if (e.key === 'Escape') { q.value = ''; apply(); } });
+
+      // Deep link: index.html?q=rose pre-fills and filters.
+      var initial = new URLSearchParams(location.search).get('q');
+      if (initial) { q.value = initial; apply(); }
+    })();
+  </script>
 </body>
 </html>
 `;
 
 writeFileSync(OUTPUT, html, 'utf8');
-console.log(`[build-index] wrote ${relative(REPO_ROOT, OUTPUT)} — ${projectKeys.length} project(s), ${totalPages} page(s).`);
+console.log(`[build-index] wrote ${relative(REPO_ROOT, OUTPUT)} — ${projectKeys.length} project(s), ${totalPages} tile(s).`);
