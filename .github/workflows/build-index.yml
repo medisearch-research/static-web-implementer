@@ -1,0 +1,46 @@
+name: Build design index
+
+# Regenerates the root index.html whenever pages under /sites change, then
+# commits it back to the branch. With Pages set to "Deploy from a branch"
+# (main / root), that commit triggers the normal Pages deployment.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'sites/**'
+      - 'scripts/build-index.mjs'
+      - '.github/workflows/build-index.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-index
+  cancel-in-progress: true
+
+jobs:
+  build-index:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Generate index.html
+        run: node scripts/build-index.mjs
+
+      - name: Commit updated index
+        run: |
+          if git diff --quiet -- index.html; then
+            echo "index.html unchanged — nothing to commit."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git commit -m "chore: auto-rebuild design index [skip ci]"
+          git push

@@ -1,0 +1,272 @@
+#!/usr/bin/env node
+/**
+ * build-index.mjs — auto-generate the root index.html
+ *
+ * Scans every *.html file under /sites, groups them by project folder,
+ * extracts each page's <title> / <meta name="description"> / version, and
+ * renders a single self-contained index.html (inline CSS, Google Fonts CDN).
+ *
+ * Pure Node, zero dependencies. Run from anywhere:
+ *     node scripts/build-index.mjs
+ *
+ * Output is deterministic (no timestamps) so re-running only changes the
+ * file when the set of pages actually changed — keeps git diffs clean.
+ */
+
+import { readFileSync, writeFileSync, readdirSync, existsSync } from 'node:fs';
+import { join, relative, sep } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const REPO_ROOT = fileURLToPath(new URL('..', import.meta.url));
+const SITES_DIR = join(REPO_ROOT, 'sites');
+const OUTPUT = join(REPO_ROOT, 'index.html');
+
+// Pretty display names for known project folders. Unknown folders fall back
+// to a title-cased version of the folder name.
+const PROJECT_NAMES = {
+  medisearch: 'MediSearch',
+  'bp-plus': 'BP+',
+  yaksaseyo: 'YakSaseyo · 약사세요',
+  pharmdash: 'Pharmdash',
+};
+
+// ---------- helpers ----------
+
+function walkHtml(dir) {
+  // Returns absolute paths of every .html file under `dir`, recursively.
+  const out = [];
+  for (const entry of readdirSync(dir, { withFileTypes: true })) {
+    const full = join(dir, entry.name);
+    if (entry.isDirectory()) out.push(...walkHtml(full));
+    else if (entry.isFile() && entry.name.toLowerCase().endsWith('.html')) out.push(full);
+  }
+  return out;
+}
+
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+const NAMED_ENTITIES = { amp: '&', lt: '<', gt: '>', quot: '"', apos: "'", nbsp: ' ' };
+
+function decodeEntities(str) {
+  return str
+    .replace(/&#x([0-9a-f]+);/gi, (_, h) => String.fromCodePoint(parseInt(h, 16)))
+    .replace(/&#(\d+);/g, (_, d) => String.fromCodePoint(parseInt(d, 10)))
+    .replace(/&(amp|lt|gt|quot|apos|nbsp);/gi, (_, n) => NAMED_ENTITIES[n.toLowerCase()]);
+}
+
+function stripTags(str) {
+  // Strip tags, decode entities (so re-escaping later doesn't double-encode),
+  // then collapse whitespace.
+  return decodeEntities(str.replace(/<[^>]*>/g, ' ')).replace(/\s+/g, ' ').trim();
+}
+
+function extractTitle(html, fallback) {
+  const t = html.match(/<title[^>]*>([\s\S]*?)<\/title>/i);
+  if (t && stripTags(t[1])) return stripTags(t[1]);
+  const h1 = html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i);
+  if (h1 && stripTags(h1[1])) return stripTags(h1[1]);
+  return fallback;
+}
+
+function extractDescription(html) {
+  // Match a <meta> tag that carries name="description", in either attr order.
+  const metas = html.match(/<meta\b[^>]*>/gi) || [];
+  for (const tag of metas) {
+    if (!/name\s*=\s*["']description["']/i.test(tag)) continue;
+    const c = tag.match(/content\s*=\s*["']([\s\S]*?)["']/i);
+    if (c) return stripTags(c[1]);
+  }
+  return '';
+}
+
+function extractVersion(filename) {
+  const m = filename.match(/-v(\d+)\b/i);
+  return m ? `v${m[1]}` : '';
+}
+
+// ---------- scan ----------
+
+if (!existsSync(SITES_DIR)) {
+  console.error(`[build-index] sites directory not found: ${SITES_DIR}`);
+  process.exit(1);
+}
+
+const projects = new Map(); // folder -> [{ title, desc, version, href, file }]
+
+for (const abs of walkHtml(SITES_DIR)) {
+  const rel = relative(SITES_DIR, abs);
+  const parts = rel.split(sep);
+  const project = parts[0];
+  const file = parts[parts.length - 1];
+  const href = `sites/${parts.join('/')}`; // URL-style separators
+
+  const html = readFileSync(abs, 'utf8');
+  const page = {
+    title: extractTitle(html, file),
+    desc: extractDescription(html),
+    version: extractVersion(file),
+    href,
+    file,
+  };
+
+  if (!projects.has(project)) projects.set(project, []);
+  projects.get(project).push(page);
+}
+
+// Stable ordering: projects alphabetical, pages by filename.
+const projectKeys = [...projects.keys()].sort();
+for (const key of projectKeys) {
+  projects.get(key).sort((a, b) => a.file.localeCompare(b.file));
+}
+
+const totalPages = [...projects.values()].reduce((n, arr) => n + arr.length, 0);
+
+// ---------- render ----------
+
+function renderCard(page) {
+  const versionBadge = page.version
+    ? `<span class="badge">${escapeHtml(page.version)}</span>`
+    : '';
+  const desc = page.desc
+    ? `<p class="card-desc">${escapeHtml(page.desc)}</p>`
+    : '<p class="card-desc card-desc--empty">설명이 없습니다.</p>';
+  return `        <a class="card" href="${escapeHtml(page.href)}">
+          <div class="card-top">
+            <h3 class="card-title">${escapeHtml(page.title)}</h3>
+            ${versionBadge}
+          </div>
+          ${desc}
+          <code class="card-file">${escapeHtml(page.file)}</code>
+          <span class="card-open">미리보기 열기 →</span>
+        </a>`;
+}
+
+function renderProject(key) {
+  const name = PROJECT_NAMES[key] || key.replace(/(^|[-_])([a-z])/g, (_, s, c) => (s ? ' ' : '') + c.toUpperCase());
+  const pages = projects.get(key);
+  return `      <section class="project" id="${escapeHtml(key)}">
+        <div class="project-head">
+          <h2 class="project-name">${escapeHtml(name)}</h2>
+          <span class="project-count">${pages.length}개 페이지</span>
+        </div>
+        <div class="grid">
+${pages.map(renderCard).join('\n')}
+        </div>
+      </section>`;
+}
+
+const projectSections = projectKeys.length
+  ? projectKeys.map(renderProject).join('\n')
+  : `      <div class="empty">
+        <p>아직 등록된 디자인이 없습니다.</p>
+        <p class="empty-hint"><code>sites/&lt;프로젝트&gt;/</code> 폴더에 <code>.html</code> 파일을 추가하세요.</p>
+      </div>`;
+
+const html = `<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>디자인 구현 목록 · static-web-implementer</title>
+  <meta name="description" content="Claude Code로 구현한 정적 디자인 페이지 목록. 클릭하면 브라우저에서 바로 검토할 수 있습니다." />
+  <!-- This file is AUTO-GENERATED by scripts/build-index.mjs. Do not edit by hand. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0b1020;
+      --bg-soft: #121a33;
+      --card: #161f3d;
+      --card-hover: #1d2950;
+      --line: #26315a;
+      --text: #e8ecf8;
+      --muted: #99a3c4;
+      --accent: #6ea8fe;
+      --accent-2: #8ef0d0;
+      --radius: 16px;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: 'Noto Sans KR', system-ui, -apple-system, 'Segoe UI', sans-serif;
+      background: radial-gradient(1200px 600px at 15% -10%, #1a2750 0%, transparent 60%), var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+    .wrap { max-width: 1080px; margin: 0 auto; padding: 56px 24px 96px; }
+    header.page-head { margin-bottom: 40px; }
+    .eyebrow {
+      display: inline-block; font-size: 13px; font-weight: 700; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--accent-2);
+      background: rgba(142,240,208,.1); border: 1px solid rgba(142,240,208,.25);
+      padding: 5px 12px; border-radius: 999px;
+    }
+    h1 { font-size: clamp(28px, 5vw, 44px); font-weight: 900; margin: 18px 0 10px; letter-spacing: -.02em; }
+    .lede { color: var(--muted); font-size: 16px; max-width: 60ch; margin: 0; }
+    .meta-line { margin-top: 18px; color: var(--muted); font-size: 14px; }
+    .meta-line strong { color: var(--text); }
+
+    .project { margin-top: 44px; }
+    .project-head { display: flex; align-items: baseline; gap: 12px; padding-bottom: 14px; border-bottom: 1px solid var(--line); }
+    .project-name { font-size: 22px; font-weight: 800; margin: 0; }
+    .project-count { color: var(--muted); font-size: 14px; }
+
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; margin-top: 20px; }
+    .card {
+      display: flex; flex-direction: column; gap: 10px;
+      background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+      padding: 20px; text-decoration: none; color: inherit;
+      transition: transform .15s ease, background .15s ease, border-color .15s ease;
+    }
+    .card:hover { transform: translateY(-3px); background: var(--card-hover); border-color: var(--accent); }
+    .card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+    .card-title { font-size: 17px; font-weight: 700; margin: 0; }
+    .badge { flex: none; font-size: 12px; font-weight: 700; color: #0b1020; background: var(--accent-2); border-radius: 999px; padding: 2px 9px; }
+    .card-desc { color: var(--muted); font-size: 14px; margin: 0; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+    .card-desc--empty { font-style: italic; opacity: .7; }
+    .card-file { font-size: 12px; color: var(--accent); background: rgba(110,168,254,.1); padding: 4px 8px; border-radius: 8px; align-self: flex-start; word-break: break-all; }
+    .card-open { margin-top: auto; font-size: 13px; font-weight: 600; color: var(--accent); }
+
+    .empty { text-align: center; padding: 80px 20px; color: var(--muted); border: 1px dashed var(--line); border-radius: var(--radius); margin-top: 32px; }
+    .empty-hint { font-size: 14px; }
+    code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+
+    footer.page-foot { margin-top: 64px; padding-top: 24px; border-top: 1px solid var(--line); color: var(--muted); font-size: 13px; }
+    footer.page-foot a { color: var(--accent); text-decoration: none; }
+    footer.page-foot a:hover { text-decoration: underline; }
+
+    @media (max-width: 540px) { .wrap { padding: 36px 16px 64px; } }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="page-head">
+      <span class="eyebrow">Design Review</span>
+      <h1>디자인 구현 목록</h1>
+      <p class="lede">Claude Code로 구현한 정적 디자인 페이지 모음입니다. 카드를 클릭하면 브라우저에서 바로 검토할 수 있습니다.</p>
+      <p class="meta-line">총 <strong>${projectKeys.length}</strong>개 프로젝트 · <strong>${totalPages}</strong>개 페이지</p>
+    </header>
+
+    <main>
+${projectSections}
+    </main>
+
+    <footer class="page-foot">
+      이 페이지는 <code>scripts/build-index.mjs</code>가 <code>/sites</code>를 스캔해 자동 생성합니다. 직접 수정하지 마세요.
+    </footer>
+  </div>
+</body>
+</html>
+`;
+
+writeFileSync(OUTPUT, html, 'utf8');
+console.log(`[build-index] wrote ${relative(REPO_ROOT, OUTPUT)} — ${projectKeys.length} project(s), ${totalPages} page(s).`);
