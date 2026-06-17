@@ -8,7 +8,7 @@
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   document.addEventListener('DOMContentLoaded', function () {
-    initYear(); initAnno(); initTabs(); initOverlayGNB(); initHeroSwiper(); initLineup(); initQuickInquiry();
+    initYear(); initAnno(); initTabs(); initOverlayGNB(); initHeroSwiper(); initLineup(); initQuickInquiry(); initRibbon();
     initGauge(); initShopFilter(); initSort(); initGallery(); initQty(); initContactForm();
     if (!hasGSAP) { showAll(); return; }
     initReveals(); initParallax();
@@ -53,6 +53,31 @@
         centeredSlides: true, initialSlide: 2, /* CLINICAL centered from start */
         navigation: { nextEl: host.querySelector('[data-lc-next]'), prevEl: host.querySelector('[data-lc-prev]') },
         pagination: { el: host.querySelector('.lc-prog'), type: 'progressbar' } });
+    });
+  }
+
+  /* contact ribbon — exactly two 40%-long snakes coiling the rounded box border.
+     viewBox set to real px (thin even stroke, no non-scaling-stroke), dash = 40%/10% of measured perimeter. */
+  function initRibbon() {
+    function rr(x, y, w, h, r) { r = Math.min(r, w / 2, h / 2); return 'M' + (x + r) + ' ' + y + 'H' + (x + w - r) + 'A' + r + ' ' + r + ' 0 0 1 ' + (x + w) + ' ' + (y + r) + 'V' + (y + h - r) + 'A' + r + ' ' + r + ' 0 0 1 ' + (x + w - r) + ' ' + (y + h) + 'H' + (x + r) + 'A' + r + ' ' + r + ' 0 0 1 ' + x + ' ' + (y + h - r) + 'V' + (y + r) + 'A' + r + ' ' + r + ' 0 0 1 ' + (x + r) + ' ' + y + 'Z'; }
+    document.querySelectorAll('.cf-wrap').forEach(function (wrap) {
+      var svg = wrap.querySelector('.ribbon'), path = wrap.querySelector('.rb');
+      if (!svg || !path) return;
+      var L = 0;
+      function build() {
+        var W = wrap.clientWidth, H = wrap.clientHeight; if (!W || !H) return;
+        var inset = 2, r = 16;
+        svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+        path.setAttribute('d', rr(inset, inset, W - inset * 2, H - inset * 2, r));
+        L = path.getTotalLength();
+        path.style.strokeDasharray = reduce ? '' : (L * 0.40) + ' ' + (L * 0.10);
+      }
+      build();
+      if (window.ResizeObserver) { try { new ResizeObserver(build).observe(wrap); } catch (e) {} }
+      if (reduce) return;
+      var start = null, dur = 7000;
+      function tick(t) { if (start === null) start = t; var p = ((t - start) % dur) / dur; if (L) path.style.strokeDashoffset = String(-p * L); requestAnimationFrame(tick); }
+      requestAnimationFrame(tick);
     });
   }
 

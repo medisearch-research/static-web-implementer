@@ -261,10 +261,11 @@ h1,h2,h3{font-family:var(--disp);font-weight:700;line-height:1.06;letter-spacing
 .contact-h em{font-style:normal;color:var(--bp)}
 .cf-wrap{position:relative;padding:36px 40px 40px;background:var(--paper);border-radius:16px}
 .cf-wrap .ribbon{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
-/* two point-symmetric "snakes" (dashes 50 apart on pathLength 100), thicker stroke */
-.cf-wrap .ribbon .rb{fill:none;stroke:var(--bp);stroke-width:3.5;vector-effect:non-scaling-stroke;stroke-linecap:round;stroke-dasharray:20 30;animation:ribbon 6.5s linear infinite}
-@keyframes ribbon{to{stroke-dashoffset:-100}}
-@media(prefers-reduced-motion:reduce){.cf-wrap .ribbon .rb{animation:none;stroke-dasharray:none;stroke:var(--b14)}}
+/* exactly two snakes: initRibbon() (ret1.js) sets the SVG viewBox to the box's real px size and the
+   dash to 40%/10% of the MEASURED perimeter — so the stroke stays thin without non-scaling-stroke
+   (which fragments pathLength dashing), and there are always exactly two 40%-long snakes. */
+.cf-wrap .ribbon .rb{fill:none;stroke:var(--bp);stroke-width:3.5;stroke-linecap:round}
+@media(prefers-reduced-motion:reduce){.cf-wrap .ribbon .rb{stroke:var(--b14)}}
 .contact .meta-line{display:flex;gap:10px;font-size:13.5px;color:var(--m55);margin-top:10px}
 .cf{margin-top:8px}
 .cf .row2{display:grid;grid-template-columns:1fr 1fr;gap:28px}
