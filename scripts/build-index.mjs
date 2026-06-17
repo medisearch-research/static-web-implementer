@@ -188,11 +188,17 @@ for (const [project, files] of byProject) {
   projects.set(project, pages);
 }
 
-// Stable ordering: projects alphabetical, pages by label.
-const projectKeys = [...projects.keys()].sort();
-for (const key of projectKeys) {
-  projects.get(key).sort((a, b) => a.file.localeCompare(b.file));
+// Stack ordering: newest on top. Tiles within a group sort by label
+// (date-prefixed folder/file name) descending; project groups sort by their
+// newest tile descending — so a newly added project/tile pushes older ones
+// down the stack. Deterministic (name-based, no timestamps).
+for (const arr of projects.values()) {
+  arr.sort((a, b) => b.file.localeCompare(a.file));
 }
+const projectKeys = [...projects.keys()].sort((a, b) => {
+  const byNewest = projects.get(b)[0].file.localeCompare(projects.get(a)[0].file);
+  return byNewest !== 0 ? byNewest : a.localeCompare(b);
+});
 
 const totalPages = [...projects.values()].reduce((n, arr) => n + arr.length, 0);
 
@@ -228,8 +234,8 @@ function renderProject(key) {
   const pages = projects.get(key);
   return `      <section class="project" id="${escapeHtml(key)}">
         <div class="project-head">
-          <h2 class="project-name">${escapeHtml(name)}</h2>
-          <span class="project-count">${pages.length}개 페이지</span>
+          <h2 class="project-tag">${escapeHtml(name)}</h2>
+          <span class="project-count">${pages.length}개 디자인</span>
         </div>
         <div class="grid">
 ${pages.map((p) => renderCard(p, key, name)).join('\n')}
@@ -303,12 +309,23 @@ const html = `<!DOCTYPE html>
     .search:focus { border-color: var(--accent); background: var(--card-hover); }
     .search:focus + .search-clear, .search-clear:focus { color: var(--text); }
 
-    .project { margin-top: 44px; }
-    .project-head { display: flex; align-items: baseline; gap: 12px; padding-bottom: 14px; border-bottom: 1px solid var(--line); }
-    .project-name { font-size: 22px; font-weight: 800; margin: 0; }
-    .project-count { color: var(--muted); font-size: 14px; }
+    /* Each project is a tagged, bordered group box. Groups stack newest-first. */
+    .project {
+      margin-top: 26px;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 22px 22px 26px;
+      background: linear-gradient(180deg, rgba(255,255,255,.025), transparent 140px), var(--bg-soft);
+    }
+    .project-head { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+    .project-tag {
+      font-size: 14px; font-weight: 800; margin: 0; letter-spacing: .02em;
+      color: var(--accent); background: rgba(110,168,254,.12);
+      border: 1px solid rgba(110,168,254,.5); border-radius: 999px; padding: 6px 16px;
+    }
+    .project-count { color: var(--muted); font-size: 13px; }
 
-    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; margin-top: 20px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; margin-top: 4px; }
     .card {
       display: flex; flex-direction: column; gap: 10px;
       background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
@@ -317,7 +334,7 @@ const html = `<!DOCTYPE html>
     }
     .card:hover { transform: translateY(-3px); background: var(--card-hover); border-color: var(--accent); }
     .card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
-    .card-title { font-size: 17px; font-weight: 700; margin: 0; flex: 1 1 auto; }
+    .card-title { font-size: 22px; font-weight: 900; margin: 0; flex: 1 1 auto; color: #fff; letter-spacing: -.01em; line-height: 1.25; }
     .badge { flex: none; font-size: 12px; font-weight: 700; color: #0b1020; background: var(--accent-2); border-radius: 999px; padding: 2px 9px; }
     .badge--folder { color: var(--text); background: rgba(110,168,254,.18); border: 1px solid rgba(110,168,254,.45); }
     .card-desc { color: var(--muted); font-size: 14px; margin: 0; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }

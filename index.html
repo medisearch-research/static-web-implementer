@@ -57,12 +57,23 @@
     .search:focus { border-color: var(--accent); background: var(--card-hover); }
     .search:focus + .search-clear, .search-clear:focus { color: var(--text); }
 
-    .project { margin-top: 44px; }
-    .project-head { display: flex; align-items: baseline; gap: 12px; padding-bottom: 14px; border-bottom: 1px solid var(--line); }
-    .project-name { font-size: 22px; font-weight: 800; margin: 0; }
-    .project-count { color: var(--muted); font-size: 14px; }
+    /* Each project is a tagged, bordered group box. Groups stack newest-first. */
+    .project {
+      margin-top: 26px;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 22px 22px 26px;
+      background: linear-gradient(180deg, rgba(255,255,255,.025), transparent 140px), var(--bg-soft);
+    }
+    .project-head { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+    .project-tag {
+      font-size: 14px; font-weight: 800; margin: 0; letter-spacing: .02em;
+      color: var(--accent); background: rgba(110,168,254,.12);
+      border: 1px solid rgba(110,168,254,.5); border-radius: 999px; padding: 6px 16px;
+    }
+    .project-count { color: var(--muted); font-size: 13px; }
 
-    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; margin-top: 20px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; margin-top: 4px; }
     .card {
       display: flex; flex-direction: column; gap: 10px;
       background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
@@ -71,7 +82,7 @@
     }
     .card:hover { transform: translateY(-3px); background: var(--card-hover); border-color: var(--accent); }
     .card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
-    .card-title { font-size: 17px; font-weight: 700; margin: 0; flex: 1 1 auto; }
+    .card-title { font-size: 22px; font-weight: 900; margin: 0; flex: 1 1 auto; color: #fff; letter-spacing: -.01em; line-height: 1.25; }
     .badge { flex: none; font-size: 12px; font-weight: 700; color: #0b1020; background: var(--accent-2); border-radius: 999px; padding: 2px 9px; }
     .badge--folder { color: var(--text); background: rgba(110,168,254,.18); border: 1px solid rgba(110,168,254,.45); }
     .card-desc { color: var(--muted); font-size: 14px; margin: 0; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
@@ -101,7 +112,7 @@
       <span class="eyebrow">Design Review</span>
       <h1>디자인 구현 목록</h1>
       <p class="lede">Claude Code로 구현한 정적 디자인 페이지 모음입니다. 검색하거나 카드를 클릭하면 브라우저에서 바로 검토할 수 있습니다.</p>
-      <p class="meta-line">총 <strong>1</strong>개 프로젝트 · <strong>2</strong>개 페이지<span class="result-count" id="result-count"></span></p>
+      <p class="meta-line">총 <strong>1</strong>개 프로젝트 · <strong>3</strong>개 페이지<span class="result-count" id="result-count"></span></p>
       <div class="search-wrap">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
         <input id="q" class="search" type="search" placeholder="제목 · 설명 · 파일 · 프로젝트로 검색…" autocomplete="off" aria-label="디자인 검색" />
@@ -111,26 +122,35 @@
     <main>
       <section class="project" id="bps">
         <div class="project-head">
-          <h2 class="project-name">BP+</h2>
-          <span class="project-count">2개 페이지</span>
+          <h2 class="project-tag">BP+</h2>
+          <span class="project-count">3개 디자인</span>
         </div>
         <div class="grid">
-        <a class="card" href="sites/bps/260616_bps/index.html" data-search="bp+ × hince — 병합 사이트 6스킨 bp-plus.co.kr(플랫폼)과 bpplusmall.com(쇼핑몰) 콘텐츠를 hince 스타일 한 페이지로 병합한 동작 데모 — 6가지 스킨 셀렉터. 알파 색 사다리·gsap 핀/패럴랙스·풀스크린 오버레이 gnb 구현. 260616_bps/ bps bp+ bp+ × hince — 병합 사이트 6스킨 bp-plus.co.kr(플랫폼)과 bpplusmall.com(쇼핑몰) 콘텐츠를 hince 스타일 한 페이지로 병합한 동작 데모 — 6가지 스킨 셀렉터. 알파 색 사다리·gsap 핀/패럴랙스·풀스크린 오버레이 gnb 구현. bp+ — rose editorial | beauty, backed by pharmacy 비피플러스 — 약사 큐레이션 더마 코스메틱 · rose editorial 스킨 bp+ — pharmacy sage | beauty, backed by pharmacy 비피플러스 — 약사 큐레이션 더마 코스메틱 · pharmacy sage 스킨 bp+ — glow amber | beauty, backed by pharmacy 비피플러스 — 약사 큐레이션 더마 코스메틱 · glow amber 스킨 bp+ — mono noir | beauty, backed by pharmacy 비피플러스 — 약사 큐레이션 더마 코스메틱 · mono noir 스킨 bp+ — derma blue | beauty, backed by pharmacy 비피플러스 — 약사 큐레이션 더마 코스메틱 · derma blue 스킨 bp+ — beige luxe | beauty, backed by pharmacy 비피플러스 — 약사 큐레이션 더마 코스메틱 · beige luxe 스킨">
+        <a class="card" href="sites/bps/260617_bps6/index.html" data-search="bps6+hince bp+ 6차 — 화이트+로즈 톤에 직접 생성한 이미지 38장. 6스킨 × 6페이지(home·shop·product·brand·community·mypage) 풀 사이트 데모. 260617_bps6/ bps bp+ bps6+hince bp+ 6차 — 화이트+로즈 톤에 직접 생성한 이미지 38장. 6스킨 × 6페이지(home·shop·product·brand·community·mypage) 풀 사이트 데모. about us | bp+ 뷰티파마시 community | bp+ 뷰티파마시 홈 | bp+ 뷰티파마시 my page | bp+ 뷰티파마시 믹순 프리미엄 병풀 크림 | bp+ 뷰티파마시 product | bp+ 뷰티파마시 about us | bp+ 뷰티파마시 community | bp+ 뷰티파마시 홈 | bp+ 뷰티파마시 my page | bp+ 뷰티파마시 믹순 프리미엄 병풀 크림 | bp+ 뷰티파마시 product | bp+ 뷰티파마시 about us | bp+ 뷰티파마시 community | bp+ 뷰티파마시 홈 | bp+ 뷰티파마시 my page | bp+ 뷰티파마시 믹순 프리미엄 병풀 크림 | bp+ 뷰티파마시 product | bp+ 뷰티파마시 about us | bp+ 뷰티파마시 community | bp+ 뷰티파마시 홈 | bp+ 뷰티파마시 my page | bp+ 뷰티파마시 믹순 프리미엄 병풀 크림 | bp+ 뷰티파마시 product | bp+ 뷰티파마시 about us | bp+ 뷰티파마시 community | bp+ 뷰티파마시 홈 | bp+ 뷰티파마시 my page | bp+ 뷰티파마시 믹순 프리미엄 병풀 크림 | bp+ 뷰티파마시 product | bp+ 뷰티파마시 about us | bp+ 뷰티파마시 community | bp+ 뷰티파마시 홈 | bp+ 뷰티파마시 my page | bp+ 뷰티파마시 믹순 프리미엄 병풀 크림 | bp+ 뷰티파마시 product | bp+ 뷰티파마시">
           <div class="card-top">
-            <h3 class="card-title">BP+ × hince — 병합 사이트 6스킨</h3>
+            <h3 class="card-title">bps6+hince</h3>
             <span class="badge badge--folder">프로젝트</span>
           </div>
-          <p class="card-desc">bp-plus.co.kr(플랫폼)과 bpplusmall.com(쇼핑몰) 콘텐츠를 hince 스타일 한 페이지로 병합한 동작 데모 — 6가지 스킨 셀렉터. 알파 색 사다리·GSAP 핀/패럴랙스·풀스크린 오버레이 GNB 구현.</p>
-          <code class="card-file">260616_bps/</code>
+          <p class="card-desc">BP+ 6차 — 화이트+로즈 톤에 직접 생성한 이미지 38장. 6스킨 × 6페이지(home·shop·product·brand·community·mypage) 풀 사이트 데모.</p>
+          <code class="card-file">260617_bps6/</code>
           <span class="card-open">미리보기 열기 →</span>
         </a>
-        <a class="card" href="sites/bps/260617_bps6/index.html" data-search="bp+ × hince — bps5 bp+ × hince 5차 작업물 — 화이트 캔버스+로즈 액센트, 직접 생성 이미지 38장. 6개 스킨(rose·sage·amber·noir·blue·beige) × 6개 페이지(home·shop·product·brand·community·mypage) 풀 사이트 데모. 260617_bps6/ bps bp+ bp+ × hince — bps5 bp+ × hince 5차 작업물 — 화이트 캔버스+로즈 액센트, 직접 생성 이미지 38장. 6개 스킨(rose·sage·amber·noir·blue·beige) × 6개 페이지(home·shop·product·brand·community·mypage) 풀 사이트 데모. about us | bp+ 뷰티파마시 community | bp+ 뷰티파마시 홈 | bp+ 뷰티파마시 my page | bp+ 뷰티파마시 믹순 프리미엄 병풀 크림 | bp+ 뷰티파마시 product | bp+ 뷰티파마시 about us | bp+ 뷰티파마시 community | bp+ 뷰티파마시 홈 | bp+ 뷰티파마시 my page | bp+ 뷰티파마시 믹순 프리미엄 병풀 크림 | bp+ 뷰티파마시 product | bp+ 뷰티파마시 about us | bp+ 뷰티파마시 community | bp+ 뷰티파마시 홈 | bp+ 뷰티파마시 my page | bp+ 뷰티파마시 믹순 프리미엄 병풀 크림 | bp+ 뷰티파마시 product | bp+ 뷰티파마시 about us | bp+ 뷰티파마시 community | bp+ 뷰티파마시 홈 | bp+ 뷰티파마시 my page | bp+ 뷰티파마시 믹순 프리미엄 병풀 크림 | bp+ 뷰티파마시 product | bp+ 뷰티파마시 about us | bp+ 뷰티파마시 community | bp+ 뷰티파마시 홈 | bp+ 뷰티파마시 my page | bp+ 뷰티파마시 믹순 프리미엄 병풀 크림 | bp+ 뷰티파마시 product | bp+ 뷰티파마시 about us | bp+ 뷰티파마시 community | bp+ 뷰티파마시 홈 | bp+ 뷰티파마시 my page | bp+ 뷰티파마시 믹순 프리미엄 병풀 크림 | bp+ 뷰티파마시 product | bp+ 뷰티파마시">
+        <a class="card" href="sites/bps/260616_bps2/index.html" data-search="bps2+hince bp+ 2차 — hince 홈 골격(swiper 제품 배너·원형 카테고리·best seller 랭킹)에 bps 테마·모션을 입힌 6스킨. 충실도 검증(comparison) 반영 v2.1. 260616_bps2/ bps bp+ bps → hince → bps2 비교·충실도 리포트 bps2+hince bp+ 2차 — hince 홈 골격(swiper 제품 배너·원형 카테고리·best seller 랭킹)에 bps 테마·모션을 입힌 6스킨. 충실도 검증(comparison) 반영 v2.1. bp+ — rose editorial | 비피플러스 · 약사 큐레이션 더마 비피플러스 bp+ — 약국의 신뢰로 큐레이션한 더마 코스메틱. rose editorial 스킨 (hince 구성 × bps 스타일). bp+ — pharmacy sage | 비피플러스 · 약사 큐레이션 더마 비피플러스 bp+ — 약국의 신뢰로 큐레이션한 더마 코스메틱. pharmacy sage 스킨 (hince 구성 × bps 스타일). bp+ — glow amber | 비피플러스 · 약사 큐레이션 더마 비피플러스 bp+ — 약국의 신뢰로 큐레이션한 더마 코스메틱. glow amber 스킨 (hince 구성 × bps 스타일). bp+ — mono noir | 비피플러스 · 약사 큐레이션 더마 비피플러스 bp+ — 약국의 신뢰로 큐레이션한 더마 코스메틱. mono noir 스킨 (hince 구성 × bps 스타일). bp+ — derma blue | 비피플러스 · 약사 큐레이션 더마 비피플러스 bp+ — 약국의 신뢰로 큐레이션한 더마 코스메틱. derma blue 스킨 (hince 구성 × bps 스타일). bp+ — beige luxe | 비피플러스 · 약사 큐레이션 더마 비피플러스 bp+ — 약국의 신뢰로 큐레이션한 더마 코스메틱. beige luxe 스킨 (hince 구성 × bps 스타일).">
           <div class="card-top">
-            <h3 class="card-title">BP+ × hince — bps5</h3>
+            <h3 class="card-title">bps2+hince</h3>
             <span class="badge badge--folder">프로젝트</span>
           </div>
-          <p class="card-desc">BP+ × hince 5차 작업물 — 화이트 캔버스+로즈 액센트, 직접 생성 이미지 38장. 6개 스킨(Rose·Sage·Amber·Noir·Blue·Beige) × 6개 페이지(home·shop·product·brand·community·mypage) 풀 사이트 데모.</p>
-          <code class="card-file">260617_bps6/</code>
+          <p class="card-desc">BP+ 2차 — hince 홈 골격(Swiper 제품 배너·원형 카테고리·BEST SELLER 랭킹)에 bps 테마·모션을 입힌 6스킨. 충실도 검증(comparison) 반영 v2.1.</p>
+          <code class="card-file">260616_bps2/</code>
+          <span class="card-open">미리보기 열기 →</span>
+        </a>
+        <a class="card" href="sites/bps/260616_bps/index.html" data-search="bps1+hince bp+ 1차 — bp-plus(플랫폼)와 bpplusmall(쇼핑몰)을 hince 스타일 한 페이지로 병합한 6스킨 셀렉터. 알파 색 사다리·gsap 핀/패럴랙스·풀스크린 오버레이 gnb. 260616_bps/ bps bp+ bps1+hince bp+ 1차 — bp-plus(플랫폼)와 bpplusmall(쇼핑몰)을 hince 스타일 한 페이지로 병합한 6스킨 셀렉터. 알파 색 사다리·gsap 핀/패럴랙스·풀스크린 오버레이 gnb. bp+ — rose editorial | beauty, backed by pharmacy 비피플러스 — 약사 큐레이션 더마 코스메틱 · rose editorial 스킨 bp+ — pharmacy sage | beauty, backed by pharmacy 비피플러스 — 약사 큐레이션 더마 코스메틱 · pharmacy sage 스킨 bp+ — glow amber | beauty, backed by pharmacy 비피플러스 — 약사 큐레이션 더마 코스메틱 · glow amber 스킨 bp+ — mono noir | beauty, backed by pharmacy 비피플러스 — 약사 큐레이션 더마 코스메틱 · mono noir 스킨 bp+ — derma blue | beauty, backed by pharmacy 비피플러스 — 약사 큐레이션 더마 코스메틱 · derma blue 스킨 bp+ — beige luxe | beauty, backed by pharmacy 비피플러스 — 약사 큐레이션 더마 코스메틱 · beige luxe 스킨">
+          <div class="card-top">
+            <h3 class="card-title">bps1+hince</h3>
+            <span class="badge badge--folder">프로젝트</span>
+          </div>
+          <p class="card-desc">BP+ 1차 — bp-plus(플랫폼)와 bpplusmall(쇼핑몰)을 hince 스타일 한 페이지로 병합한 6스킨 셀렉터. 알파 색 사다리·GSAP 핀/패럴랙스·풀스크린 오버레이 GNB.</p>
+          <code class="card-file">260616_bps/</code>
           <span class="card-open">미리보기 열기 →</span>
         </a>
         </div>
