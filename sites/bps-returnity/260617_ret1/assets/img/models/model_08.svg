@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 800" width="600" height="800" preserveAspectRatio="xMidYMid slice" role="img" aria-label="RETURN TO TRUST — 약국에서 시작되는">
+  <defs>
+    <linearGradient id="bg_model_08" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#E6E4E1"/><stop offset="1" stop-color="#C8C4BE"/>
+    </linearGradient>
+    <linearGradient id="skin_model_08" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#E2D5C4"/><stop offset="1" stop-color="#b9afa1"/>
+    </linearGradient>
+    <radialGradient id="sun_model_08" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#B0A89D"/><stop offset="0.78" stop-color="#B0A89D"/><stop offset="1" stop-color="#B0A89D" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="grain_model_08"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer><feFuncA type="linear" slope="0.5"/></feComponentTransfer>
+    </filter>
+    <clipPath id="frame_model_08"><rect width="600" height="800"/></clipPath>
+  </defs>
+  <g clip-path="url(#frame_model_08)">
+    <rect width="600" height="800" fill="url(#bg_model_08)"/>
+    <!-- returnity sun halo -->
+    <circle cx="300" cy="262" r="196" fill="url(#sun_model_08)" opacity="0.62"/>
+    <circle cx="300" cy="262" r="150" fill="none" stroke="#1A1A1A" stroke-opacity="0.10" stroke-width="1.2"/>
+    <!-- hair mass behind -->
+    <path d="M168 392 C150 214 236 132 300 132 C364 132 450 214 432 392 C426 470 408 520 388 556 L212 556 C192 520 174 470 168 392 Z" fill="#26241F"/>
+    <!-- shoulders / garment -->
+    <path d="M96 800 C96 656 178 568 300 568 C422 568 504 656 504 800 Z" fill="#9C958A"/>
+    <!-- neck -->
+    <path d="M268 486 L332 486 C330 520 332 552 348 576 L252 576 C268 552 270 520 268 486 Z" fill="#a79e91"/>
+    <!-- head -->
+    <ellipse cx="300" cy="402" rx="98" ry="120" fill="url(#skin_model_08)"/>
+    <!-- cheek/jaw shadow for dimension -->
+    <path d="M300 282 C360 290 398 340 398 402 C398 470 356 522 300 522 Z" fill="#26241F" opacity="0.07"/>
+    <!-- hair fringe over head -->
+    <path d="M202 360 C198 250 250 196 300 196 C350 196 402 250 398 360 C372 318 338 300 300 300 C262 300 228 318 202 360 Z" fill="#26241F"/>
+    <!-- side hair strands -->
+    <path d="M200 360 C196 470 214 540 236 580 L210 580 C186 520 172 452 178 372 Z" fill="#26241F" opacity="0.92"/>
+    <path d="M400 360 C404 470 386 540 364 580 L390 580 C414 520 428 452 422 372 Z" fill="#26241F" opacity="0.92"/>
+    <!-- grain -->
+    <rect width="600" height="800" filter="url(#grain_model_08)" opacity="0.05"/>
+    <!-- caption -->
+    <g font-family="'Albert Sans','AlbertSans',Arial,sans-serif">
+      <line x1="44" y1="694" x2="86" y2="694" stroke="#1A1A1A" stroke-width="2"/>
+      <text x="44" y="734" fill="#1A1A1A" font-size="40" font-weight="700" letter-spacing="0.5">RETURN TO TRUST</text>
+      <text x="46" y="766" fill="#1A1A1A" fill-opacity="0.66" font-size="19" font-family="'Pretendard',sans-serif" letter-spacing="0.5">약국에서 시작되는</text>
+    </g>
+  </g>
+</svg>

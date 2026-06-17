@@ -37,6 +37,7 @@ const PROJECT_NAMES = {
   medisearch: 'MediSearch',
   'bp-plus': 'BP+',
   bps: 'BP+',
+  'bps-returnity': 'BPS-Returnity',
   yaksaseyo: 'YakSaseyo · 약사세요',
   pharmdash: 'Pharmdash',
 };
