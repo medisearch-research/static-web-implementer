@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>제품 상세 · BEAUTY PHARMACY</title>
+<link rel="stylesheet" href="assets/fusion.css?v=4">
+<link rel="stylesheet" href="assets/fusion2.css?v=4">
+<style>
+  .pd{padding:var(--s64) 0 var(--s120)}
+  .pd .crumb{font-family:var(--lat);font-size:12px;letter-spacing:.06em;color:var(--m99);margin-bottom:var(--s40)}
+  .pd .crumb a:hover{color:var(--bp-d)}
+  .pd .head{display:grid;grid-template-columns:1fr 1fr;gap:var(--s64)}
+  .pd .gallery .big{aspect-ratio:1/1;background:var(--mist);display:flex;align-items:center;justify-content:center;overflow:hidden}
+  .pd .gallery .big img{width:82%;height:82%;object-fit:contain}
+  .pd .gallery .thumbs{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+  .pd .gallery .thumbs button{width:72px;height:72px;background:var(--mist);border:1px solid transparent;overflow:hidden}
+  .pd .gallery .thumbs button.on{border-color:var(--bp)}
+  .pd .gallery .thumbs img{width:100%;height:100%;object-fit:contain;padding:8%}
+  .pd .meta{display:flex;flex-direction:column;justify-content:center}
+  .pd .meta .brand{font-family:var(--lat);font-size:12px;letter-spacing:.1em;color:var(--silver-d);font-weight:600;text-transform:uppercase}
+  .pd .meta .line{font-family:var(--disp);font-weight:800;font-size:clamp(34px,4vw,56px);line-height:.95;margin:14px 0 6px}
+  .pd .meta h1{font-size:24px;font-weight:700;letter-spacing:-.01em;margin:0 0 12px}
+  .pd .meta .bl{color:var(--m66);font-size:15px;line-height:1.6}
+  .pd .meta .price{font-size:26px;font-weight:800;margin:24px 0;letter-spacing:-.01em}
+  .pd .meta .price.soon{color:var(--silver-d);font-size:18px;font-weight:700}
+  .pd .meta .buy{display:flex;gap:12px}
+  .pd .meta .buy a,.pd .meta .buy button{flex:1;text-align:center;padding:16px;font-size:14px;font-weight:700;letter-spacing:.02em;transition:.3s var(--ease)}
+  .pd .meta .buy .cart{border:1.5px solid var(--ink)}
+  .pd .meta .buy .cart:hover{background:var(--ink);color:#fff}
+  .pd .meta .buy .now{background:var(--bp);color:#fff}
+  .pd .meta .buy .now:hover{background:var(--bp-d)}
+  .pd .meta .note{font-size:12.5px;color:var(--m99);margin-top:18px;line-height:1.7}
+  .detailtab{border-top:1px solid var(--b10);margin-top:var(--s120);display:flex;gap:30px;justify-content:center;padding-top:var(--s24)}
+  .detailtab a{font-size:14px;font-weight:700;color:var(--m99);padding:14px 0}
+  .detailtab a.on{color:var(--ink);box-shadow:inset 0 -2px var(--bp)}
+  .detailbody{max-width:760px;margin:var(--s64) auto 0}
+  .detailbody img{width:100%;margin:0 auto}
+  .detailbody .empty{text-align:center;color:var(--m99);padding:var(--s96) 0}
+  .pd .meta .seal{display:inline-flex;align-items:center;gap:8px;font-family:var(--lat);font-size:11px;letter-spacing:.1em;color:var(--silver-d);margin-bottom:18px}
+  .pd .meta .seal::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--bp)}
+</style>
+</head>
+<body>
+
+<header class="gnb"><div class="wrap row">
+  <a class="logo" href="index.html" data-logo aria-label="BEAUTY PHARMACY"><span class="ch b">B</span><span class="ch rest">EAUTY&nbsp;</span><span class="ch p">P</span><span class="ch rest">HARMACY</span><span class="ch plus">+</span></a>
+  <nav class="nav">
+    <a href="awards.html">AWARDS</a><a href="ranking.html">RANKING</a><a href="clinic.html">CLINIC</a>
+    <a href="store.html">STORE</a><a href="index.html#about">ABOUT US</a><a href="community.html">COMMUNITY</a>
+  </nav>
+  <div class="util"><button aria-label="검색">SEARCH</button><a href="store.html" aria-label="장바구니">CART <span class="cartnum">0</span></a><button class="burger" id="burger" aria-label="메뉴"><span></span><span></span><span></span></button></div>
+</div></header>
+
+<div class="gnbov" id="gnbov">
+  <div class="gnbov-top"><span class="logo ov" aria-hidden="true"><span class="ch b">B</span><span class="ch rest">EAUTY&nbsp;</span><span class="ch p">P</span><span class="ch rest">HARMACY</span><span class="ch plus">+</span></span><button class="x" id="ovx" aria-label="닫기">CLOSE ✕</button></div>
+  <nav class="gnbov-mid">
+    <a href="awards.html"><span class="t">Awards</span><small>Blue Cross · 약사 심사 어워드</small></a>
+    <a href="ranking.html"><span class="t">Ranking</span><small>증상별 처방 랭킹</small></a>
+    <a href="clinic.html"><span class="t">Clinic</span><small>1:1 피부 처방전</small></a>
+    <a href="store.html"><span class="t">Store</span><small>파마시 셀렉트 스토어</small></a>
+    <a href="index.html#about"><span class="t">About&nbsp;Us</span><small>뷰티파마시 철학</small></a>
+    <a href="community.html"><span class="t">Community</span><small>리뷰 · 노미네이트</small></a>
+  </nav>
+  <div class="gnbov-foot"><span>약사가 인증하는 믿음직한 뷰티</span><span>partnership@bp-plus.co.kr</span><span>+82 10-8313-3579</span></div>
+</div>
+
+<main class="pd"><div class="wrap">
+  <div class="crumb"><a href="index.html">HOME</a> / <a href="store.html">STORE</a> / <span id="cbLine"></span></div>
+  <div class="head">
+    <div class="gallery">
+      <div class="big"><img id="bigImg" src="" alt=""></div>
+      <div class="thumbs" id="thumbs"></div>
+    </div>
+    <div class="meta">
+      <span class="seal">PHARMACIST-CURATED</span>
+      <div class="brand" id="mBrand"></div>
+      <div class="line" id="mLine"></div>
+      <div class="hook" id="mHook"></div>
+      <h1 id="mName"></h1>
+      <p class="bl" id="mBlurb"></p>
+      <div class="price" id="mPrice"></div>
+      <div class="buy" id="mBuy"></div>
+      <p class="note">약사가 큐레이션한 더모코스메틱 · 무료배송 5만원 이상 · 본 페이지는 BP+ 융합 디자인 데모입니다.</p>
+    </div>
+  </div>
+
+  <nav class="detailtab"><a class="on">상세정보</a><a href="store.html">연관 라인</a></nav>
+  <div class="detailbody" id="detailBody"></div>
+</div></main>
+
+<footer class="ft"><div class="wrap">
+  <div class="ft-top">
+    <div><h4 class="ftlogo"><a class="logo dark" href="index.html" data-logo aria-label="BEAUTY PHARMACY"><span class="ch b">B</span><span class="ch rest">EAUTY&nbsp;</span><span class="ch p">P</span><span class="ch rest">HARMACY</span><span class="ch plus">+</span></a></h4><p class="desc">약사가 큐레이션한 더모 코스메틱 · 무료배송 5만원 이상</p></div>
+    <div><h4>MENU</h4><a href="awards.html">Awards</a><a href="ranking.html">Ranking</a><a href="clinic.html">Clinic</a><a href="store.html">Store</a></div>
+    <div><h4>ABOUT / 제휴</h4><a href="index.html#about">뷰티파마시 철학</a><a href="index.html#contact">제휴 문의</a></div>
+    <div><h4>CS / COMMUNITY</h4><a href="community.html">리뷰 · 노미네이트</a><a href="store.html">주문조회</a></div>
+  </div>
+  <p class="comp">법인명 : 비피플러스 주식회사 &nbsp;|&nbsp; 대표자 : 이지은 &nbsp;|&nbsp; 고객센터 : +82 10-8313-3579 &nbsp;|&nbsp; Copyright © <span data-year>2026</span> 비피플러스 주식회사.</p>
+  <div class="word">BEAUTY PHARMACY</div>
+</div></footer>
+
+<a class="qinq" data-qinq href="index.html#contact"><span class="ic"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 11.5a8.4 8.4 0 0 1-12 7.6L3 21l1.9-6A8.4 8.4 0 1 1 21 11.5Z"/></svg></span><span class="tx">제휴문의</span></a>
+<button class="qtop" data-qtop aria-label="맨 위로"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
+
+<script src="assets/products.js?v=4"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="assets/fusion.js?v=4"></script>
+<script>
+(function(){
+  var P = window.BP_PRODUCTS || [];
+  var no = +(new URLSearchParams(location.search).get('no'));
+  var p = P.find(function(x){return x.no===no;}) || P[0];
+  if(!p){document.getElementById('detailBody').innerHTML='<p class="empty">제품을 찾을 수 없습니다.</p>';return;}
+  document.title = 'BP+ · '+p.brand+' '+p.name;
+  document.getElementById('cbLine').textContent = p.line;
+  document.getElementById('mBrand').textContent = p.brand;
+  document.getElementById('mLine').textContent = p.line;
+  var hk=document.getElementById('mHook'); if(hk) hk.textContent = p.hook||'';
+  document.getElementById('mName').textContent = p.name;
+  document.getElementById('mBlurb').textContent = p.blurb||'';
+  var pr = document.getElementById('mPrice');
+  if(p.price){pr.textContent = Number(p.price).toLocaleString('ko-KR')+'원';}
+  else{pr.textContent='출시 준비중';pr.className='price soon';}
+  document.getElementById('mBuy').innerHTML = p.price
+    ? '<button class="cart">장바구니</button><button class="now">바로 구매</button>'
+    : '<button class="cart" disabled style="opacity:.5">출시 준비중</button>';
+  // gallery
+  var imgs = [p.main].concat(p.detail||[]).filter(Boolean);
+  var big = document.getElementById('bigImg'); big.src = p.main; big.alt = p.name;
+  document.getElementById('thumbs').innerHTML = imgs.slice(0,6).map(function(s,i){
+    return '<button class="'+(i===0?'on':'')+'" data-src="'+s+'"><img src="'+s+'" alt=""></button>';
+  }).join('');
+  document.querySelectorAll('#thumbs button').forEach(function(b){
+    b.addEventListener('click',function(){
+      document.querySelectorAll('#thumbs button').forEach(function(x){x.classList.remove('on');});
+      b.classList.add('on'); big.src=b.dataset.src;
+    });
+  });
+  // detail design strips (the brand's uploaded detail images)
+  var db = document.getElementById('detailBody');
+  if(p.detail && p.detail.length){
+    db.innerHTML = p.detail.map(function(s){return '<img src="'+s+'" alt="'+p.name+' 상세" loading="lazy">';}).join('');
+  } else {
+    db.innerHTML = '<p class="empty">상세 이미지를 준비 중입니다.</p>';
+  }
+})();
+</script>
+</body>
+</html>

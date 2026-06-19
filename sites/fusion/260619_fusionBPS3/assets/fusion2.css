@@ -1,0 +1,235 @@
+/* =========================================================================
+   BPS2 (260619) — additions / overrides over fusion.css
+   ret1 GNB overlay + BEAUTY PHARMACY↔BP+ logo morph + fullbleed hero +
+   returnity sec_01 visual category + ret1 contact/footer + countdown
+   (loaded AFTER fusion.css → later cascade wins)
+   ========================================================================= */
+
+/* ---- logo: BEAUTY PHARMACY (main) → hover morph to BP+ → click spins + ---- */
+.logo{display:inline-flex;align-items:center;font-family:var(--lat);font-weight:800;font-size:1.35rem;
+  letter-spacing:-.01em;line-height:1;color:var(--ink);white-space:nowrap;cursor:pointer;
+  transition:font-size .45s var(--ease);overflow:visible}
+.logo .ch{display:inline-block}
+.logo .b,.logo .p{color:var(--bp)}              /* B & P = main pink by default */
+/* rest letters collapse cleanly (width+opacity+font-size→0) so morph never garbles/overlaps */
+.logo .rest{overflow:hidden;max-width:6em;opacity:1;transition:max-width .4s var(--ease),opacity .26s var(--ease),font-size .4s var(--ease)}
+.logo .plus{--pS:.2;--pr:0deg;color:var(--bp);font-weight:800;max-width:0;opacity:0;
+  transform:scale(var(--pS)) rotate(var(--pr));transform-origin:center 58%;
+  transition:max-width .4s var(--ease),opacity .3s var(--ease),transform .6s var(--ease)}
+/* morph (JS .morph): grow via FONT-SIZE not transform-scale → clean, no letter overlap/garble */
+.logo.morph{font-size:2.7rem}                   /* BP+ ≈ 43px ≈ 1.2× of 43×37 product logo */
+.logo.morph .rest{max-width:0;opacity:0;font-size:0}
+.logo.morph .plus{--pS:1;max-width:.7em;opacity:1}
+.logo.morph .b,.logo.morph .p{color:var(--ink)} /* on morph: BP black, + stays pink */
+.logo.dark{color:#fff}
+.logo.dark .b,.logo.dark .p{color:var(--bp)}            /* footer(dark): B/P pink */
+.logo.dark.morph .b,.logo.dark.morph .p{color:#fff}     /* footer morph: BP white (black invisible on ink) */
+.logo.ov{color:#fff;cursor:default;font-size:19px}      /* overlay decorative: B/P pink, no morph */
+.logo.ov .rest{max-width:6em;opacity:1}
+.logo.ov .plus{max-width:0;opacity:0}
+
+/* ---- header burger always visible (opens overlay) ---- */
+.burger{display:flex;flex-direction:column;gap:5px;background:none;border:0;cursor:pointer;padding:6px 2px}
+.burger span{width:22px;height:1.5px;background:var(--ink);transition:.3s var(--ease)}
+.burger.is-open span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+.burger.is-open span:nth-child(2){opacity:0}
+.burger.is-open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+.util a{font-size:13px;font-weight:600;color:var(--ink);text-decoration:none;display:flex;align-items:center;gap:6px;opacity:.8}
+.util a:hover{opacity:1;color:var(--bp-d)}
+
+/* ---- overlay GNB (260617_ret1 exact: GSAP-driven slide-down + staggered links) ----
+   display:none default (no flash); GSAP sets display:flex + yPercent + link y/opacity.
+   No CSS transform/opacity on links → GSAP owns the motion (matches ret1). */
+.gnbov{position:fixed;inset:0;z-index:100;background:var(--ink);color:#fff;display:flex;flex-direction:column;padding:40px 44px;
+  transform:translateY(-100%);visibility:hidden;transition:transform .62s cubic-bezier(.76,0,.24,1),visibility 0s linear .62s}
+.gnbov.on{transform:translateY(0);visibility:visible;transition:transform .62s cubic-bezier(.76,0,.24,1)}
+.gnbov-top{display:flex;justify-content:space-between;align-items:center}
+.gnbov .x{background:none;border:0;color:#fff;font-family:var(--lat);font-size:13px;letter-spacing:.12em;cursor:pointer;opacity:.8}
+.gnbov .x:hover{opacity:1;color:var(--bp)}
+.gnbov-mid{flex:1;display:flex;flex-direction:column;justify-content:center;gap:2px}
+.gnbov-mid a{font-family:var(--disp);font-size:clamp(34px,5.8vw,72px);font-weight:800;line-height:1.06;
+  letter-spacing:-.02em;color:#fff;text-decoration:none;transition:color .3s,padding .3s}
+.gnbov-mid a:hover{color:var(--bp);padding-left:20px}
+.gnbov-mid a small{font-family:var(--lat);font-size:12px;letter-spacing:.16em;opacity:.45;
+  vertical-align:super;margin-left:14px;text-transform:uppercase}
+.gnbov-foot{display:flex;gap:28px;font-size:12px;letter-spacing:.06em;opacity:.55;flex-wrap:wrap}
+
+/* ---- hero: fullbleed photographic (pharmacist-certified) ---- */
+.hero{position:relative;height:90vh;min-height:600px;background:var(--mist);overflow:hidden}
+.hero .slide{display:none;position:absolute;inset:0;height:100%;overflow:hidden}
+.hero .slide.on{display:block}
+.hero .slide .bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:75% center;z-index:0}
+.hero .slide .veil{position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(10,10,10,.55) 0%,rgba(10,10,10,.32) 30%,rgba(10,10,10,.05) 58%,transparent 76%)}
+.hero-cap{position:absolute;left:0;bottom:13%;z-index:2;padding:0 5vw;max-width:1040px;color:#fff}
+.hero-cap .ey{font-family:var(--lat);font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:#fff;opacity:.88}
+.hero-cap .en{font-family:var(--disp);font-size:clamp(44px,7vw,104px);font-weight:800;line-height:.92;letter-spacing:-.01em;margin:14px 0 8px;color:#fff}
+.hero-cap .en .ln{display:block;overflow:hidden}
+.hero-cap .en .kin{display:inline-block;white-space:nowrap;transform:translateY(110%);transition:transform .9s var(--ease)}
+.hero .slide.on .hero-cap .en .kin{transform:none}
+.hero-cap h1{font-size:clamp(22px,3.2vw,40px);font-weight:700;margin:0 0 16px;color:#fff;letter-spacing:-.01em}
+.hero-cap p{font-size:16px;color:rgba(255,255,255,.85);max-width:520px;margin:0 0 26px;line-height:1.6}
+.hero-cap .btn{display:inline-flex;align-items:center;gap:10px;border:1.5px solid #fff;color:#fff;padding:13px 30px;
+  font-family:var(--lat);font-size:13px;font-weight:700;letter-spacing:.06em;text-decoration:none;transition:.35s var(--ease)}
+.hero-cap .btn:hover{background:#fff;color:var(--ink);gap:16px}
+.hero .seal{position:absolute;right:5vw;top:14%;z-index:3;width:108px;height:108px;background:#fff;border-radius:50%;overflow:hidden;box-shadow:0 8px 22px rgba(10,10,10,.28)}
+.hero .seal img{width:100%;height:100%;object-fit:contain}   /* official white-bg circle logo blends into white seal */
+.hero .dots{position:absolute;left:5vw;bottom:30px;display:flex;gap:8px;z-index:5}
+.hero .dots button{width:30px;height:3px;background:rgba(255,255,255,.42);border:0;cursor:pointer;transition:.3s}
+.hero .dots button.on{background:#fff;width:50px}
+.hero .slide-no{position:absolute;right:5vw;bottom:30px;z-index:3;font-family:var(--lat);font-size:13px;letter-spacing:.18em;color:rgba(255,255,255,.7)}
+
+/* ---- sec_01 visual category (returnity sec01: image tile + EN label) ---- */
+.catwrap{display:grid;grid-template-columns:repeat(6,1fr);gap:2px;background:var(--b10);border-block:1px solid var(--b10)}
+.cat{position:relative;background:var(--paper);aspect-ratio:3/4;overflow:hidden;display:block;text-decoration:none}
+.cat .im{position:absolute;inset:0;background:var(--mist)}
+.cat .im img{width:100%;height:100%;object-fit:contain;padding:16%;transition:transform .6s var(--ease)}
+.cat:hover .im img{transform:scale(1.07)}
+.cat .lab{position:absolute;left:0;right:0;bottom:0;padding:18px 14px 16px;display:flex;flex-direction:column;gap:3px;
+  background:linear-gradient(transparent,rgba(255,255,255,.94) 46%)}
+.cat .lab .en{font-family:var(--disp);font-weight:800;font-size:clamp(17px,1.5vw,25px);line-height:1;color:var(--ink);transition:color .3s}
+.cat .lab .ko{font-size:12px;color:var(--m66)}
+.cat:hover .lab .en{color:var(--bp)}
+
+/* ---- contact (260617_ret1) ---- */
+.contact{background:var(--mist)}
+.contact-grid{display:grid;grid-template-columns:1fr 1.05fr;gap:80px;align-items:start}
+.contact .ey{font-family:var(--lat);font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--m99)}
+.contact-h{font-size:clamp(30px,4vw,52px);font-weight:800;line-height:1.18;letter-spacing:-.02em;margin:10px 0 0}
+.contact-h em{font-style:normal;color:var(--bp)}
+.contact .lede{color:var(--m66);font-size:15px;max-width:440px}
+.contact .meta-line{display:flex;gap:10px;font-size:13.5px;color:var(--m55);margin-top:10px}
+.cf-wrap{position:relative;padding:36px 40px 40px;background:var(--paper);border-radius:16px}
+.cf-wrap .ribbon{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+.cf-wrap .ribbon .rb{fill:none;stroke:var(--bp);stroke-width:3.5;stroke-linecap:round}
+@media(prefers-reduced-motion:reduce){.cf-wrap .ribbon .rb{stroke:var(--b14)}}
+.cf{margin-top:8px}
+.cf .row2{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+.cf .fld{margin-bottom:24px}
+.cf label{display:block;font-family:var(--lat);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--m66);margin-bottom:8px}
+.cf input,.cf select,.cf textarea{width:100%;border:0;border-bottom:1px solid var(--b14);padding:10px 0;
+  font-family:var(--body);font-size:15px;background:none;color:var(--ink);transition:.25s}
+.cf input:focus,.cf select:focus,.cf textarea:focus{outline:0;border-color:var(--bp)}
+.cf textarea{min-height:84px;resize:vertical}
+.cf .done{display:none;background:var(--ink);color:#fff;padding:15px;text-align:center;font-size:14px;margin-bottom:18px}
+.btn-ac{display:inline-flex;align-items:center;gap:10px;background:var(--bp);color:#fff;border:0;cursor:pointer;
+  padding:16px 40px;font-size:14px;font-weight:700;letter-spacing:.02em;transition:.3s var(--ease)}
+.btn-ac:hover{background:var(--bp-d);gap:16px}
+
+/* ---- footer (260617_ret1 design, fusion ink) ---- */
+.ft{background:var(--ink);color:rgba(255,255,255,.55);padding:78px 0 0}
+.ft .ft-top{display:grid;grid-template-columns:1.6fr 1fr 1fr 1.2fr;gap:34px;padding-bottom:50px;border-bottom:1px solid rgba(255,255,255,.14)}
+.ft h4{color:#fff;font-family:var(--lat);font-size:13px;letter-spacing:.12em;margin:0 0 18px;font-weight:700}
+.ft .ftlogo{margin-bottom:16px}
+.ft a{display:block;font-size:13px;padding:5px 0;color:rgba(255,255,255,.72);text-decoration:none}
+.ft a:hover{color:var(--bp)}
+.ft .desc{font-size:13.5px;line-height:1.85;color:rgba(255,255,255,.6)}
+.ft .comp{font-size:11.5px;line-height:2;color:rgba(255,255,255,.4);padding:24px 0 34px}
+.ft .word{font-family:var(--disp);font-weight:800;font-size:clamp(46px,11vw,150px);line-height:.8;color:#fff;
+  opacity:.06;letter-spacing:-.02em;text-align:center;padding-bottom:26px;white-space:nowrap;overflow:hidden}
+
+/* ---- floating quick (ret1 qinq/qtop, fusion pink) ---- */
+.qinq{position:fixed;right:22px;bottom:22px;z-index:80;display:inline-flex;align-items:center;gap:9px;
+  padding:14px 22px 14px 17px;background:var(--bp);color:#fff;border-radius:999px;font-family:var(--lat);
+  font-size:13px;letter-spacing:.06em;text-decoration:none;box-shadow:0 12px 30px rgba(193,40,120,.34);
+  border:2px solid var(--silver);transition:.28s var(--ease)}
+.qinq:hover{background:var(--bp-d);transform:translateY(-2px)}
+.qinq .ic{display:grid;place-items:center}
+.qtop{position:fixed;right:22px;bottom:84px;z-index:80;width:46px;height:46px;border-radius:50%;background:var(--paper);
+  border:1px solid var(--b14);color:var(--ink);display:none;place-items:center;cursor:pointer;box-shadow:0 8px 22px rgba(0,0,0,.12)}
+.qtop.show{display:grid}
+
+/* ---- countdown (awards/ranking/clinic/community teaser pages) ---- */
+.teaser{min-height:calc(100vh - 38px - 68px);display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:var(--s96) var(--s24);background:var(--paper);position:relative}
+.teaser .ey{margin-bottom:20px}
+.teaser .ten{font-family:var(--disp);font-weight:800;font-size:clamp(48px,10vw,128px);line-height:.9;letter-spacing:-.02em}
+.teaser .ten em{font-style:normal;color:var(--bp)}
+.teaser .tsub{max-width:640px;margin:22px auto 0;color:var(--m66);font-size:15px;line-height:1.7}
+.countdown{display:flex;gap:clamp(14px,3vw,38px);justify-content:center;align-items:flex-start;margin:48px 0 8px}
+.cd-unit{text-align:center;min-width:66px}
+.cd-unit .v{font-family:var(--disp);font-weight:800;font-size:clamp(40px,7vw,82px);line-height:1;letter-spacing:-.02em}
+.cd-unit .l{font-family:var(--lat);font-size:11px;letter-spacing:.16em;color:var(--m99);margin-top:10px;text-transform:uppercase}
+.cd-sep{font-family:var(--disp);font-weight:300;font-size:clamp(30px,6vw,64px);color:var(--b20);line-height:1.15}
+.opendate{font-family:var(--lat);font-size:13px;letter-spacing:.14em;color:var(--bp);margin-top:6px}
+.teaser .princ{display:flex;gap:26px;flex-wrap:wrap;justify-content:center;margin-top:54px;max-width:860px}
+.teaser .princ .p{flex:1;min-width:170px;text-align:left;border-top:1px solid var(--b14);padding-top:14px}
+.teaser .princ .p b{display:block;font-size:14px;margin-bottom:6px}
+.teaser .princ .p span{font-size:12.5px;color:var(--m99);line-height:1.55}
+.teaser .back{margin-top:48px;display:inline-flex;gap:8px;border:1.5px solid var(--ink);padding:13px 30px;font-size:13px;font-weight:700;text-decoration:none;color:var(--ink);transition:.3s var(--ease)}
+.teaser .back:hover{background:var(--ink);color:#fff}
+
+@media(max-width:1023px){
+  .catwrap{grid-template-columns:repeat(3,1fr)}
+  .contact-grid{grid-template-columns:1fr;gap:40px}
+  .ft .ft-top{grid-template-columns:1fr 1fr;gap:28px}
+  .hero{height:78vh}
+  .hero .slide .bg{object-position:78% center}
+  .hero .seal{width:84px;height:84px;top:11%}
+}
+@media(max-width:560px){
+  .nav{display:none}
+  .catwrap{grid-template-columns:repeat(2,1fr)}
+  .ft .ft-top{grid-template-columns:1fr}
+  .logo.morph{font-size:2rem}
+  /* narrow: model stays right, darken bottom so bottom-left text reads */
+  .hero{height:88vh}
+  .hero .slide .bg{object-position:72% center}
+  .hero .slide .veil{background:linear-gradient(180deg,rgba(10,10,10,.12) 30%,rgba(10,10,10,.72) 100%)}
+  .hero-cap{bottom:9%;max-width:none;padding:0 7vw}
+  .hero .seal{width:64px;height:64px;top:auto;bottom:26%;right:7vw}
+}
+
+/* ---- Awards · Blue Cross emblems + grade ladder ---- */
+.teaser.bc{justify-content:flex-start;padding-top:var(--s96);padding-bottom:var(--s96)}
+.bc-logo{height:5.6rem;width:auto;margin:6px auto 0;display:block}  /* rem → 뷰포트 비율/줌에 견고, 안 잘림 */
+.bc-h{font-family:var(--body);font-weight:800;font-size:clamp(20px,2.4vw,30px);letter-spacing:-.01em;margin:64px 0 6px}
+.bc-sub{color:var(--m66);font-size:14px;max-width:560px;margin:0 auto}
+.bc-grades{display:flex;flex-direction:column;gap:0;max-width:760px;width:100%;margin:30px auto 0;text-align:left;border-top:1px solid var(--b10)}
+.bc-grade{display:flex;align-items:center;gap:24px;padding:20px 8px;border-bottom:1px solid var(--b10);transition:.3s var(--ease)}
+.bc-grade:hover{background:var(--mist)}
+.bc-grade.hi{background:var(--bp10)}
+.bc-emblem{flex:none;width:130px;display:flex;align-items:center;gap:4px}
+.bc-emblem img{height:34px;width:auto}
+.bc-emblem.faded{opacity:.32}
+.bc-meta b{display:block;font-size:16px;font-weight:800;margin-bottom:4px}
+.bc-meta b span{font-family:var(--lat);font-size:11px;letter-spacing:.12em;color:var(--bp-d);margin-left:8px;font-weight:700}
+.bc-meta .d{font-size:13.5px;color:var(--m66);line-height:1.55}
+.bc-note{display:flex;align-items:center;gap:14px;max-width:720px;margin:44px auto 0;padding:18px 22px;
+  background:var(--mist);border-radius:14px;font-size:13.5px;color:var(--m55);line-height:1.6;text-align:left}
+.bc-note .shield{height:44px;width:auto;flex:none}
+.bc-note b{color:var(--ink)}
+@media(max-width:560px){
+  .bc-grade{flex-direction:row;gap:14px;align-items:flex-start}
+  .bc-emblem{width:96px}.bc-emblem img{height:26px}
+}
+
+/* ---- store card hooking copy ---- */
+.pcard .hook{font-size:12.5px;font-weight:700;color:var(--bp-d);line-height:1.4;margin:2px 0 7px;
+  letter-spacing:-.01em;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.pd .meta .hook{font-size:14px;font-weight:700;color:var(--bp-d);margin:0 0 12px;letter-spacing:-.01em}
+
+/* ---- Awards Blue Cross lockup (SVG cross + wordmark, fixed size, no clip) ---- */
+.bc-lockup{display:flex;align-items:center;justify-content:center;gap:18px;margin:8px auto 0;flex-wrap:wrap;max-width:100%}
+.bc-cross{height:84px;width:auto;flex:none}                 /* fixed px → unaffected by viewport ratio/zoom */
+.bc-word{font-family:var(--lat);font-weight:800;font-size:clamp(32px,4vw,52px);color:#2269DA;letter-spacing:-.01em;
+  line-height:1;display:flex;flex-direction:column;align-items:flex-start}
+.bc-tag{font-family:var(--body);font-weight:500;font-size:13px;color:var(--m66);letter-spacing:0;margin-top:7px}
+.bc-emblem img{height:34px;width:auto}                      /* grade emblems fixed px */
+@media(max-width:560px){ .bc-cross{height:62px} .bc-word{align-items:center} .bc-lockup{gap:10px} }
+
+/* ---- Blue Cross grade emblems as coupon stamps (inverse icon in a coupon chip) ---- */
+.bc-emblem{gap:8px;align-items:center}
+.bc-emblem .cpn{display:inline-flex;align-items:center;justify-content:center;width:50px;height:50px;border-radius:14px;
+  background:#fff;border:1.5px dashed var(--bp40);flex:none;overflow:hidden}
+.bc-emblem .cpn img{height:44px;width:auto}      /* official white-bg logo blends on white chip */
+.bc-grade.hi .cpn{border-style:solid;border-color:var(--bp);background:#fff}
+.bc-emblem.faded{opacity:.4}
+@media(max-width:560px){ .bc-emblem .cpn{width:40px;height:40px} .bc-emblem .cpn img{height:26px} }
+
+/* ---- Awards masthead = real horizontal logo (d70a3538), fixed size + tagline ---- */
+.bc-logo{height:5.6rem;width:auto;margin:10px auto 2px;display:block}   /* rem → 비율/줌에 견고 */
+.bc-tagline{font-size:.95rem;color:var(--m66);margin:12px auto 0;letter-spacing:0}
+@media(max-width:560px){ .bc-logo{height:4rem} }
+/* fix: 3 Cross(hi) coupon icons were intruding into the text → widen emblem column */
+.bc-emblem{width:208px;flex:none;justify-content:flex-start}
+@media(max-width:560px){ .bc-emblem{width:150px} }
