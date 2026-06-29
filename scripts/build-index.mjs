@@ -35,6 +35,7 @@ const OUTPUT = join(REPO_ROOT, 'index.html');
 // to a title-cased version of the folder name.
 const PROJECT_NAMES = {
   medisearch: 'MediSearch',
+  medisearch_single01: 'MediSearch single01',
   'bp-plus': 'BP+',
   bps: 'BP+',
   'bps-returnity': 'BPS-Returnity',

@@ -1,0 +1,587 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MediSearch — 랜딩 (로그인 전) · 260628 리브랜드</title>
+<meta name="description" content="메디서치는 30초 안에 끝나는 의료 입지 분석 서비스입니다." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+<style>
+/* =====================================================================
+   MediSearch · 리브랜드 (로그인 전) — "WARM DATA, ONE CLEAR SIGNAL"
+   원칙: 로고색 불변(Medi=deep-sky / Search=deep-mint, M=sky→mint).
+        따뜻한 종이 캔버스 + 실사진 지배 + 포컬 그라데이션 1개/화면 +
+        coral 포인트는 인기/핵심숫자/주CTA에만. 비로그인 인테이크 =
+        StartDoctor식 '다크 프리미엄 번호 질문' 밴드(쿨함의 정체).
+   ===================================================================== */
+:root{
+  /* 브랜드(불변) */
+  --sky:#9bcce9; --mint:#99d6c9; --deep-sky:#4e86c4; --deep-mint:#4e9891; --navy:#17559b;
+  --grad-brand:linear-gradient(120deg,#4e86c4 0%,#4e9891 100%);
+  --grad-soft:linear-gradient(120deg,#9bcce9 0%,#99d6c9 100%);
+  /* 잉크 */
+  --ink:#0c2340; --ink-2:#27384f; --muted:#5b6b82; --muted-2:#90a0b4;
+  /* 따뜻함(신규 액센트 — 절제) */
+  --coral:#e2654f; --coral-deep:#c9523e; --wash-coral:#fbf1ee;
+  /* 캔버스 — 차가운 순백 금지, 따뜻한 종이 */
+  --paper:#fbfaf8; --card:#ffffff; --wash-sky:#eef4fb; --wash-mint:#eaf4f1;
+  /* 다크 인테이크 밴드 */
+  --ink-deep:#0b1a2e; --ink-deep-2:#0e2236; --on-dark:#eaf0f8; --on-dark-mute:#8ea0b8;
+  --line:#e8ecf2; --line-2:#eef1f6;
+  --shadow-sm:0 1px 2px rgba(12,35,64,.05);
+  --shadow:0 16px 40px -24px rgba(12,35,64,.24);
+  --shadow-lg:0 34px 80px -34px rgba(12,35,64,.40);
+  --ring:0 0 0 4px rgba(78,134,196,.16);
+  --r:12px; --r-lg:16px; --r-xl:24px;
+  --maxw:1180px;
+  --font:"Pretendard Variable",Pretendard,system-ui,-apple-system,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);color:var(--ink);background:var(--paper);
+  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;line-height:1.55;
+  overflow-x:hidden;word-break:keep-all}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
+img{display:block;max-width:100%}
+svg{flex:0 0 auto}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px}
+.tnum{font-variant-numeric:tabular-nums}
+.eyebrow{font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--deep-sky)}
+
+/* ============ LOGO ============ */
+.logo{display:inline-flex;align-items:center;gap:9px}
+.logo img{width:30px;height:30px;object-fit:contain}
+.logo .wm{font-weight:800;font-size:21px;letter-spacing:-.02em;line-height:1}
+.logo .wm .a{color:var(--deep-sky)} .logo .wm .b{color:var(--deep-mint)}
+
+/* ============ BUTTONS ============ */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-weight:700;font-size:15px;
+  border-radius:999px;padding:12px 22px;transition:transform .18s ease,box-shadow .25s ease,background .2s,color .2s;white-space:nowrap}
+.btn svg{width:18px;height:18px}
+.btn-grad{background:var(--grad-brand);color:#fff;box-shadow:0 12px 26px -12px rgba(78,134,196,.7)}
+.btn-grad:hover{transform:translateY(-2px);box-shadow:0 18px 34px -12px rgba(78,134,196,.85)}
+.btn-coral{background:var(--coral);color:#fff;box-shadow:0 12px 26px -12px rgba(226,101,79,.7)}
+.btn-coral:hover{transform:translateY(-2px);background:var(--coral-deep);box-shadow:0 18px 34px -12px rgba(226,101,79,.8)}
+.btn-ink{background:var(--ink);color:#fff}
+.btn-ink:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
+.btn-ghost{background:var(--card);color:var(--ink);border:1.5px solid var(--line)}
+.btn-ghost:hover{border-color:var(--deep-sky);color:var(--deep-sky)}
+.btn-lg{padding:16px 30px;font-size:16.5px}
+
+/* ============ GNB ============ */
+.gnb{position:sticky;top:0;z-index:60;background:rgba(251,250,248,.84);
+  backdrop-filter:blur(16px) saturate(1.2);-webkit-backdrop-filter:blur(16px) saturate(1.2);
+  border-bottom:1px solid var(--line-2)}
+.gnb-in{height:72px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.nav{display:flex;align-items:center;gap:34px}
+.nav a{font-size:15.5px;font-weight:600;color:var(--ink-2);position:relative;padding:6px 0;transition:color .18s}
+.nav a .sub{display:block;font-size:11px;font-weight:600;color:var(--muted-2);margin-top:1px}
+.nav a:hover{color:var(--deep-sky)}
+.nav a::after{content:"";position:absolute;left:0;bottom:-2px;height:2px;width:0;background:var(--grad-brand);transition:width .22s ease;border-radius:2px}
+.nav a:hover::after{width:100%}
+.gnb-right{display:flex;align-items:center;gap:10px}
+.gnb-right .login{font-weight:700;font-size:15px;color:var(--ink);padding:9px 8px}
+.gnb-right .login:hover{color:var(--deep-sky)}
+.menu-btn{display:none}
+
+/* ============ HERO 광고 캐러셀 (실사진) ============ */
+.hero{padding:30px 0 0}
+.carousel{position:relative;display:flex;align-items:center;gap:14px}
+.car-arrow{flex:0 0 auto;width:46px;height:46px;border-radius:50%;background:var(--card);
+  border:1px solid var(--line);box-shadow:var(--shadow-sm);display:grid;place-items:center;color:var(--ink-2);transition:all .2s}
+.car-arrow:hover{color:var(--deep-sky);border-color:var(--deep-sky);transform:scale(1.06);box-shadow:var(--shadow)}
+.car-arrow svg{width:20px;height:20px}
+.car-viewport{flex:1 1 auto;overflow:hidden;border-radius:var(--r-xl);box-shadow:var(--shadow)}
+.car-track{display:flex;transition:transform .6s cubic-bezier(.66,0,.2,1)}
+.slide{flex:0 0 100%;min-height:440px;position:relative;overflow:hidden;display:flex;align-items:flex-end;padding:54px 60px;color:#fff}
+.slide .s-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
+.slide .s-scrim{position:absolute;inset:0;z-index:1;
+  background:linear-gradient(95deg,rgba(8,20,38,.9) 0%,rgba(8,20,38,.62) 42%,rgba(8,20,38,.18) 78%,rgba(8,20,38,.05) 100%)}
+.slide .s-content{position:relative;z-index:2;max-width:660px}
+.slide .s-eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:700;letter-spacing:.12em;
+  text-transform:uppercase;color:#cfe6f7;margin-bottom:16px}
+.slide .s-eyebrow::before{content:"";width:24px;height:1.5px;background:var(--mint);display:inline-block}
+.slide h1{font-size:clamp(28px,3.7vw,46px);font-weight:800;line-height:1.2;letter-spacing:-.025em;text-shadow:0 2px 24px rgba(0,0,0,.25)}
+.slide h1 .hl{background:var(--grad-soft);-webkit-background-clip:text;background-clip:text;color:transparent}
+.slide p.s-sub{margin-top:16px;font-size:16.5px;line-height:1.6;color:rgba(255,255,255,.88);max-width:34em}
+.slide .s-cta{margin-top:26px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.slide .s-chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.14);
+  border:1px solid rgba(255,255,255,.28);padding:9px 15px;border-radius:999px;font-size:13.5px;font-weight:600;backdrop-filter:blur(4px)}
+.slide .s-chip svg{width:15px;height:15px}
+.dots{display:flex;gap:8px;justify-content:center;margin-top:18px}
+.dot{width:8px;height:8px;border-radius:999px;background:var(--line);border:none;transition:all .25s;cursor:pointer}
+.dot.on{width:26px;background:var(--grad-brand)}
+
+/* ============ 다크 인테이크 폼 (StartDoctor 쿨함) ============ */
+.diag{position:relative;margin-top:56px;background:var(--ink-deep);color:var(--on-dark);overflow:hidden}
+.diag::before{content:"";position:absolute;z-index:0;width:760px;height:760px;right:-200px;top:-320px;
+  background:radial-gradient(circle,rgba(78,134,196,.34),rgba(78,152,145,.12) 45%,transparent 70%);filter:blur(8px)}
+.diag::after{content:"";position:absolute;z-index:0;left:-160px;bottom:-260px;width:520px;height:520px;
+  background:radial-gradient(circle,rgba(153,214,201,.16),transparent 68%)}
+.diag-in{position:relative;z-index:2;padding:58px 0 68px}
+.diag-grid{display:grid;grid-template-columns:330px 1fr;gap:56px;align-items:start}
+/* left rail */
+.diag-side{position:sticky;top:96px}
+.diag-side .s-eyebrow{color:var(--mint)}
+.diag-side h2{font-size:30px;font-weight:800;letter-spacing:-.02em;line-height:1.28;margin-top:14px;color:#fff}
+.diag-side .lead{margin-top:15px;font-size:14.5px;line-height:1.7;color:var(--on-dark-mute)}
+.prog{margin-top:26px;height:5px;border-radius:999px;background:rgba(255,255,255,.1);overflow:hidden}
+.prog .bar{height:100%;width:20%;border-radius:999px;background:var(--grad-soft);transition:width .4s ease}
+.steps{margin-top:22px;display:flex;flex-direction:column;gap:2px}
+.step{display:flex;align-items:center;gap:13px;padding:11px 0;color:var(--on-dark-mute);font-size:14.5px;font-weight:600;transition:color .25s}
+.step .n{width:27px;height:27px;border-radius:50%;border:1.5px solid rgba(255,255,255,.22);display:grid;place-items:center;
+  font-size:13px;font-weight:700;flex:0 0 auto;transition:all .25s}
+.step.on{color:#fff} .step.on .n{background:var(--grad-soft);border-color:transparent;color:var(--ink)}
+.badge-30{margin-top:26px;display:inline-flex;align-items:center;gap:9px;background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.16);border-radius:999px;padding:10px 16px;font-size:13px;font-weight:600;color:var(--on-dark)}
+.badge-30 svg{width:15px;height:15px;color:var(--mint)} .badge-30 b{color:var(--mint)}
+/* right form */
+.diag-body .q{padding:26px 0;border-bottom:1px solid rgba(255,255,255,.08)}
+.diag-body .q:first-child{padding-top:0}
+.q-head{display:flex;align-items:baseline;gap:13px;margin-bottom:16px}
+.q-num{font-size:14px;font-weight:800;color:var(--ink);background:var(--grad-soft);width:28px;height:28px;border-radius:9px;
+  display:grid;place-items:center;flex:0 0 auto}
+.q-title{font-size:18.5px;font-weight:700;letter-spacing:-.01em;color:#fff}
+.q-title .opt{font-size:12.5px;font-weight:600;color:var(--on-dark-mute);margin-left:7px}
+.q-hint{font-size:13px;color:var(--on-dark-mute);margin-top:3px;font-weight:500}
+.q-body{display:flex;gap:12px;align-items:stretch;flex-wrap:wrap}
+.field{flex:1 1 280px;display:flex;align-items:center;gap:11px;background:rgba(255,255,255,.045);
+  border:1.5px solid rgba(255,255,255,.16);border-radius:var(--r);padding:0 16px;min-height:54px;transition:all .2s}
+.field:focus-within{background:rgba(255,255,255,.07);border-color:var(--sky);box-shadow:0 0 0 4px rgba(78,134,196,.22)}
+.field svg{width:19px;height:19px;color:var(--on-dark-mute)}
+.field input{flex:1;border:none;background:transparent;outline:none;font-size:16px;font-weight:500;min-width:0;color:#fff}
+.field input::placeholder{color:var(--on-dark-mute);font-weight:400}
+.field.is-off{opacity:.4;pointer-events:none}
+.unsure{flex:0 0 auto;display:inline-flex;align-items:center;gap:9px;background:transparent;border:1.5px solid rgba(255,255,255,.16);
+  border-radius:var(--r);padding:0 16px;min-height:54px;font-size:14px;font-weight:600;color:var(--on-dark-mute);transition:all .18s}
+.unsure:hover{border-color:rgba(255,255,255,.4);color:var(--on-dark)}
+.unsure .box{width:18px;height:18px;border-radius:6px;border:1.5px solid var(--on-dark-mute);display:grid;place-items:center;transition:all .18s}
+.unsure .box svg{width:12px;height:12px;color:var(--ink);opacity:0}
+.unsure.on{border-color:var(--mint);color:var(--mint)}
+.unsure.on .box{background:var(--grad-soft);border-color:transparent} .unsure.on .box svg{opacity:1}
+.seg{display:inline-flex;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:var(--r);padding:5px;gap:4px;flex:0 0 auto}
+.seg button{padding:11px 20px;border-radius:9px;font-size:14.5px;font-weight:700;color:var(--on-dark-mute);transition:all .18s;white-space:nowrap}
+.seg button.on{background:var(--card);color:var(--ink)}
+.choices{display:grid;grid-template-columns:1fr 1fr;gap:12px;width:100%}
+.choice{display:flex;gap:13px;align-items:flex-start;text-align:left;background:rgba(255,255,255,.04);
+  border:1.5px solid rgba(255,255,255,.14);border-radius:var(--r-lg);padding:18px;transition:all .18s}
+.choice:hover{border-color:rgba(255,255,255,.3)}
+.choice.on{border-color:var(--sky);background:rgba(78,134,196,.12)}
+.choice .ic{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;flex:0 0 auto;background:var(--grad-soft);color:var(--ink)}
+.choice .ic svg{width:22px;height:22px}
+.choice .ct b{font-size:15.5px;font-weight:700;display:block;color:#fff}
+.choice .ct span{font-size:13px;color:var(--on-dark-mute);font-weight:500;display:block;margin-top:3px;line-height:1.45}
+.choice .pick{margin-left:auto;width:20px;height:20px;border-radius:50%;border:2px solid rgba(255,255,255,.25);flex:0 0 auto;transition:all .18s;position:relative}
+.choice.on .pick{border-color:var(--sky)} .choice.on .pick::after{content:"";position:absolute;inset:3px;border-radius:50%;background:var(--grad-soft)}
+.chips{display:flex;flex-wrap:wrap;gap:9px}
+.chip{display:inline-flex;align-items:center;gap:7px;background:transparent;border:1.5px solid rgba(255,255,255,.16);
+  border-radius:999px;padding:10px 16px;font-size:14px;font-weight:600;color:var(--on-dark);transition:all .16s}
+.chip:hover{border-color:rgba(255,255,255,.4)}
+.chip.on{background:rgba(153,214,201,.14);border-color:var(--mint);color:var(--mint)}
+.chip .x{width:16px;height:16px;border-radius:50%;background:var(--grad-soft);color:var(--ink);display:none;place-items:center;font-size:10px;font-weight:800}
+.chip.on .x{display:grid}
+.diag-foot{margin-top:30px;display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap}
+.diag-foot .note{font-size:13px;color:var(--on-dark-mute);display:flex;align-items:center;gap:8px}
+.diag-foot .note svg{width:16px;height:16px;color:var(--mint)}
+.result{display:none;margin-top:22px;background:rgba(255,255,255,.05);border:1px solid rgba(153,214,201,.3);
+  border-radius:var(--r-lg);padding:20px 22px;align-items:center;gap:16px}
+.result.show{display:flex;animation:fade-up .5s ease both}
+.result .rdot{width:42px;height:42px;border-radius:12px;background:var(--grad-soft);display:grid;place-items:center;flex:0 0 auto}
+.result .rdot svg{width:22px;height:22px;color:var(--ink)}
+.result b{font-size:15px;color:#fff} .result p{font-size:13.5px;color:var(--on-dark-mute);margin-top:2px}
+.field.optional{background:transparent;border:1.5px dashed rgba(255,255,255,.18)}
+.field.optional:focus-within{border-style:solid;border-color:var(--sky)}
+
+/* ============ TRUST STRIP ============ */
+.trust{padding:64px 0 18px}
+.trust-head{text-align:center;margin-bottom:30px}
+.trust-head h2{font-size:26px;font-weight:800;letter-spacing:-.02em}
+.trust-head p{margin-top:8px;font-size:15px;color:var(--muted)}
+.trust-in{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.tcard{background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);padding:26px;transition:all .22s}
+.tcard:hover{transform:translateY(-4px);box-shadow:var(--shadow);border-color:transparent}
+.tcard .ic{width:44px;height:44px;border-radius:12px;background:var(--wash-sky);color:var(--deep-sky);display:grid;place-items:center;margin-bottom:16px}
+.tcard .ic svg{width:23px;height:23px}
+.tcard .big{font-size:33px;font-weight:800;letter-spacing:-.02em;line-height:1;color:var(--coral)}
+.tcard .big small{font-size:16px;font-weight:700;color:var(--muted);margin-left:1px}
+.tcard h4{font-size:15.5px;font-weight:700;margin-top:9px}
+.tcard p{font-size:13.5px;color:var(--muted);margin-top:5px;line-height:1.5}
+
+/* ============ ABOUT TEASER (라이트 에디토리얼) ============ */
+.about{padding:70px 0 84px}
+.about-in{display:grid;grid-template-columns:1fr 1fr;gap:0;background:var(--card);border:1px solid var(--line);
+  border-radius:var(--r-xl);overflow:hidden;box-shadow:var(--shadow)}
+.about-photo{position:relative;min-height:420px}
+.about-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.about-photo .ph-scrim{position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(11,26,46,.5))}
+.about-photo .ph-cap{position:absolute;left:26px;bottom:24px;color:#fff;z-index:2}
+.about-photo .ph-cap b{font-size:16px;font-weight:700;display:block}
+.about-photo .ph-cap span{font-size:13px;color:rgba(255,255,255,.85)}
+.about-copy{padding:50px 48px}
+.about-copy h2{font-size:28px;font-weight:800;letter-spacing:-.02em;line-height:1.32;margin-top:14px}
+.about-copy h2 .hl{color:var(--deep-sky)}
+.about-copy p{margin-top:16px;font-size:15.5px;line-height:1.75;color:var(--muted)}
+.gov{margin-top:24px;display:flex;flex-direction:column;gap:10px}
+.gov-row{display:flex;align-items:center;gap:13px;background:var(--wash-sky);border-radius:var(--r);padding:14px 16px}
+.gov-row .ic{width:36px;height:36px;border-radius:10px;background:var(--card);display:grid;place-items:center;flex:0 0 auto;color:var(--deep-mint)}
+.gov-row .ic svg{width:19px;height:19px}
+.gov-row b{font-size:14.5px;display:block} .gov-row span{font-size:12.5px;color:var(--muted)}
+.about-copy .a-cta{margin-top:26px;display:flex;gap:12px;flex-wrap:wrap}
+
+/* ============ FOOTER ============ */
+.foot{border-top:1px solid var(--line);background:#fff;padding:54px 0 40px}
+.foot-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:30px}
+.foot .logo{margin-bottom:14px}
+.foot .desc{font-size:13.5px;color:var(--muted);line-height:1.65;max-width:24em}
+.foot h5{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:14px}
+.foot ul{list-style:none;display:flex;flex-direction:column;gap:10px}
+.foot ul a{font-size:13.5px;color:var(--muted);transition:color .16s}
+.foot ul a:hover{color:var(--deep-sky)}
+.foot-bot{margin-top:40px;padding-top:24px;border-top:1px solid var(--line);display:flex;justify-content:space-between;
+  align-items:center;gap:16px;flex-wrap:wrap;font-size:12.5px;color:var(--muted-2)}
+
+/* ============ ANIM ============ */
+@keyframes fade-up{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spinner{width:18px;height:18px;border:2.5px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .8s linear infinite;display:inline-block}
+.btn:disabled{opacity:.95;cursor:default;transform:none!important}
+.js [data-reveal]{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}
+.js [data-reveal].in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){.js [data-reveal]{opacity:1!important;transform:none!important}}
+
+/* ============ RESPONSIVE ============ */
+@media(max-width:980px){
+  .diag-grid{grid-template-columns:1fr;gap:32px} .diag-side{position:static}
+  .about-in{grid-template-columns:1fr} .about-photo{min-height:280px}
+  .trust-in{grid-template-columns:1fr 1fr} .foot-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:760px){
+  .wrap{padding:0 18px}
+  .nav{display:none}
+  .gnb-right .login{display:none}
+  .menu-btn{display:grid;place-items:center;width:42px;height:42px;border-radius:11px;border:1px solid var(--line);color:var(--ink)}
+  .menu-btn svg{width:22px;height:22px}
+  .car-arrow{display:none}
+  .slide{padding:36px 26px;min-height:380px}
+  .diag-in{padding:44px 0 52px}
+  .q-body{flex-direction:column} .field,.seg,.unsure{width:100%;flex:0 0 auto} .seg button{flex:1} .choices{grid-template-columns:1fr}
+  .trust-in{grid-template-columns:1fr 1fr} .about-copy{padding:34px 24px} .foot-grid{grid-template-columns:1fr 1fr}
+}
+</style>
+<script>document.documentElement.className+=" js";</script>
+</head>
+<body>
+
+<!-- ICON DEFS -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-arrow-l" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></symbol>
+  <symbol id="i-arrow-r" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></symbol>
+  <symbol id="i-ur" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></symbol>
+  <symbol id="i-stetho" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4.8 3v5a4 4 0 0 0 8 0V3"/><path d="M3 3h2M11.8 3h2"/><path d="M8.8 16a5 5 0 0 0 10 0v-3"/><circle cx="19.8" cy="11" r="2"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13A4 4 0 0 1 16 11"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></symbol>
+  <symbol id="i-bolt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h7l-1 8 10-12h-7l1-8Z"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+  <symbol id="i-spark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"/></symbol>
+  <symbol id="i-data" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v6c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 11v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/></symbol>
+  <symbol id="i-target" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.4"/></symbol>
+  <symbol id="i-handshake" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m11 17 2 2a1 1 0 0 0 1.4 0l3.6-3.6"/><path d="m18 12 2.4 2.4M3.5 12.5 8 8l3 2 2-2 5 5M2 9l4-4 3 3"/></symbol>
+  <symbol id="i-board" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M7 8h6M7 12h10M9 21h6"/></symbol>
+  <symbol id="i-scale" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M7 21h10M12 6 5 9l-2.5 5a3 3 0 0 0 5 0L5 9M19 9l-2.5 5a3 3 0 0 0 5 0L19 9 12 6"/></symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.6A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.6a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.5-1.1a2 2 0 0 1 2.1-.5c.8.3 1.7.5 2.6.6a2 2 0 0 1 1.7 2Z"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></symbol>
+</svg>
+
+<!-- ============ GNB ============ -->
+<header class="gnb">
+  <div class="wrap gnb-in">
+    <a href="#" class="logo" aria-label="MediSearch 홈">
+      <img src="./assets/landing/logo-mark.png" alt="" />
+      <span class="wm"><span class="a">Medi</span><span class="b">Search</span></span>
+    </a>
+    <nav class="nav">
+      <a href="#">입지계약·컨설팅<span class="sub">개원·중개 계약 매칭</span></a>
+      <a href="#">입지강의<span class="sub">개원 입지 클래스</span></a>
+      <a href="#about">About us<span class="sub">메디서치 이야기</span></a>
+    </nav>
+    <div class="gnb-right">
+      <a href="#" class="login">로그인</a>
+      <a href="#diag" class="btn btn-coral">무료 진단</a>
+      <button class="menu-btn" aria-label="메뉴"><svg><use href="#i-menu"/></svg></button>
+    </div>
+  </div>
+</header>
+
+<!-- ============ HERO 광고 캐러셀 ============ -->
+<section class="hero">
+  <div class="wrap">
+    <div class="carousel">
+      <button class="car-arrow" id="prev" aria-label="이전 광고"><svg><use href="#i-arrow-l"/></svg></button>
+      <div class="car-viewport"><div class="car-track" id="track">
+
+        <article class="slide">
+          <img class="s-photo" src="./assets/seoul.jpg" alt="" />
+          <div class="s-scrim"></div>
+          <div class="s-content">
+            <span class="s-eyebrow">AI 입지 인텔리전스</span>
+            <h1>메디서치는 <span class="hl">30초 안에 끝나는</span><br/>의료 입지 분석 서비스입니다</h1>
+            <p class="s-sub">전국 병·의원 데이터와 상권 지표를 AI가 교차 분석해, 어디에 개원해야 할지 즉시 알려드려요.</p>
+            <div class="s-cta">
+              <a href="#diag" class="btn btn-grad">지금 무료로 진단받기 <svg><use href="#i-arrow-r"/></svg></a>
+              <span class="s-chip"><svg><use href="#i-clock"/></svg> 평균 28초 소요</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="slide">
+          <img class="s-photo" src="./assets/meetroom.jpg" alt="" />
+          <div class="s-scrim"></div>
+          <div class="s-content">
+            <span class="s-eyebrow">입지계약 · 컨설팅</span>
+            <h1>개원도, 중개도<br/><span class="hl">메디서치를 통해</span> 계약하세요</h1>
+            <p class="s-sub">검증된 입지 데이터를 기반으로 원장님과 중개·임대인을 연결합니다. 계약부터 컨설팅까지 한 번에.</p>
+            <div class="s-cta">
+              <a href="#" class="btn btn-grad">입지계약·컨설팅 문의</a>
+              <span class="s-chip"><svg><use href="#i-handshake"/></svg> 전담 컨설턴트 배정</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="slide">
+          <img class="s-photo" src="./assets/lecture.jpg" alt="" />
+          <div class="s-scrim"></div>
+          <div class="s-content">
+            <span class="s-eyebrow">메디서치 클래스</span>
+            <h1>입지를 보는 눈,<br/><span class="hl">강의로 길러드립니다</span></h1>
+            <p class="s-sub">데이터로 입지를 읽는 법, 개원 전략과 상권 분석까지. 실전 노하우를 담은 입지강의를 만나보세요.</p>
+            <div class="s-cta">
+              <a href="#" class="btn btn-grad">입지강의 둘러보기</a>
+              <span class="s-chip"><svg><use href="#i-board"/></svg> 원장 전용 커리큘럼</span>
+            </div>
+          </div>
+        </article>
+
+      </div></div>
+      <button class="car-arrow" id="next" aria-label="다음 광고"><svg><use href="#i-arrow-r"/></svg></button>
+    </div>
+    <div class="dots" id="dots"></div>
+  </div>
+</section>
+
+<!-- ============ 30초 입지 진단 폼 (다크) ============ -->
+<section class="diag" id="diag">
+  <div class="wrap diag-in">
+    <div class="diag-grid">
+
+      <aside class="diag-side">
+        <span class="eyebrow s-eyebrow">30초 입지 진단</span>
+        <h2>몇 가지만 알려주시면<br/>AI가 입지를 찾아드려요</h2>
+        <p class="lead">복잡한 검색은 필요 없어요. 아래 질문에 편하게 답하면, 메디서치가 데이터로 최적의 자리를 추천합니다.</p>
+        <div class="prog"><div class="bar" id="progBar"></div></div>
+        <div class="steps" id="steps">
+          <div class="step on" data-step="1"><span class="n">1</span> 희망 지역</div>
+          <div class="step" data-step="2"><span class="n">2</span> 진료과</div>
+          <div class="step" data-step="3"><span class="n">3</span> 의사 수</div>
+          <div class="step" data-step="4"><span class="n">4</span> 운영 성향</div>
+          <div class="step" data-step="5"><span class="n">+</span> 관심 지표 · 연락처</div>
+        </div>
+        <span class="badge-30"><svg><use href="#i-clock"/></svg> 평균 <b>28초</b> · 가입 없이 무료</span>
+      </aside>
+
+      <form class="diag-body" id="diagForm" onsubmit="return false;">
+
+        <div class="q" data-q="1">
+          <div class="q-head"><span class="q-num">1</span><div>
+            <div class="q-title">어느 지역에 개원·이전하고 싶으세요?</div>
+            <div class="q-hint">동·역·구 단위로 적어도 좋고, 모르면 AI에게 맡겨도 돼요.</div></div></div>
+          <div class="q-body">
+            <label class="field"><svg><use href="#i-pin"/></svg>
+              <input type="text" placeholder="예) 강남구 역삼동, 분당 정자역 근처" /></label>
+            <button type="button" class="unsure" data-target=".q[data-q='1'] .field">
+              <span class="box"><svg><use href="#i-check"/></svg></span> 잘 모르겠어요</button>
+          </div>
+        </div>
+
+        <div class="q" data-q="2">
+          <div class="q-head"><span class="q-num">2</span><div>
+            <div class="q-title">어떤 진료과를 준비 중이신가요?</div>
+            <div class="q-hint">약국 개설도 포함해 분석해 드려요.</div></div></div>
+          <div class="q-body">
+            <label class="field"><svg><use href="#i-stetho"/></svg>
+              <input type="text" placeholder="예) 피부과, 정형외과, 내과, 약국…" /></label>
+            <div class="seg" data-name="role"><button type="button" class="on">의사</button><button type="button">약사</button><button type="button">기타</button></div>
+          </div>
+        </div>
+
+        <div class="q" data-q="3">
+          <div class="q-head"><span class="q-num">3</span><div>
+            <div class="q-title">의사 수는 총 몇 명일까요? <span class="opt">범위로 적어도 OK</span></div>
+            <div class="q-hint">패밀리(공동 개원) 인원까지 포함해 주세요.</div></div></div>
+          <div class="q-body">
+            <label class="field"><svg><use href="#i-users"/></svg>
+              <input type="text" placeholder="예) 1명 / 2~3명 / 패밀리 4명" /></label>
+            <button type="button" class="unsure" data-target=".q[data-q='3'] .field">
+              <span class="box"><svg><use href="#i-check"/></svg></span> 아직 모르겠어요</button>
+          </div>
+        </div>
+
+        <div class="q" data-q="4">
+          <div class="q-head"><span class="q-num">4</span><div>
+            <div class="q-title">운영 성향은 어떤 편인가요?</div>
+            <div class="q-hint">추천 입지의 리스크·기대 매출 균형을 조정하는 데 쓰여요.</div></div></div>
+          <div class="q-body">
+            <div class="choices" data-name="style">
+              <button type="button" class="choice on"><span class="ic"><svg><use href="#i-bolt"/></svg></span>
+                <span class="ct"><b>공격적</b><span>성장·매출 우선. 경쟁이 있어도 수요 큰 자리</span></span><span class="pick"></span></button>
+              <button type="button" class="choice"><span class="ic"><svg><use href="#i-shield"/></svg></span>
+                <span class="ct"><b>안정형</b><span>리스크 최소. 경쟁 적고 꾸준한 자리</span></span><span class="pick"></span></button>
+            </div>
+          </div>
+        </div>
+
+        <div class="q" data-q="5">
+          <div class="q-head"><span class="q-num">+</span><div>
+            <div class="q-title">분석에서 특히 중요하게 볼 점이 있나요? <span class="opt">선택</span></div>
+            <div class="q-hint">고른 지표에 가중치를 둬서 분야별로 더 깊게 분석해요.</div></div></div>
+          <div class="q-body" style="flex-direction:column;align-items:flex-start;gap:14px">
+            <div class="chips" data-name="focus">
+              <button type="button" class="chip">경쟁 강도 <span class="x">✓</span></button>
+              <button type="button" class="chip">배후 세대 <span class="x">✓</span></button>
+              <button type="button" class="chip">유동 인구 <span class="x">✓</span></button>
+              <button type="button" class="chip">임대료 부담 <span class="x">✓</span></button>
+              <button type="button" class="chip">교통·역세권 <span class="x">✓</span></button>
+              <button type="button" class="chip">예상 매출 <span class="x">✓</span></button>
+              <button type="button" class="chip">주차·접근성 <span class="x">✓</span></button>
+            </div>
+          </div>
+        </div>
+
+        <div class="q" data-q="6">
+          <div class="q-head"><span class="q-num">+</span><div>
+            <div class="q-title">결과를 받아볼 연락처 <span class="opt">선택 · 상담 희망 시</span></div>
+            <div class="q-hint">분석 결과는 화면에 바로 떠요. 전담 컨설팅을 원하면 남겨주세요.</div></div></div>
+          <div class="q-body">
+            <label class="field optional"><svg><use href="#i-phone"/></svg>
+              <input type="tel" placeholder="휴대폰 번호 (선택)" aria-label="연락처(선택)" /></label>
+          </div>
+        </div>
+
+        <div class="diag-foot">
+          <span class="note"><svg><use href="#i-shield"/></svg> 입력값은 분석에만 쓰이고 안전하게 보호돼요.</span>
+          <button type="submit" class="btn btn-grad btn-lg" id="submitBtn">AI 입지 분석 시작하기 <svg><use href="#i-ur"/></svg></button>
+        </div>
+
+        <div class="result" id="result">
+          <span class="rdot"><svg><use href="#i-spark"/></svg></span>
+          <div><b>분석을 시작했어요 — 지도와 함께 추천 입지를 불러오는 중…</b>
+            <p>로그인하면 추천 매물 저장·비교와 상권 리포트까지 이어서 볼 수 있어요.</p></div>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TRUST STRIP ============ -->
+<section class="trust">
+  <div class="wrap">
+    <div class="trust-head" data-reveal>
+      <h2>숫자로 증명하는 메디서치</h2>
+      <p>추측이 아니라 데이터로 입지를 말합니다.</p>
+    </div>
+    <div class="trust-in">
+      <div class="tcard" data-reveal><span class="ic"><svg><use href="#i-clock"/></svg></span>
+        <div class="big tnum">28<small>초</small></div><h4>평균 분석 시간</h4><p>질문에 답하는 순간 AI가 입지를 계산합니다.</p></div>
+      <div class="tcard" data-reveal><span class="ic"><svg><use href="#i-data"/></svg></span>
+        <div class="big tnum">7.2<small>만</small></div><h4>분석된 병·의원</h4><p>전국 의료기관·상권 데이터를 교차 분석해요.</p></div>
+      <div class="tcard" data-reveal><span class="ic"><svg><use href="#i-target"/></svg></span>
+        <div class="big tnum">92<small>%</small></div><h4>입지 추천 적중도</h4><p>실제 개원 성과와 비교해 검증한 정확도예요.</p></div>
+      <div class="tcard" data-reveal><span class="ic"><svg><use href="#i-users"/></svg></span>
+        <div class="big tnum">3,400<small>+</small></div><h4>함께한 원장님</h4><p>개원·이전을 준비하는 분들이 사용 중이에요.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ABOUT 티저 ============ -->
+<section class="about" id="about">
+  <div class="wrap">
+    <div class="about-in" data-reveal>
+      <div class="about-photo">
+        <img src="./assets/boardroom.jpg" alt="메디서치 팀" />
+        <div class="ph-scrim"></div>
+        <div class="ph-cap"><b>keynexion corp.</b><span>데이터로 의료 입지의 기준을 만드는 팀</span></div>
+      </div>
+      <div class="about-copy">
+        <span class="eyebrow">About MediSearch</span>
+        <h2>데이터로 <span class="hl">의료 입지의 기준</span>을<br/>다시 쓰는 회사입니다</h2>
+        <p>메디서치는 흩어진 의료·상권 데이터를 하나의 지능으로 모아, 원장님이 더 좋은 결정을 더 빨리 내릴 수 있도록 돕습니다. 우리는 추측이 아니라 근거로 입지를 말합니다.</p>
+        <div class="gov">
+          <div class="gov-row"><span class="ic"><svg><use href="#i-scale"/></svg></span><div><b>투명한 지배구조</b><span>이사회 중심의 의사결정 체계</span></div></div>
+          <div class="gov-row"><span class="ic"><svg><use href="#i-shield"/></svg></span><div><b>데이터 윤리</b><span>병원·상가 데이터의 분리·보호 원칙</span></div></div>
+          <div class="gov-row"><span class="ic"><svg><use href="#i-target"/></svg></span><div><b>미션</b><span>모든 개원의에게 공정한 입지 정보를</span></div></div>
+        </div>
+        <div class="a-cta"><a href="#" class="btn btn-ink">회사 소개 보기</a><a href="#" class="btn btn-ghost">지배구조·연혁</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <a href="#" class="logo"><img src="./assets/landing/logo-mark.png" alt="" /><span class="wm"><span class="a">Medi</span><span class="b">Search</span></span></a>
+        <p class="desc">30초 안에 끝나는 의료 입지 분석. 병·의원과 상가 데이터를 AI로 교차 분석해 최적의 자리를 찾아드립니다.</p>
+      </div>
+      <div><h5>서비스</h5><ul><li><a href="#diag">AI 입지 진단</a></li><li><a href="#">입지계약·컨설팅</a></li><li><a href="#">입지강의</a></li><li><a href="#">상권 리포트</a></li></ul></div>
+      <div><h5>회사</h5><ul><li><a href="#about">About us</a></li><li><a href="#">지배구조</a></li><li><a href="#">채용</a></li><li><a href="#">제휴 문의</a></li></ul></div>
+      <div><h5>시작하기</h5><ul><li><a href="#">로그인</a></li><li><a href="#">회원가입</a></li><li><a href="#">고객센터</a></li><li><a href="#">이용약관 · 개인정보</a></li></ul></div>
+    </div>
+    <div class="foot-bot">
+      <span>© 2026 MediSearch · keynexion corp. 의료 입지 인텔리전스 플랫폼.</span>
+      <span>사업자등록번호 460-81-01554 · 경기 성남시 분당 · 대표 장해남</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* 광고 캐러셀 */
+(function(){
+  const track=document.getElementById('track'),slides=track.children.length,dotsWrap=document.getElementById('dots');
+  let i=0,timer;
+  for(let s=0;s<slides;s++){const b=document.createElement('button');b.className='dot'+(s===0?' on':'');b.onclick=()=>go(s);dotsWrap.appendChild(b);}
+  const dots=[...dotsWrap.children];
+  function render(){track.style.transform=`translateX(-${i*100}%)`;dots.forEach((d,k)=>d.classList.toggle('on',k===i));}
+  function go(n){i=(n+slides)%slides;render();restart();}
+  function restart(){clearInterval(timer);timer=setInterval(()=>go(i+1),6000);}
+  document.getElementById('next').onclick=()=>go(i+1);document.getElementById('prev').onclick=()=>go(i-1);restart();
+})();
+/* 폼 인터랙션 */
+document.querySelectorAll('.unsure').forEach(btn=>btn.addEventListener('click',()=>{
+  btn.classList.toggle('on');const f=document.querySelector(btn.dataset.target);if(f)f.classList.toggle('is-off',btn.classList.contains('on'));}));
+document.querySelectorAll('.seg').forEach(seg=>seg.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{
+  seg.querySelectorAll('button').forEach(x=>x.classList.remove('on'));b.classList.add('on');})));
+document.querySelectorAll('.choices').forEach(grp=>grp.querySelectorAll('.choice').forEach(c=>c.addEventListener('click',()=>{
+  grp.querySelectorAll('.choice').forEach(x=>x.classList.remove('on'));c.classList.add('on');})));
+document.querySelectorAll('.chip').forEach(c=>c.addEventListener('click',()=>c.classList.toggle('on')));
+/* 스텝 + 프로그레스 */
+const steps=[...document.querySelectorAll('#steps .step')],bar=document.getElementById('progBar');
+document.querySelectorAll('.q').forEach(q=>{q.addEventListener('focusin',()=>setStep(q.dataset.q));q.addEventListener('mouseenter',()=>setStep(q.dataset.q));});
+function setStep(n){const k=Math.min(+n,5);steps.forEach(s=>s.classList.toggle('on',+s.dataset.step===k));bar.style.width=(k/5*100)+'%';}
+/* 가짜 제출 */
+document.getElementById('submitBtn').addEventListener('click',e=>{const btn=e.currentTarget;if(btn.disabled)return;
+  btn.disabled=true;btn.innerHTML='<span class="spinner"></span> 분석 중…';
+  const r=document.getElementById('result');r.classList.add('show');r.scrollIntoView({behavior:'smooth',block:'center'});});
+/* reveal */
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}),{threshold:.12});
+document.querySelectorAll('[data-reveal]').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>

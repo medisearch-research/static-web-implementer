@@ -1,0 +1,607 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MediSearch — 홈 (로그인 후) · 260628 리브랜드</title>
+<meta name="description" content="검색 한 번으로 시작하는 의료 입지 분석 — 메디서치 홈." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+<style>
+/* =====================================================================
+   MediSearch · 리브랜드 (로그인 후 홈) — "WARM DATA, ONE CLEAR SIGNAL"
+   실사진 지배 · 카테고리 벤토(Bondam) · AI 정성배지(강/중)+「추정」 ·
+   coral 포인트(인기/하트/핵심숫자) · 포컬 sky 워시 1개.
+   ===================================================================== */
+:root{
+  --sky:#9bcce9; --mint:#99d6c9; --deep-sky:#4e86c4; --deep-mint:#4e9891; --navy:#17559b;
+  --grad-brand:linear-gradient(120deg,#4e86c4 0%,#4e9891 100%);
+  --grad-soft:linear-gradient(120deg,#9bcce9 0%,#99d6c9 100%);
+  --grad-ink:linear-gradient(135deg,#0b1a2e 0%,#123a5e 60%,#155e63 120%);
+  --ink:#0c2340; --ink-2:#27384f; --muted:#5b6b82; --muted-2:#90a0b4;
+  --coral:#e2654f; --coral-deep:#c9523e; --wash-coral:#fbf1ee;
+  --paper:#fbfaf8; --card:#ffffff; --wash-sky:#eef4fb; --wash-mint:#eaf4f1; --wash-2:#e7eef7;
+  --line:#e8ecf2; --line-2:#eef1f6;
+  --shadow-sm:0 1px 2px rgba(12,35,64,.05);
+  --shadow:0 16px 40px -24px rgba(12,35,64,.24);
+  --shadow-lg:0 34px 80px -34px rgba(12,35,64,.40);
+  --ring:0 0 0 4px rgba(78,134,196,.16);
+  --r:12px; --r-lg:16px; --r-xl:24px;
+  --maxw:1180px;
+  --font:"Pretendard Variable",Pretendard,system-ui,-apple-system,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);color:var(--ink);background:var(--paper);
+  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;line-height:1.55;overflow-x:hidden;word-break:keep-all}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+input{font-family:inherit;font-size:inherit;color:inherit}
+img{display:block;max-width:100%}
+svg{flex:0 0 auto}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px}
+.tnum{font-variant-numeric:tabular-nums}
+.eyebrow{font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--deep-sky)}
+
+/* LOGO / BUTTONS */
+.logo{display:inline-flex;align-items:center;gap:9px}
+.logo img{width:30px;height:30px;object-fit:contain}
+.logo .wm{font-weight:800;font-size:21px;letter-spacing:-.02em;line-height:1}
+.logo .wm .a{color:var(--deep-sky)} .logo .wm .b{color:var(--deep-mint)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-weight:700;font-size:15px;border-radius:999px;
+  padding:12px 22px;transition:transform .18s,box-shadow .25s,background .2s;white-space:nowrap}
+.btn svg{width:18px;height:18px}
+.btn-grad{background:var(--grad-brand);color:#fff;box-shadow:0 12px 26px -12px rgba(78,134,196,.7)}
+.btn-grad:hover{transform:translateY(-2px);box-shadow:0 18px 34px -12px rgba(78,134,196,.85)}
+.btn-coral{background:var(--coral);color:#fff;box-shadow:0 12px 26px -12px rgba(226,101,79,.7)}
+.btn-coral:hover{transform:translateY(-2px);background:var(--coral-deep)}
+
+/* GNB */
+.gnb{position:sticky;top:0;z-index:60;background:rgba(251,250,248,.86);
+  backdrop-filter:blur(16px) saturate(1.2);-webkit-backdrop-filter:blur(16px) saturate(1.2);border-bottom:1px solid var(--line-2)}
+.gnb-in{height:72px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.nav{display:flex;align-items:center;gap:32px}
+.nav a{font-size:15.5px;font-weight:600;color:var(--ink-2);position:relative;padding:6px 0;transition:color .18s}
+.nav a .sub{display:block;font-size:11px;font-weight:600;color:var(--muted-2);margin-top:1px}
+.nav a:hover{color:var(--deep-sky)}
+.nav a::after{content:"";position:absolute;left:0;bottom:-2px;height:2px;width:0;background:var(--grad-brand);transition:width .22s;border-radius:2px}
+.nav a:hover::after{width:100%}
+.gnb-right{display:flex;align-items:center;gap:12px}
+.icon-btn{position:relative;width:42px;height:42px;border-radius:12px;display:grid;place-items:center;color:var(--ink-2);transition:all .18s}
+.icon-btn:hover{background:var(--wash-sky);color:var(--deep-sky)}
+.icon-btn svg{width:21px;height:21px}
+.icon-btn .badge{position:absolute;top:8px;right:8px;width:8px;height:8px;border-radius:50%;background:var(--coral);border:2px solid var(--paper)}
+.avatar{display:flex;align-items:center;gap:9px;padding:5px 14px 5px 5px;border-radius:999px;border:1px solid var(--line);transition:all .18s}
+.avatar:hover{border-color:var(--deep-sky)}
+.avatar .pic{width:32px;height:32px;border-radius:50%;background:var(--grad-brand);display:grid;place-items:center;color:#fff;font-weight:800;font-size:14px}
+.avatar .nm{font-size:14px;font-weight:700}
+.menu-btn{display:none}
+
+/* SEARCH HERO */
+.search-hero{position:relative;padding:54px 0 36px;overflow:hidden}
+.search-hero::before{content:"";position:absolute;inset:0;z-index:0;
+  background:radial-gradient(120% 100% at 50% -25%,var(--wash-2) 0%,var(--wash-sky) 30%,var(--paper) 66%)}
+.sh-in{position:relative;z-index:2;max-width:840px;margin:0 auto;text-align:center}
+.sh-eyebrow{display:inline-flex;align-items:center;gap:9px;background:var(--card);border:1px solid var(--line);
+  border-radius:999px;padding:7px 16px 7px 9px;font-size:13px;font-weight:700;color:var(--ink-2);box-shadow:var(--shadow-sm)}
+.sh-eyebrow .pdot{width:22px;height:22px;border-radius:50%;background:var(--grad-brand);display:grid;place-items:center}
+.sh-eyebrow .pdot svg{width:13px;height:13px;color:#fff}
+.sh-in h1{margin-top:20px;font-size:clamp(27px,3.5vw,42px);font-weight:800;letter-spacing:-.025em;line-height:1.22}
+.sh-in h1 .hl{background:var(--grad-brand);-webkit-background-clip:text;background-clip:text;color:transparent}
+.sh-in p{margin-top:12px;font-size:16px;color:var(--muted);font-weight:500}
+.searchbar{margin:30px auto 0;display:flex;align-items:center;gap:12px;background:var(--card);border:1.5px solid var(--line);
+  border-radius:999px;padding:10px 10px 10px 24px;box-shadow:var(--shadow-lg);transition:all .25s;max-width:760px}
+.searchbar:focus-within{border-color:var(--deep-sky);box-shadow:var(--shadow-lg),var(--ring);transform:translateY(-2px)}
+.searchbar .mag{width:24px;height:24px;color:var(--deep-sky)}
+.searchbar input{flex:1;border:none;outline:none;background:transparent;font-size:17px;font-weight:500;min-width:0;padding:10px 0}
+.searchbar input::placeholder{color:var(--muted-2);font-weight:400}
+.searchbar .go{flex:0 0 auto;background:var(--grad-brand);color:#fff;border-radius:999px;height:50px;padding:0 26px;font-weight:700;font-size:15.5px;
+  display:inline-flex;align-items:center;gap:8px;transition:all .2s}
+.searchbar .go:hover{transform:scale(1.03);box-shadow:0 10px 22px -8px rgba(78,134,196,.7)}
+.searchbar .go svg{width:18px;height:18px}
+.sugg{margin:18px auto 0;display:flex;gap:9px;justify-content:center;flex-wrap:wrap;max-width:780px}
+.sugg .lbl{font-size:13px;color:var(--muted-2);font-weight:600;align-self:center;margin-right:2px}
+.sugg button{display:inline-flex;align-items:center;gap:7px;background:var(--card);border:1px solid var(--line);border-radius:999px;
+  padding:9px 15px;font-size:13.5px;font-weight:600;color:var(--ink-2);transition:all .16s}
+.sugg button:hover{border-color:var(--deep-sky);color:var(--deep-sky);transform:translateY(-1px)}
+.sugg button svg{width:14px;height:14px;color:var(--deep-mint)}
+
+/* SECTION HEAD */
+.section{padding:40px 0}
+.sec-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:22px}
+.sec-head .tt{display:flex;align-items:center;gap:12px}
+.sec-head .tt .si{width:38px;height:38px;border-radius:11px;background:var(--wash-sky);color:var(--deep-sky);display:grid;place-items:center}
+.sec-head .tt .si svg{width:20px;height:20px}
+.sec-head h2{font-size:23px;font-weight:800;letter-spacing:-.02em}
+.sec-head .sub{font-size:13.5px;color:var(--muted);margin-top:2px;font-weight:500}
+.more{font-size:14px;font-weight:700;color:var(--deep-sky);display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
+.more svg{width:15px;height:15px;transition:transform .18s} .more:hover svg{transform:translateX(3px)}
+
+/* AD CAROUSEL */
+.carousel{position:relative;display:flex;align-items:center;gap:14px}
+.car-arrow{flex:0 0 auto;width:44px;height:44px;border-radius:50%;background:var(--card);border:1px solid var(--line);
+  box-shadow:var(--shadow-sm);display:grid;place-items:center;color:var(--ink-2);transition:all .2s}
+.car-arrow:hover{color:var(--deep-sky);border-color:var(--deep-sky);transform:scale(1.06);box-shadow:var(--shadow)}
+.car-arrow svg{width:19px;height:19px}
+.car-viewport{flex:1;overflow:hidden;border-radius:var(--r-xl);box-shadow:var(--shadow)}
+.car-track{display:flex;transition:transform .6s cubic-bezier(.66,0,.2,1)}
+.slide{flex:0 0 100%;min-height:250px;position:relative;overflow:hidden;display:flex;align-items:center;padding:40px 52px;color:#fff}
+.slide .s-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
+.slide .s-scrim{position:absolute;inset:0;z-index:1;background:linear-gradient(95deg,rgba(8,20,38,.88) 0%,rgba(8,20,38,.55) 45%,rgba(8,20,38,.12) 82%)}
+.slide .s-content{position:relative;z-index:2;max-width:560px}
+.slide .s-eyebrow{font-size:11.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#cfe6f7;margin-bottom:12px}
+.slide h3{font-size:clamp(22px,2.6vw,32px);font-weight:800;line-height:1.22;letter-spacing:-.02em;text-shadow:0 2px 18px rgba(0,0,0,.25)}
+.slide h3 .hl{background:var(--grad-soft);-webkit-background-clip:text;background-clip:text;color:transparent}
+.slide p{margin-top:12px;font-size:15px;color:rgba(255,255,255,.86);max-width:30em}
+.slide .s-cta{margin-top:20px}
+.slide .s-cta .btn{background:#fff;color:var(--ink)} .slide .s-cta .btn:hover{transform:translateY(-2px)}
+.dots{display:flex;gap:8px;justify-content:center;margin-top:16px}
+.dot{width:8px;height:8px;border-radius:999px;background:var(--line);transition:all .25s;cursor:pointer}
+.dot.on{width:26px;background:var(--grad-brand)}
+
+/* ===== CATEGORY BENTO ===== */
+.bento{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:118px;gap:14px;
+  grid-template-areas:
+   "ai ai sv sv"
+   "ai ai pop new"
+   "trend trend like rank"
+   "comp boss dist report";}
+.tile{position:relative;border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--line);background:var(--card);
+  display:flex;flex-direction:column;justify-content:flex-end;padding:18px;transition:all .2s;cursor:pointer}
+.tile:hover{transform:translateY(-4px);box-shadow:var(--shadow);border-color:transparent}
+.tile .tname{font-size:15px;font-weight:800;letter-spacing:-.01em;display:flex;align-items:center;gap:6px}
+.tile .tsub{font-size:11.5px;font-weight:600;margin-top:3px;color:var(--muted-2)}
+.tile .ur{position:absolute;top:16px;right:16px;width:30px;height:30px;border-radius:9px;display:grid;place-items:center;
+  background:rgba(12,35,64,.06);color:var(--ink-2);transition:all .2s}
+.tile:hover .ur{background:var(--ink);color:#fff;transform:rotate(0deg)}
+.tile .ur svg{width:15px;height:15px}
+.tile .tic{position:absolute;top:16px;left:18px;width:40px;height:40px;border-radius:11px;display:grid;place-items:center;
+  background:var(--wash-sky);color:var(--deep-sky)}
+.tile .tic svg{width:22px;height:22px}
+/* small icon tiles: top-aligned stack (icon→label→sub) — no overlap/clip */
+.tile:not(.photo):not(.grad){justify-content:flex-start}
+.tile:not(.photo):not(.grad) .tic{position:static;margin-bottom:11px}
+.tile:not(.photo):not(.grad) .tname{font-size:14.5px}
+/* small icon tiles */
+.tile.s-pop .tic,.tile.s-like .tic{background:var(--wash-coral);color:var(--coral)}
+/* photo tiles */
+.tile.photo{justify-content:flex-end;color:#fff;border:none}
+.tile.photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
+.tile.photo .pscrim{position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(8,20,38,.05) 30%,rgba(8,20,38,.82))}
+.tile.photo .tname,.tile.photo .tsub,.tile.photo .ur{position:relative;z-index:2}
+.tile.photo .tname{font-size:19px} .tile.photo .tsub{color:rgba(255,255,255,.85)}
+.tile.photo .ur{background:rgba(255,255,255,.18);color:#fff;backdrop-filter:blur(4px)}
+.tile.area-ai{grid-area:ai} .tile.area-sv{grid-area:sv} .tile.area-trend{grid-area:trend}
+.tile.area-pop{grid-area:pop} .tile.area-new{grid-area:new} .tile.area-like{grid-area:like}
+.tile.area-rank{grid-area:rank} .tile.area-comp{grid-area:comp} .tile.area-boss{grid-area:boss}
+.tile.area-dist{grid-area:dist} .tile.area-report{grid-area:report}
+.tile.area-ai .tname{font-size:24px}
+/* survival rate grad tile */
+.tile.grad{background:var(--grad-ink);color:#fff;border:none;justify-content:space-between;flex-direction:row;align-items:flex-end}
+.tile.grad .gv{position:relative;z-index:2}
+.tile.grad .stat{font-size:30px;font-weight:800;letter-spacing:-.02em;line-height:1;color:#fff}
+.tile.grad .stat small{font-size:14px;color:var(--mint);font-weight:700}
+.tile.grad .ex{font-size:10px;font-weight:800;color:var(--ink);background:var(--mint);border-radius:5px;padding:2px 6px;margin-right:8px;vertical-align:middle;letter-spacing:.02em}
+.tile.grad .tname{color:#fff} .tile.grad .tsub{color:rgba(255,255,255,.7)}
+.tile.grad .tic{background:rgba(255,255,255,.12);color:var(--mint)}
+.tile.grad .ur{background:rgba(255,255,255,.16);color:#fff}
+.tile.grad::after{content:"";position:absolute;right:-40px;bottom:-60px;width:220px;height:220px;z-index:0;
+  background:radial-gradient(circle,rgba(153,214,201,.3),transparent 65%)}
+
+/* ===== PROPERTY RAILS ===== */
+.rail{position:relative}
+.rail-scroll{display:flex;gap:16px;overflow-x:auto;scroll-behavior:smooth;padding:4px 2px 14px;scrollbar-width:none}
+.rail-scroll::-webkit-scrollbar{display:none}
+.pcard{flex:0 0 272px;background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden;transition:all .2s;cursor:pointer}
+.pcard:hover{transform:translateY(-5px);box-shadow:var(--shadow);border-color:transparent}
+.pthumb{position:relative;height:168px;overflow:hidden}
+.pthumb img{width:100%;height:100%;object-fit:cover;transition:transform .3s}
+.pcard:hover .pthumb img{transform:scale(1.04)}
+.pbadge{position:absolute;top:12px;left:12px;display:inline-flex;align-items:center;gap:6px;border-radius:8px;padding:5px 10px;
+  font-size:11.5px;font-weight:800;box-shadow:var(--shadow-sm)}
+.pbadge i{font-style:normal;font-size:9.5px;font-weight:700;opacity:.62;margin-left:6px;padding-left:6px;border-left:1px solid currentColor}
+.pbadge.ai-strong{background:#eef4fb;color:var(--deep-sky)} .pbadge.ai-strong i{color:var(--deep-sky)}
+.pbadge.ai-mid{background:#eaf4f1;color:var(--deep-mint)} .pbadge.ai-mid i{color:var(--deep-mint)}
+.pbadge.hot{background:var(--coral);color:#fff} .pbadge.hot i{color:#fff;opacity:.85}
+.pheart{position:absolute;top:10px;right:10px;width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.92);
+  display:grid;place-items:center;color:var(--muted-2);transition:all .18s}
+.pheart:hover{color:var(--coral);transform:scale(1.1)} .pheart.on{color:var(--coral)}
+.pheart svg{width:18px;height:18px} .pheart.on svg{fill:currentColor}
+.pbody{padding:15px 16px 17px}
+.ptags{display:flex;gap:6px;margin-bottom:9px}
+.tag{display:inline-flex;align-items:center;gap:4px;border-radius:999px;padding:4px 9px;font-size:11px;font-weight:700}
+.tag svg{width:11px;height:11px}
+.tag.t-hosp{background:var(--wash-sky);color:var(--deep-sky)}
+.tag.t-store{background:var(--wash-2);color:var(--ink-2)}
+.tag.t-spec{background:var(--wash-mint);color:var(--deep-mint)}
+.pname{font-size:15.5px;font-weight:700;letter-spacing:-.01em;line-height:1.3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pprice{font-size:17px;font-weight:800;margin-top:6px}
+.pprice small{font-size:12.5px;font-weight:600;color:var(--muted)}
+.pmeta{display:flex;align-items:center;gap:12px;margin-top:8px;font-size:12.5px;color:var(--muted)}
+.pmeta span{display:inline-flex;align-items:center;gap:4px}
+.pmeta svg{width:14px;height:14px;color:var(--muted-2)}
+.pinsight{display:flex;align-items:flex-start;gap:6px;margin-top:11px;padding-top:11px;border-top:1px solid var(--line-2)}
+.pinsight svg{width:15px;height:15px;color:var(--deep-mint);margin-top:1px}
+.pinsight p{font-size:12.5px;font-weight:600;color:var(--ink-2);line-height:1.4}
+.hcard .pthumb{height:140px}
+.rail-nav{display:flex;gap:8px}
+.rail-nav button{width:34px;height:34px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink-2);display:grid;place-items:center;transition:all .18s}
+.rail-nav button:hover{border-color:var(--deep-sky);color:var(--deep-sky)}
+.rail-nav button svg{width:17px;height:17px}
+
+/* MID BANNER (survival) */
+.midbanner{margin:14px 0;background:var(--grad-ink);border-radius:var(--r-xl);padding:38px 44px;color:#fff;
+  display:flex;align-items:center;justify-content:space-between;gap:24px;position:relative;overflow:hidden}
+.midbanner::after{content:"";position:absolute;right:-60px;top:-80px;width:340px;height:340px;z-index:0;
+  background:radial-gradient(circle,rgba(153,214,201,.28),transparent 64%)}
+.midbanner .mb-t{position:relative;z-index:2}
+.midbanner .eyebrow{color:var(--mint)}
+.midbanner h3{font-size:25px;font-weight:800;letter-spacing:-.02em;margin-top:8px}
+.midbanner p{font-size:14.5px;color:rgba(255,255,255,.82);margin-top:6px}
+.midbanner .mb-cta{position:relative;z-index:2}
+
+/* FOOTER */
+.foot{border-top:1px solid var(--line);background:#fff;padding:54px 0 40px;margin-top:28px}
+.foot-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:30px}
+.foot .logo{margin-bottom:14px}
+.foot .desc{font-size:13.5px;color:var(--muted);line-height:1.65;max-width:24em}
+.foot h5{font-size:13px;font-weight:700;margin-bottom:14px}
+.foot ul{list-style:none;display:flex;flex-direction:column;gap:10px}
+.foot ul a{font-size:13.5px;color:var(--muted);transition:color .16s}
+.foot ul a:hover{color:var(--deep-sky)}
+.foot-bot{margin-top:40px;padding-top:24px;border-top:1px solid var(--line);display:flex;justify-content:space-between;
+  align-items:center;gap:16px;flex-wrap:wrap;font-size:12.5px;color:var(--muted-2)}
+
+/* ANIM */
+.js [data-reveal]{opacity:0;transform:translateY(24px);transition:opacity .7s,transform .7s}
+.js [data-reveal].in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){.js [data-reveal]{opacity:1!important;transform:none!important}}
+
+/* RESPONSIVE */
+@media(max-width:980px){
+  .bento{grid-template-columns:repeat(2,1fr);grid-auto-rows:120px;
+    grid-template-areas:"ai ai" "ai ai" "sv sv" "pop new" "trend trend" "like rank" "comp boss" "dist report";}
+  .foot-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:760px){
+  .wrap{padding:0 18px}
+  .nav,.avatar .nm{display:none}
+  .menu-btn{display:grid;place-items:center;width:42px;height:42px;border-radius:11px;border:1px solid var(--line);color:var(--ink)}
+  .menu-btn svg{width:22px;height:22px}
+  .car-arrow{display:none}
+  .searchbar{padding:8px 8px 8px 18px} .searchbar input{font-size:15px} .searchbar .go{padding:0 16px;height:44px} .searchbar .go span{display:none}
+  .bento{grid-auto-rows:104px}
+  .sec-head{flex-wrap:wrap;row-gap:6px} .sec-head h2{font-size:20px} .rail-nav{display:none}
+  .slide{padding:30px 24px;min-height:210px}
+  .midbanner{flex-direction:column;align-items:flex-start;padding:28px 24px}
+  .foot-grid{grid-template-columns:1fr 1fr}
+}
+</style>
+<script>document.documentElement.className+=" js";</script>
+</head>
+<body>
+
+<!-- ICON DEFS -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-arrow-l" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></symbol>
+  <symbol id="i-arrow-r" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></symbol>
+  <symbol id="i-ur" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></symbol>
+  <symbol id="i-mag" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></symbol>
+  <symbol id="i-spark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></symbol>
+  <symbol id="i-area" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8V3h5M21 8V3h-5M3 16v5h5M21 16v5h-5"/></symbol>
+  <symbol id="i-heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 5.6a5 5 0 0 0-7.1 0L12 7.3l-1.7-1.7a5 5 0 1 0-7.1 7.1L12 21l8.8-8.3a5 5 0 0 0 0-7.1Z"/></symbol>
+  <symbol id="i-heart-f" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21 3.2 12.7a5 5 0 1 1 7.1-7.1l1.7 1.7 1.7-1.7a5 5 0 1 1 7.1 7.1L12 21Z"/></symbol>
+  <symbol id="i-bell" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10.3 21a1.9 1.9 0 0 0 3.4 0"/></symbol>
+  <symbol id="i-stetho" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4.8 3v5a4 4 0 0 0 8 0V3"/><path d="M3 3h2M11.8 3h2"/><path d="M8.8 16a5 5 0 0 0 10 0v-3"/><circle cx="19.8" cy="11" r="2"/></symbol>
+  <symbol id="i-store" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9 4.5 4h15L21 9M4 9v10a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V9M3 9h18"/></symbol>
+  <symbol id="i-hosp" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v15M3 21h18M12 7v6M9 10h6"/></symbol>
+  <symbol id="i-fire" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c1 3 4 4.5 4 8a4 4 0 0 1-8 0c0-1 .3-1.8.8-2.5C9 10 9.5 11 10.5 11 9 8 12 5 12 3Z"/><path d="M12 22a6 6 0 0 0 6-6c0-2-1-3.5-2-5"/></symbol>
+  <symbol id="i-cpu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="12" height="12" rx="2"/><rect x="9.5" y="9.5" width="5" height="5" rx="1"/><path d="M9 3v3M15 3v3M9 18v3M15 18v3M3 9h3M3 15h3M18 9h3M18 15h3"/></symbol>
+  <symbol id="i-new" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M3 12h18M6.5 6.5l11 11M17.5 6.5l-11 11"/></symbol>
+  <symbol id="i-trophy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4h10v5a5 5 0 0 1-10 0V4ZM7 6H4v1a3 3 0 0 0 3 3M17 6h3v1a3 3 0 0 1-3 3M9 21h6M12 14v7"/></symbol>
+  <symbol id="i-radar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><path d="M12 12 18 6"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><path d="m9 12 2 2 4-4"/></symbol>
+  <symbol id="i-crown" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7l4 5 5-7 5 7 4-5-2 12H5L3 7Z"/></symbol>
+  <symbol id="i-layers" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 9 5-9 5-9-5 9-5ZM3 13l9 5 9-5M3 17l9 5 9-5"/></symbol>
+  <symbol id="i-report" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5Z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></symbol>
+  <symbol id="i-trend" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3 17 6-6 4 4 8-8M21 7v6h-6"/></symbol>
+  <symbol id="i-grid" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></symbol>
+</svg>
+
+<!-- ============ GNB (로그인 후) ============ -->
+<header class="gnb">
+  <div class="wrap gnb-in">
+    <a href="#" class="logo" aria-label="MediSearch 홈"><img src="./assets/landing/logo-mark.png" alt="" />
+      <span class="wm"><span class="a">Medi</span><span class="b">Search</span></span></a>
+    <nav class="nav">
+      <a href="#">입지계약·컨설팅<span class="sub">계약 매칭</span></a>
+      <a href="#">입지강의·상권분석<span class="sub">클래스 &amp; 리포트</span></a>
+      <a href="#">About us<span class="sub">메디서치 이야기</span></a>
+    </nav>
+    <div class="gnb-right">
+      <button class="icon-btn" aria-label="찜한 매물"><svg><use href="#i-heart"/></svg></button>
+      <button class="icon-btn" aria-label="알림"><span class="badge"></span><svg><use href="#i-bell"/></svg></button>
+      <a href="#" class="avatar"><span class="pic">달</span><span class="nm">My page</span></a>
+      <button class="menu-btn" aria-label="메뉴"><svg><use href="#i-menu"/></svg></button>
+    </div>
+  </div>
+</header>
+
+<!-- ============ SEARCH HERO ============ -->
+<section class="search-hero">
+  <div class="wrap sh-in">
+    <span class="sh-eyebrow"><span class="pdot"><svg><use href="#i-spark"/></svg></span> AI에게 묻고, 지도로 확인하세요</span>
+    <h1>어디에, 어떤 진료과로 개원할까요?<br/><span class="hl">검색 한 번이면</span> 메디서치가 분석합니다</h1>
+    <p>질문을 입력하면 채팅으로 답하고, 추천 입지를 지도 위에 바로 띄워드려요.</p>
+    <div class="searchbar">
+      <svg class="mag"><use href="#i-mag"/></svg>
+      <input type="text" placeholder="예) 강남구 피부과 입지 분석해줘" aria-label="입지 검색" />
+      <button class="go"><svg><use href="#i-spark"/></svg><span>분석하기</span></button>
+    </div>
+    <div class="sugg">
+      <span class="lbl">추천 질문</span>
+      <button><svg><use href="#i-stetho"/></svg>강남구 피부과 입지</button>
+      <button><svg><use href="#i-radar"/></svg>내 주변 경쟁 약한 상권</button>
+      <button><svg><use href="#i-area"/></svg>정형외과 80평 매물</button>
+      <button><svg><use href="#i-trend"/></svg>분당 내과 예상 매출</button>
+      <button><svg><use href="#i-fire"/></svg>요즘 뜨는 상권 TOP</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ AD CAROUSEL ============ -->
+<section class="section" style="padding-top:6px">
+  <div class="wrap">
+    <div class="carousel">
+      <button class="car-arrow" id="prev" aria-label="이전"><svg><use href="#i-arrow-l"/></svg></button>
+      <div class="car-viewport"><div class="car-track" id="track">
+        <article class="slide"><img class="s-photo" src="./assets/tower.jpg" alt="" /><div class="s-scrim"></div>
+          <div class="s-content"><div class="s-eyebrow">MediSearch Pro</div>
+            <h3>우리 메디서치는, <span class="hl">데이터로 입지를 증명</span>합니다</h3>
+            <p>병·의원 7만 건과 상권 지표를 결합한 분석 엔진. 추천 매물마다 근거 리포트를 함께 받아보세요.</p>
+            <div class="s-cta"><a href="#" class="btn">프로 분석 체험 →</a></div></div></article>
+        <article class="slide"><img class="s-photo" src="./assets/meetroom.jpg" alt="" /><div class="s-scrim"></div>
+          <div class="s-content"><div class="s-eyebrow">입지계약 · 컨설팅</div>
+            <h3>마음에 든 매물,<br/><span class="hl">계약까지 메디서치가</span></h3>
+            <p>전담 컨설턴트가 임대인·중개와 연결해 안전한 계약을 돕습니다.</p>
+            <div class="s-cta"><a href="#" class="btn">상담 신청 →</a></div></div></article>
+        <article class="slide"><img class="s-photo" src="./assets/lecture.jpg" alt="" /><div class="s-scrim"></div>
+          <div class="s-content"><div class="s-eyebrow">MediSearch Class</div>
+            <h3>입지를 보는 눈,<br/><span class="hl">강의로 길러드려요</span></h3>
+            <p>상권 분석 실전 노하우와 개원 전략을 한 번에. 원장 전용 커리큘럼.</p>
+            <div class="s-cta"><a href="#" class="btn">강의 둘러보기 →</a></div></div></article>
+      </div></div>
+      <button class="car-arrow" id="next" aria-label="다음"><svg><use href="#i-arrow-r"/></svg></button>
+    </div>
+    <div class="dots" id="dots"></div>
+  </div>
+</section>
+
+<!-- ============ CATEGORY BENTO ============ -->
+<section class="section">
+  <div class="wrap">
+    <div class="sec-head"><div class="tt"><span class="si"><svg><use href="#i-grid"/></svg></span>
+      <div><h2>무엇을 찾아드릴까요?</h2><div class="sub">카테고리를 골라 매물·병원·상권을 빠르게 탐색하세요</div></div></div></div>
+    <div class="bento">
+      <a href="#" class="tile photo area-ai"><img src="./assets/aerial.jpg" alt="" /><div class="pscrim"></div>
+        <span class="ur"><svg><use href="#i-ur"/></svg></span>
+        <div class="tname">AI 추천 매물</div><div class="tsub">내 조건에 맞춰 매일 새로 골라드려요</div></a>
+      <div class="tile grad area-sv"><span class="tic"><svg><use href="#i-shield"/></svg></span><span class="ur"><svg><use href="#i-ur"/></svg></span>
+        <div class="gv"><div class="tname">나의 생존확률</div><div class="tsub">관심 매물 3년 생존율 · AI 시뮬</div></div>
+        <div class="stat tnum"><span class="ex">예시</span>94.5<small>%</small></div></div>
+      <a href="#" class="tile s-pop area-pop"><span class="tic"><svg><use href="#i-fire"/></svg></span><span class="ur"><svg><use href="#i-ur"/></svg></span>
+        <div class="tname">인기 매물</div><div class="tsub">조회 급상승</div></a>
+      <a href="#" class="tile area-new"><span class="tic"><svg><use href="#i-new"/></svg></span><span class="ur"><svg><use href="#i-ur"/></svg></span>
+        <div class="tname">신규 매물</div><div class="tsub">새로 등록</div></a>
+      <a href="#" class="tile photo area-trend"><img src="./assets/seoul.jpg" alt="" /><div class="pscrim"></div>
+        <span class="ur"><svg><use href="#i-ur"/></svg></span>
+        <div class="tname">뜨는 상권 TOP</div><div class="tsub">성장세 가파른 지역의 대표 후보지</div></a>
+      <a href="#" class="tile s-like area-like"><span class="tic"><svg><use href="#i-heart"/></svg></span><span class="ur"><svg><use href="#i-ur"/></svg></span>
+        <div class="tname">많이 찜한 매물</div><div class="tsub">원장님 PICK</div></a>
+      <a href="#" class="tile area-rank"><span class="tic"><svg><use href="#i-trophy"/></svg></span><span class="ur"><svg><use href="#i-ur"/></svg></span>
+        <div class="tname">매물 랭킹</div><div class="tsub">TOP 100</div></a>
+      <a href="#" class="tile area-comp"><span class="tic"><svg><use href="#i-radar"/></svg></span><span class="ur"><svg><use href="#i-ur"/></svg></span>
+        <div class="tname">경쟁병원 찾기</div><div class="tsub">주변 분석</div></a>
+      <a href="#" class="tile area-boss"><span class="tic"><svg><use href="#i-crown"/></svg></span><span class="ur"><svg><use href="#i-ur"/></svg></span>
+        <div class="tname">대장 병원</div><div class="tsub">상권 1위</div></a>
+      <a href="#" class="tile area-dist"><span class="tic"><svg><use href="#i-layers"/></svg></span><span class="ur"><svg><use href="#i-ur"/></svg></span>
+        <div class="tname">병원 포화도</div><div class="tsub">지역별 분포</div></a>
+      <a href="#" class="tile area-report"><span class="tic"><svg><use href="#i-report"/></svg></span><span class="ur"><svg><use href="#i-ur"/></svg></span>
+        <div class="tname">상권 리포트</div><div class="tsub">PDF 발급</div></a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ RAIL: 인기 병원 ============ -->
+<section class="section" style="padding-top:6px">
+  <div class="wrap">
+    <div class="sec-head"><div class="tt"><span class="si"><svg><use href="#i-hosp"/></svg></span>
+      <div><h2>요즘 주목받는 병원</h2><div class="sub">다른 사용자들이 많이 들여다본 병·의원이에요</div></div></div>
+      <div style="display:flex;align-items:center;gap:14px"><a href="#" class="more">전체보기 <svg><use href="#i-arrow-r"/></svg></a>
+        <div class="rail-nav"><button data-dir="-1"><svg><use href="#i-arrow-l"/></svg></button><button data-dir="1"><svg><use href="#i-arrow-r"/></svg></button></div></div></div>
+    <div class="rail"><div class="rail-scroll">
+      <article class="pcard hcard"><div class="pthumb"><img src="./assets/clinic1.jpg" alt=""><span class="pbadge hot"><svg style="width:12px;height:12px"><use href="#i-fire"/></svg>인기</span><button class="pheart"><svg><use href="#i-heart"/></svg></button></div>
+        <div class="pbody"><div class="ptags"><span class="tag t-hosp"><svg><use href="#i-hosp"/></svg>병원</span><span class="tag t-spec">피부과</span></div>
+          <div class="pname">강남 라엘피부과의원</div><div class="pmeta"><span><svg><use href="#i-pin"/></svg>강남구 역삼동</span><span>조회 12,480</span></div>
+          <div class="pinsight"><svg><use href="#i-trend"/></svg><p>상권 내 피부과 매출 1위 · 재방문율 상위</p></div></div></article>
+      <article class="pcard hcard"><div class="pthumb"><img src="./assets/clinic2.jpg" alt=""><span class="pbadge ai-strong">AI 추천 강 <i>추정</i></span><button class="pheart on"><svg><use href="#i-heart-f"/></svg></button></div>
+        <div class="pbody"><div class="ptags"><span class="tag t-hosp"><svg><use href="#i-hosp"/></svg>병원</span><span class="tag t-spec">정형외과</span></div>
+          <div class="pname">분당 튼튼정형외과</div><div class="pmeta"><span><svg><use href="#i-pin"/></svg>성남 정자동</span><span>조회 9,210</span></div>
+          <div class="pinsight"><svg><use href="#i-trend"/></svg><p>배후 세대 2.1만 · 경쟁 병원 대비 우위</p></div></div></article>
+      <article class="pcard hcard"><div class="pthumb"><img src="./assets/clinic_bright.jpg" alt=""><span class="pbadge ai-strong">AI 추천 강 <i>추정</i></span><button class="pheart"><svg><use href="#i-heart"/></svg></button></div>
+        <div class="pbody"><div class="ptags"><span class="tag t-hosp"><svg><use href="#i-hosp"/></svg>병원</span><span class="tag t-spec">내과</span></div>
+          <div class="pname">마곡 연세내과의원</div><div class="pmeta"><span><svg><use href="#i-pin"/></svg>강서구 마곡동</span><span>조회 8,040</span></div>
+          <div class="pinsight"><svg><use href="#i-trend"/></svg><p>직장인 유동 인구 풍부 · 오피스 밀집</p></div></div></article>
+      <article class="pcard hcard"><div class="pthumb"><img src="./assets/interior.jpg" alt=""><span class="pbadge ai-mid">AI 추천 중 <i>추정</i></span><button class="pheart"><svg><use href="#i-heart"/></svg></button></div>
+        <div class="pbody"><div class="ptags"><span class="tag t-hosp"><svg><use href="#i-hosp"/></svg>병원</span><span class="tag t-spec">소아과</span></div>
+          <div class="pname">광교 아이맘소아청소년과</div><div class="pmeta"><span><svg><use href="#i-pin"/></svg>수원 광교동</span><span>조회 7,330</span></div>
+          <div class="pinsight"><svg><use href="#i-trend"/></svg><p>신도시 영유아 비중 높음 · 성장 상권</p></div></div></article>
+      <article class="pcard hcard"><div class="pthumb"><img src="./assets/hosp1.jpg" alt=""><span class="pbadge ai-mid">AI 추천 중 <i>추정</i></span><button class="pheart"><svg><use href="#i-heart"/></svg></button></div>
+        <div class="pbody"><div class="ptags"><span class="tag t-hosp"><svg><use href="#i-hosp"/></svg>병원</span><span class="tag t-spec">치과</span></div>
+          <div class="pname">잠실 미소드림치과</div><div class="pmeta"><span><svg><use href="#i-pin"/></svg>송파구 잠실동</span><span>조회 6,980</span></div>
+          <div class="pinsight"><svg><use href="#i-trend"/></svg><p>대단지 배후 · 역세권 접근성 우수</p></div></div></article>
+    </div></div>
+  </div>
+</section>
+
+<!-- ============ RAIL: 인기 상가 매물 ============ -->
+<section class="section" style="padding-top:6px">
+  <div class="wrap">
+    <div class="sec-head"><div class="tt"><span class="si"><svg><use href="#i-store"/></svg></span>
+      <div><h2>지금 인기 있는 상가 매물</h2><div class="sub">AI 적합도가 높은 개원 후보지를 모았어요</div></div></div>
+      <div style="display:flex;align-items:center;gap:14px"><a href="#" class="more">전체보기 <svg><use href="#i-arrow-r"/></svg></a>
+        <div class="rail-nav"><button data-dir="-1"><svg><use href="#i-arrow-l"/></svg></button><button data-dir="1"><svg><use href="#i-arrow-r"/></svg></button></div></div></div>
+    <div class="rail"><div class="rail-scroll">
+      <article class="pcard"><div class="pthumb"><img src="./assets/landing/property-thumb.png" alt=""><span class="pbadge ai-strong">AI 추천 강 <i>추정</i></span><button class="pheart on"><svg><use href="#i-heart-f"/></svg></button></div>
+        <div class="pbody"><div class="ptags"><span class="tag t-store"><svg><use href="#i-store"/></svg>상가</span><span class="tag t-spec">피부과 추천</span></div>
+          <div class="pname">역삼역 5번출구 메디컬빌딩 3F</div><div class="pprice">보증금 1억 <small>/ 월 850만</small></div>
+          <div class="pmeta"><span><svg><use href="#i-pin"/></svg>강남구 역삼동</span><span><svg><use href="#i-area"/></svg>62평</span></div>
+          <div class="pinsight"><svg><use href="#i-spark"/></svg><p>피부과 적합도 최상 · 평당 임대료 합리적</p></div></div></article>
+      <article class="pcard"><div class="pthumb"><img src="./assets/bldg1.jpg" alt=""><span class="pbadge ai-strong">AI 추천 강 <i>추정</i></span><button class="pheart"><svg><use href="#i-heart"/></svg></button></div>
+        <div class="pbody"><div class="ptags"><span class="tag t-store"><svg><use href="#i-store"/></svg>상가</span><span class="tag t-spec">내과 추천</span></div>
+          <div class="pname">마곡나루역 의료상가 2F</div><div class="pprice">보증금 7천 <small>/ 월 520만</small></div>
+          <div class="pmeta"><span><svg><use href="#i-pin"/></svg>강서구 마곡동</span><span><svg><use href="#i-area"/></svg>45평</span></div>
+          <div class="pinsight"><svg><use href="#i-spark"/></svg><p>오피스 배후 탄탄 · 1층 약국 입점 가능</p></div></div></article>
+      <article class="pcard"><div class="pthumb"><img src="./assets/bldg2.jpg" alt=""><span class="pbadge ai-strong">AI 추천 강 <i>추정</i></span><button class="pheart"><svg><use href="#i-heart"/></svg></button></div>
+        <div class="pbody"><div class="ptags"><span class="tag t-store"><svg><use href="#i-store"/></svg>상가</span><span class="tag t-spec">정형외과</span></div>
+          <div class="pname">정자역 코어빌딩 4F 통층</div><div class="pprice">보증금 1.2억 <small>/ 월 980만</small></div>
+          <div class="pmeta"><span><svg><use href="#i-pin"/></svg>성남 정자동</span><span><svg><use href="#i-area"/></svg>84평</span></div>
+          <div class="pinsight"><svg><use href="#i-spark"/></svg><p>80평 이상 · 정형외과 면적 요건 충족</p></div></div></article>
+      <article class="pcard"><div class="pthumb"><img src="./assets/street.jpg" alt=""><span class="pbadge ai-mid">AI 추천 중 <i>추정</i></span><button class="pheart"><svg><use href="#i-heart"/></svg></button></div>
+        <div class="pbody"><div class="ptags"><span class="tag t-store"><svg><use href="#i-store"/></svg>상가</span><span class="tag t-spec">소아과</span></div>
+          <div class="pname">광교중앙역 어린이상가 2F</div><div class="pprice">보증금 6천 <small>/ 월 440만</small></div>
+          <div class="pmeta"><span><svg><use href="#i-pin"/></svg>수원 광교동</span><span><svg><use href="#i-area"/></svg>38평</span></div>
+          <div class="pinsight"><svg><use href="#i-spark"/></svg><p>학원가 인접 · 영유아 동선 중심</p></div></div></article>
+      <article class="pcard"><div class="pthumb"><img src="./assets/bldg4.jpg" alt=""><span class="pbadge ai-mid">AI 추천 중 <i>추정</i></span><button class="pheart"><svg><use href="#i-heart"/></svg></button></div>
+        <div class="pbody"><div class="ptags"><span class="tag t-store"><svg><use href="#i-store"/></svg>상가</span><span class="tag t-spec">한의원</span></div>
+          <div class="pname">잠실새내역 프라자 3F</div><div class="pprice">보증금 5천 <small>/ 월 390만</small></div>
+          <div class="pmeta"><span><svg><use href="#i-pin"/></svg>송파구 잠실동</span><span><svg><use href="#i-area"/></svg>41평</span></div>
+          <div class="pinsight"><svg><use href="#i-spark"/></svg><p>주거+상업 혼합 · 안정형 입지</p></div></div></article>
+    </div></div>
+  </div>
+</section>
+
+<!-- ============ MID BANNER ============ -->
+<section class="section" style="padding:12px 0">
+  <div class="wrap">
+    <div class="midbanner" data-reveal>
+      <div class="mb-t"><span class="eyebrow">Survival Rate</span>
+        <h3>지금 보는 자리, 살아남을 확률은?</h3>
+        <p>관심 매물의 3년 생존확률과 리스크를 AI가 시뮬레이션해 드려요.</p></div>
+      <div class="mb-cta"><a href="#" class="btn btn-grad">나의 생존확률 보기 →</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ RAIL: 강남구 추천 ============ -->
+<section class="section" style="padding-top:6px">
+  <div class="wrap">
+    <div class="sec-head"><div class="tt"><span class="si"><svg><use href="#i-pin"/></svg></span>
+      <div><h2>강남구 추천 입지</h2><div class="sub">관심 지역으로 등록한 강남구의 신규·우량 매물</div></div></div>
+      <div style="display:flex;align-items:center;gap:14px"><a href="#" class="more">전체보기 <svg><use href="#i-arrow-r"/></svg></a>
+        <div class="rail-nav"><button data-dir="-1"><svg><use href="#i-arrow-l"/></svg></button><button data-dir="1"><svg><use href="#i-arrow-r"/></svg></button></div></div></div>
+    <div class="rail"><div class="rail-scroll">
+      <article class="pcard"><div class="pthumb"><img src="./assets/tower.jpg" alt=""><span class="pbadge ai-strong">AI 추천 강 <i>추정</i></span><button class="pheart"><svg><use href="#i-heart"/></svg></button></div>
+        <div class="pbody"><div class="ptags"><span class="tag t-store"><svg><use href="#i-store"/></svg>상가</span><span class="tag t-spec">신규</span></div>
+          <div class="pname">선릉역 메디타워 5F</div><div class="pprice">보증금 1.5억 <small>/ 월 1,100만</small></div>
+          <div class="pmeta"><span><svg><use href="#i-pin"/></svg>강남구 대치동</span><span><svg><use href="#i-area"/></svg>70평</span></div>
+          <div class="pinsight"><svg><use href="#i-spark"/></svg><p>대로변 코너 · 가시성 최상</p></div></div></article>
+      <article class="pcard"><div class="pthumb"><img src="./assets/bldg1.jpg" alt=""><span class="pbadge ai-strong">AI 추천 강 <i>추정</i></span><button class="pheart"><svg><use href="#i-heart"/></svg></button></div>
+        <div class="pbody"><div class="ptags"><span class="tag t-store"><svg><use href="#i-store"/></svg>상가</span><span class="tag t-spec">피부과</span></div>
+          <div class="pname">신논현역 SK리더스뷰 3F</div><div class="pprice">보증금 1억 <small>/ 월 920만</small></div>
+          <div class="pmeta"><span><svg><use href="#i-pin"/></svg>강남구 역삼동</span><span><svg><use href="#i-area"/></svg>58평</span></div>
+          <div class="pinsight"><svg><use href="#i-spark"/></svg><p>유동 인구 최상위 · 미용 수요 집중</p></div></div></article>
+      <article class="pcard"><div class="pthumb"><img src="./assets/street.jpg" alt=""><span class="pbadge ai-mid">AI 추천 중 <i>추정</i></span><button class="pheart"><svg><use href="#i-heart"/></svg></button></div>
+        <div class="pbody"><div class="ptags"><span class="tag t-store"><svg><use href="#i-store"/></svg>상가</span><span class="tag t-spec">치과</span></div>
+          <div class="pname">압구정로데오 코너 2F</div><div class="pprice">보증금 8천 <small>/ 월 760만</small></div>
+          <div class="pmeta"><span><svg><use href="#i-pin"/></svg>강남구 청담동</span><span><svg><use href="#i-area"/></svg>49평</span></div>
+          <div class="pinsight"><svg><use href="#i-spark"/></svg><p>고소득 배후 · 프리미엄 진료 적합</p></div></div></article>
+      <article class="pcard"><div class="pthumb"><img src="./assets/bldg2.jpg" alt=""><span class="pbadge ai-mid">AI 추천 중 <i>추정</i></span><button class="pheart"><svg><use href="#i-heart"/></svg></button></div>
+        <div class="pbody"><div class="ptags"><span class="tag t-store"><svg><use href="#i-store"/></svg>상가</span><span class="tag t-spec">이비인후과</span></div>
+          <div class="pname">학동역 우성빌딩 4F</div><div class="pprice">보증금 6천 <small>/ 월 480만</small></div>
+          <div class="pmeta"><span><svg><use href="#i-pin"/></svg>강남구 논현동</span><span><svg><use href="#i-area"/></svg>43평</span></div>
+          <div class="pinsight"><svg><use href="#i-spark"/></svg><p>주거 배후 안정 · 경쟁 과밀도 낮음</p></div></div></article>
+    </div></div>
+  </div>
+</section>
+
+<!-- ============ RAIL: 뜨는 상권 ============ -->
+<section class="section" style="padding-top:6px">
+  <div class="wrap">
+    <div class="sec-head"><div class="tt"><span class="si"><svg><use href="#i-trend"/></svg></span>
+      <div><h2>요즘 뜨는 상권 TOP</h2><div class="sub">성장세가 가파른 지역의 대표 후보지예요</div></div></div>
+      <div style="display:flex;align-items:center;gap:14px"><a href="#" class="more">전체보기 <svg><use href="#i-arrow-r"/></svg></a>
+        <div class="rail-nav"><button data-dir="-1"><svg><use href="#i-arrow-l"/></svg></button><button data-dir="1"><svg><use href="#i-arrow-r"/></svg></button></div></div></div>
+    <div class="rail"><div class="rail-scroll">
+      <article class="pcard"><div class="pthumb"><img src="./assets/citynight.jpg" alt=""><span class="pbadge hot">성장 1위</span><button class="pheart"><svg><use href="#i-heart"/></svg></button></div>
+        <div class="pbody"><div class="ptags"><span class="tag t-store"><svg><use href="#i-store"/></svg>상권</span><span class="tag t-spec">마곡</span></div>
+          <div class="pname">마곡 LG사이언스파크 상권</div><div class="pprice">평균 월세 <small>평당 24만</small></div>
+          <div class="pmeta"><span><svg><use href="#i-pin"/></svg>강서구 마곡동</span><span style="color:var(--coral);font-weight:700"><svg style="color:var(--coral)"><use href="#i-trend"/></svg>+34%</span></div>
+          <div class="pinsight"><svg><use href="#i-trend"/></svg><p>대형 직장 유입 · 진료 수요 급증</p></div></div></article>
+      <article class="pcard"><div class="pthumb"><img src="./assets/street.jpg" alt=""><span class="pbadge hot">성장 2위</span><button class="pheart"><svg><use href="#i-heart"/></svg></button></div>
+        <div class="pbody"><div class="ptags"><span class="tag t-store"><svg><use href="#i-store"/></svg>상권</span><span class="tag t-spec">광교</span></div>
+          <div class="pname">광교 호수공원 신상권</div><div class="pprice">평균 월세 <small>평당 19만</small></div>
+          <div class="pmeta"><span><svg><use href="#i-pin"/></svg>수원 광교동</span><span style="color:var(--coral);font-weight:700"><svg style="color:var(--coral)"><use href="#i-trend"/></svg>+29%</span></div>
+          <div class="pinsight"><svg><use href="#i-trend"/></svg><p>신도시 입주 마무리 · 가족 수요 강세</p></div></div></article>
+      <article class="pcard"><div class="pthumb"><img src="./assets/aerial.jpg" alt=""><span class="pbadge hot">성장 3위</span><button class="pheart"><svg><use href="#i-heart"/></svg></button></div>
+        <div class="pbody"><div class="ptags"><span class="tag t-store"><svg><use href="#i-store"/></svg>상권</span><span class="tag t-spec">위례</span></div>
+          <div class="pname">위례중앙광장 상권</div><div class="pprice">평균 월세 <small>평당 17만</small></div>
+          <div class="pmeta"><span><svg><use href="#i-pin"/></svg>송파·성남 위례</span><span style="color:var(--coral);font-weight:700"><svg style="color:var(--coral)"><use href="#i-trend"/></svg>+25%</span></div>
+          <div class="pinsight"><svg><use href="#i-trend"/></svg><p>젊은 가구 비중 높음 · 소아·산부인과 유망</p></div></div></article>
+      <article class="pcard"><div class="pthumb"><img src="./assets/bldg4.jpg" alt=""><span class="pbadge hot">성장 4위</span><button class="pheart"><svg><use href="#i-heart"/></svg></button></div>
+        <div class="pbody"><div class="ptags"><span class="tag t-store"><svg><use href="#i-store"/></svg>상권</span><span class="tag t-spec">청라</span></div>
+          <div class="pname">청라국제도시 의료존</div><div class="pprice">평균 월세 <small>평당 15만</small></div>
+          <div class="pmeta"><span><svg><use href="#i-pin"/></svg>인천 서구 청라동</span><span style="color:var(--coral);font-weight:700"><svg style="color:var(--coral)"><use href="#i-trend"/></svg>+22%</span></div>
+          <div class="pinsight"><svg><use href="#i-trend"/></svg><p>대단지 입주 진행 · 선점 효과 기대</p></div></div></article>
+    </div></div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div><a href="#" class="logo"><img src="./assets/landing/logo-mark.png" alt="" /><span class="wm"><span class="a">Medi</span><span class="b">Search</span></span></a>
+        <p class="desc">검색 한 번으로 시작하는 의료 입지 분석. 병·의원과 상가 데이터를 AI로 교차 분석해 최적의 자리를 찾아드립니다.</p></div>
+      <div><h5>탐색</h5><ul><li><a href="#">인기 매물</a></li><li><a href="#">AI 추천 매물</a></li><li><a href="#">상권 리포트</a></li><li><a href="#">뜨는 상권</a></li></ul></div>
+      <div><h5>회사</h5><ul><li><a href="#">About us</a></li><li><a href="#">입지계약·컨설팅</a></li><li><a href="#">입지강의</a></li><li><a href="#">지배구조</a></li></ul></div>
+      <div><h5>내 계정</h5><ul><li><a href="#">My page</a></li><li><a href="#">찜한 매물</a></li><li><a href="#">내 보고서</a></li><li><a href="#">고객센터</a></li></ul></div>
+    </div>
+    <div class="foot-bot">
+      <span>© 2026 MediSearch · keynexion corp. 의료 입지 인텔리전스 플랫폼.</span>
+      <span>사업자등록번호 460-81-01554 · 경기 성남시 분당 · 대표 장해남</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* 캐러셀 */
+(function(){
+  const track=document.getElementById('track'),slides=track.children.length,dotsWrap=document.getElementById('dots');let i=0,timer;
+  for(let s=0;s<slides;s++){const b=document.createElement('button');b.className='dot'+(s===0?' on':'');b.onclick=()=>go(s);dotsWrap.appendChild(b);}
+  const dots=[...dotsWrap.children];
+  function render(){track.style.transform=`translateX(-${i*100}%)`;dots.forEach((d,k)=>d.classList.toggle('on',k===i));}
+  function go(n){i=(n+slides)%slides;render();restart();}
+  function restart(){clearInterval(timer);timer=setInterval(()=>go(i+1),6000);}
+  document.getElementById('next').onclick=()=>go(i+1);document.getElementById('prev').onclick=()=>go(i-1);restart();
+})();
+/* 레일 좌우 */
+document.querySelectorAll('.rail').forEach(rail=>{
+  const sc=rail.querySelector('.rail-scroll'),navs=rail.closest('.section').querySelectorAll('.rail-nav button');
+  navs.forEach(b=>b.addEventListener('click',()=>sc.scrollBy({left:(+b.dataset.dir)*600,behavior:'smooth'})));
+});
+/* 하트 */
+document.querySelectorAll('.pheart').forEach(h=>h.addEventListener('click',e=>{e.stopPropagation();e.preventDefault();
+  const on=h.classList.toggle('on');h.innerHTML='<svg><use href="#'+(on?'i-heart-f':'i-heart')+'"/></svg>';}));
+/* 추천칩 → 검색창 */
+const input=document.querySelector('.searchbar input');
+document.querySelectorAll('.sugg button').forEach(b=>b.addEventListener('click',()=>{input.value=b.textContent.trim();input.focus();}));
+/* reveal */
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}),{threshold:.1});
+document.querySelectorAll('[data-reveal]').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
